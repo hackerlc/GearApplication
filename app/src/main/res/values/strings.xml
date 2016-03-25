@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">GearApplication</string>
     <string name="action_settings">Settings</string>
+
+    <!--welcome-->
+    <string name="main_activity">Main Activity Demo</string>
+    <string name="main_data_binding">DataBinding Demo</string>
+    <string name="main_rx_java">RxJava</string>
 </resources>
