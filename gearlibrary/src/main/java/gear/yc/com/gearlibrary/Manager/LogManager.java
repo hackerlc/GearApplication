@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.Manager;
+package gear.yc.com.gearlibrary.manager;
 
 import android.util.Log;
 

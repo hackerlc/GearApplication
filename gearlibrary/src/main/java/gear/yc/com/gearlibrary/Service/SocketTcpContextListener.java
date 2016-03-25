@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.Service;
+package gear.yc.com.gearlibrary.service;
 
 /**
  * youmai

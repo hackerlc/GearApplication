@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.Web;
+package gear.yc.com.gearlibrary.web;
 
 import android.content.Context;
 import android.os.Build;

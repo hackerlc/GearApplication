@@ -1,7 +1,7 @@
 package gear.yc.com.gearapplication;
 
 import gear.yc.com.gearlibrary.GearApplication;
-import gear.yc.com.gearlibrary.Manager.LogManager;
+import gear.yc.com.gearlibrary.manager.LogManager;
 
 /**
  * GearApplication

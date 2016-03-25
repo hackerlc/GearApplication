@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.CustomView.Carousel;
+package gear.yc.com.gearlibrary.CustomView.carousel;
 
 import android.content.Context;
 import android.os.Message;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import gear.yc.com.gearlibrary.ImageLoading.DisplayImg;
 import gear.yc.com.gearlibrary.R;
-import gear.yc.com.gearlibrary.Utils.ConvertPadPlus;
+import gear.yc.com.gearlibrary.utils.ConvertPadPlus;
 
 /**
  * BAndroid

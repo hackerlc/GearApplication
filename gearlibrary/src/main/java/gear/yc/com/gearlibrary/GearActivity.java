@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 
-import gear.yc.com.gearlibrary.Manager.ActivityManager;
+import gear.yc.com.gearlibrary.manager.ActivityManager;
 
 /**
  * GearApplication

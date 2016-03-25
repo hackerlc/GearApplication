@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.Encryption;
+package gear.yc.com.gearlibrary.encryption;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

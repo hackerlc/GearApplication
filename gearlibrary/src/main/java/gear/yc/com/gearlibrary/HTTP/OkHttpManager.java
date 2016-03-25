@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.HTTP;
+package gear.yc.com.gearlibrary.http;
 
 import android.os.Handler;
 import android.os.Message;

@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.CustomView.Carousel;
+package gear.yc.com.gearlibrary.CustomView.carousel;
 
 import android.content.Context;
 import android.os.Parcelable;

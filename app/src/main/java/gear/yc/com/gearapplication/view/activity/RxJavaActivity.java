@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.view;
+package gear.yc.com.gearapplication.view.activity;
 
 import gear.yc.com.gearapplication.BaseActivity;
 

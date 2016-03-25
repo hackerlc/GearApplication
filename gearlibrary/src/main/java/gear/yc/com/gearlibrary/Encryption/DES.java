@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.Encryption;
+package gear.yc.com.gearlibrary.encryption;
 
 import java.security.Key;
 import java.security.SecureRandom;

@@ -1,31 +1,15 @@
-package gear.yc.com.gearapplication.view;
+package gear.yc.com.gearapplication.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
-import gear.yc.com.gearlibrary.HTTP.OkHttpManager;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import gear.yc.com.gearlibrary.http.OkHttpManager;
 
 public class MainActivity extends BaseActivity {
     TextView hello_tv;
