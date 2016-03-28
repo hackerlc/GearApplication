@@ -48,7 +48,7 @@ public class WelcomeActivity extends BaseActivity {
                 strActivity(this,MainActivity.class);
                 break;
             case R.id.btn_RxJava:
-                strActivity(this,MainActivity.class);
+                strActivity(this,RxJavaActivity.class);
                 break;
         }
     }

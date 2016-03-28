@@ -33,7 +33,7 @@ public class DataBindingActivity extends BaseActivity {
         user=new User();
         user.setId("2213");
         user.setUser("Joker");
-        user.setPwd("123123");
+        user.setPwd("120.00");
         binding.setUser(user);
     }
 
@@ -42,7 +42,7 @@ public class DataBindingActivity extends BaseActivity {
         public void run() {
             try {
                 Thread.sleep(3000);
-                user.setPwd("321321");
+                user.setPwd("321.10");
                 binding.setUser(user);
                 handler.sendEmptyMessage(0);
             } catch (InterruptedException e) {
