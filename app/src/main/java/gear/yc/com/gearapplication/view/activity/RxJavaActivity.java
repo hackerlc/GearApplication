@@ -3,9 +3,13 @@ package gear.yc.com.gearapplication.view.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gear.yc.com.gearapplication.BaseActivity;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 /**
  * GearApplication
@@ -25,8 +29,34 @@ public class RxJavaActivity extends BaseActivity{
 //            }
 //        });
         //3.
-        Observable.just("Hello world").subscribe(s -> System.out.println(s));
+//        Observable.just("Hello world").subscribe(s -> System.out.println(s));
+
+        //3. map
+//        Observable.just("Hello world")
+//                .map(s -> s+"Joker")
+//                .map(s -> s.hashCode())
+//                .map(i -> Integer.toString(i))
+//                .subscribe(s -> System.out.println(s));
+
+        //4
+//        List<String> urls =new ArrayList<String>();
+//        urls.add("a");
+//        urls.add("b");
+//        Observable.just(urls)
+//                .flatMap( u -> Observable.from(u))
+//                .subscribe(url -> System.out.println(url));
+        //5 Demo
+        Observable.just("#Basic Markdown to HTML with lambda")
+                .filter(s -> s!=null && s.startsWith("#"))
+                .map(s -> "<h1>"+s.substring(1,s.length())+"</h1>")
+                .subscribe(s -> System.out.println(s));
+
+
     }
+    //4
+//    Observable<List<String>> query(String text){
+//        return Observable.create(Observable<List<String>>);
+//    }
 
     //1.
     Observable<String> mObservable = rx.Observable.create(new Observable.OnSubscribe<String>() {

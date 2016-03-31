@@ -6,4 +6,6 @@
     <string name="main_activity">Main Activity Demo</string>
     <string name="main_data_binding">DataBinding Demo</string>
     <string name="main_rx_java">RxJava</string>
+    <string name="main_web_view">WebView</string>
+    <string name="main_recycler">RecyclerDemo</string>
 </resources>

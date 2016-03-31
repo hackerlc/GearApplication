@@ -89,23 +89,20 @@ public class OkHttpManager {
                 .url(url)
                 .build();
         final Call call = okHttpClient.newCall(request);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                Message message=null;
-                try {
-                    final Response response = call.execute();
-                    message = new Message();
-                    if(response==null){
-                        message.what=-1;
-                    }else{
-                        message.obj = response.body().string();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        executorService.execute(() ->{
+            Message message=null;
+            try {
+                final Response response = call.execute();
+                message = new Message();
+                if(response==null){
+                    message.what=-1;
+                }else{
+                    message.obj = response.body().string();
                 }
-                handler.sendMessage(message);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            handler.sendMessage(message);
         });
     }
 
@@ -155,9 +152,7 @@ public class OkHttpManager {
                 .url(url)
                 .build();
         final Call call = okHttpClient.newCall(request);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
+        executorService.execute(() ->{
                 Message message=null;
                 try {
                     final Response response = call.execute();
@@ -177,8 +172,7 @@ public class OkHttpManager {
                     e.printStackTrace();
                 }
                 handler.sendMessage(message);
-            }
-        });
+            });
     }
 
 }

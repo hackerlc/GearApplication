@@ -16,11 +16,12 @@ public class WelcomeActivity extends BaseActivity {
     Button mainActivity;
     Button mainDataBinding;
     Button btn_RxJava;
+    Button btn_WebView;
+    Button btn_recycler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -31,10 +32,14 @@ public class WelcomeActivity extends BaseActivity {
         mainActivity=(Button)findViewById(R.id.btn_main_activity);
         mainDataBinding=(Button)findViewById(R.id.btn_data_binding);
         btn_RxJava=(Button)findViewById(R.id.btn_RxJava);
+        btn_WebView=(Button)findViewById(R.id.btn_WebView);
+        btn_recycler=(Button)findViewById(R.id.btn_recycler);
 
         mainActivity.setOnClickListener(this);
         mainDataBinding.setOnClickListener(this);
         btn_RxJava.setOnClickListener(this);
+        btn_WebView.setOnClickListener(this);
+        btn_recycler.setOnClickListener(this);
     }
 
     @Override
@@ -50,6 +55,10 @@ public class WelcomeActivity extends BaseActivity {
             case R.id.btn_RxJava:
                 strActivity(this,RxJavaActivity.class);
                 break;
+            case R.id.btn_WebView:
+                strActivity(this,WebViewActivity.class);
+            case R.id.btn_recycler:
+                strActivity(this,RecyclerViewActivity.class);
         }
     }
 }

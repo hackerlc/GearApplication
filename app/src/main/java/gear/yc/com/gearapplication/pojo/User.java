@@ -12,6 +12,7 @@ public class User {
     private String id;
     private String user;
     private String pwd;
+    private String headPortrait;
 
     public String getId() {
         return id;
@@ -37,9 +38,16 @@ public class User {
         this.pwd = pwd;
     }
 
+    public String getHeadPortrait() {
+        return headPortrait;
+    }
+
+    public void setHeadPortrait(String headPortrait) {
+        this.headPortrait = headPortrait;
+    }
+
     // 设置字的大小
     public SpannableString setTextSize(String pic) {
-        //pic = "¥" + pic;
         int i = pic.indexOf(".");
         SpannableString msp = new SpannableString(pic);
         if (i > 0) {

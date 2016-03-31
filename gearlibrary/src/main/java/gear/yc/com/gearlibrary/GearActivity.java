@@ -25,9 +25,12 @@ public class GearActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         ActivityManager.getInstance().getActivities().add(this);
         initUI();
+        initData();
     }
 
     public void initUI(){}
+
+    public void initData(){}
 
     @Override
     public void onClick(View v) {

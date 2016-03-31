@@ -32,6 +32,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/main_rx_java" />
+        <Button
+            android:id="@+id/btn_WebView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_web_view" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_recycler" />
 
     </LinearLayout>
 

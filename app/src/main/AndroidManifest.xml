@@ -33,6 +33,12 @@
         <activity android:name=".view.activity.RxJavaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".view.activity.WebViewActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".view.activity.RecyclerViewActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

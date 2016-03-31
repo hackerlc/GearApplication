@@ -173,12 +173,7 @@ public class CarouselRelativeLayout extends RelativeLayout{
         }
     }
 
-    OnClickListener mOnClickListener =new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            mViewOnClickLis.setOnClickLis(viewNum);
-        }
-    };
+    OnClickListener mOnClickListener = v -> mViewOnClickLis.setOnClickLis(viewNum);
 
     /**
      * 设置无数据显示方式，默认为无数据显示ViewPage
