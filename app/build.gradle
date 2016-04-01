@@ -3,7 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "gear.yc.com.gearapplication"
@@ -11,6 +11,15 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("./MyGearKey.jks")
+            storePassword 'GearApplication123'
+            keyAlias("joker")
+            keyPassword 'joker123'
+        }
     }
 
     dataBinding{
@@ -21,12 +30,34 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+        }
+        debug {
+            signingConfig signingConfigs.myConfig
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    applicationVariants.all { variant ->
+
+        if (variant.buildType.name.equals('release')) {
+            variant.outputs.each { output ->
+                def appName = 'Gear'
+                def oldFile = output.outputFile
+                def releaseApkName
+                releaseApkName = appName + getVersionNameFromManifest()   + '.apk'
+                output.outputFile = new File(oldFile.parent, releaseApkName)
+            }
+        }
+    }
+}
+
+def getVersionNameFromManifest() {
+
+    return android.defaultConfig.versionName+"-"+android.defaultConfig.versionCode
 }
 
 dependencies {
@@ -34,5 +65,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:23.1.1'
     compile project(':gearlibrary')
-    compile 'com.android.support:appcompat-v7:24.0.0-alpha1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
 }
