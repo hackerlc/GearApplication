@@ -54,6 +54,9 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
 }
 
 def getVersionNameFromManifest() {
