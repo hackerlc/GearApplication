@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+retrolambda {
+    jvmArgs '-noverify'
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
@@ -53,6 +57,7 @@ android {
             }
         }
     }
+
 }
 
 def getVersionNameFromManifest() {
