@@ -40,7 +40,7 @@ public class RecyclerViewActivity extends BaseActivity{
     @Override
     public void initData() {
         super.initData();
-        users=new ArrayList<User>();
+        users=new ArrayList();
         for (int i='A';i<'z';i++){
             User user=new User();
             user.setUser("joker:"+(char)i);

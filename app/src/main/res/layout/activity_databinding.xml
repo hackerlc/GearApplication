@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
-
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
-
         <import type="gear.yc.com.gearapplication.pojo.User" alias="U" />
         <variable
             name="user"
@@ -13,19 +12,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="6dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{user.id}"/>
+            android:text="@{user.id}"
+            tools:text="234"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{user.user}"/>
+            android:text="@{user.user}"
+            tools:text="joker"/>
 
         <include layout="@layout/layout_databinding_user_pwd"
             bind:user="@{user}"/>

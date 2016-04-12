@@ -49,7 +49,7 @@ public class RxJavaActivity extends BaseActivity{
         Observable.just("#Basic Markdown to HTML with lambda")
                 .filter(s -> s!=null && s.startsWith("#"))
                 .map(s -> "<h1>"+s.substring(1,s.length())+"</h1>")
-                .subscribe(s -> System.out.println(s));
+                .subscribe(System.out::println);
 
 
     }

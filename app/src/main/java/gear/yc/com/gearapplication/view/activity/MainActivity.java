@@ -19,19 +19,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         hello_tv = (TextView) findViewById(R.id.hello_tv);
-        hello_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                hello_tv.setText("On Click Hello");
-                            }
-                        }).show();
-            }
-        });
-
+        hello_tv.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", v1 -> hello_tv.setText("On Click Hello")).show());
         testOkHttp();
 
     }

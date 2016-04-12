@@ -42,7 +42,6 @@ public class DataBindingActivity extends BaseActivity {
             try {
                 Thread.sleep(3000);
                 user.setPwd("321.10");
-                binding.setUser(user);
                 handler.sendEmptyMessage(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -54,7 +53,7 @@ public class DataBindingActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
+            binding.setUser(user);
         }
     };
 }
