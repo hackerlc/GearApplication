@@ -6,6 +6,6 @@ package gear.yc.com.gearlibrary.service;
  */
 public interface SocketTcpContextListener {
 
-    public void getServerContent(String str);
+    void getServerContent(String str);
 
 }

@@ -71,7 +71,7 @@ public class DisplayImg {
 
         public BitmapCache() {
             int maxSize = 10 * 1024 * 1024;
-            mCache = new LruCache<String, Bitmap>(maxSize) {
+            mCache =new LruCache<String, Bitmap>(maxSize) {
                 @Override
                 protected int sizeOf(String key, Bitmap value) {
                     return value.getRowBytes() * value.getHeight();

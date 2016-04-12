@@ -28,7 +28,7 @@ public class ActivityManager {
 
     public ActivityManager(){
         if(activities==null){
-            activities=new ArrayList<Activity>();
+            activities=new ArrayList();
         }
     }
 
