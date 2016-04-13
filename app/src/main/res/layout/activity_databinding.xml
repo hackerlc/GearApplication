@@ -19,14 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{user.id}"
+            android:text="@{user.uid}"
             tools:text="234"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{user.user}"
+            android:text="@{user.username}"
             tools:text="joker"/>
 
         <include layout="@layout/layout_databinding_user_pwd"

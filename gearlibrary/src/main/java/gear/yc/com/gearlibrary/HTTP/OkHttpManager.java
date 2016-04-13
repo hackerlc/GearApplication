@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -16,10 +17,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+
 
 /**
  * GearApplication
- * okHttp 管理类，封装了okHttp的网络连接方法
+ * okHttp3 管理类，封装了okHttp的网络连接方法
  * 可以设置Gson解析
  * Created by YichenZ on 2016/3/8 13:41.
  */
@@ -40,6 +43,7 @@ public class OkHttpManager {
     }
 
     private static OkHttpClient okHttpClient;
+    private static com.squareup.okhttp.OkHttpClient oldOkHttpClient;
 
     //连接池大小
     private static final int DEFAULT_FIXED_THREAD = 2;
@@ -56,7 +60,14 @@ public class OkHttpManager {
     //初始化一些参数
     private void init() {
         if (okHttpClient == null) {
-            okHttpClient = new OkHttpClient();
+            okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .retryOnConnectionFailure(true)
+                    .connectTimeout(15,TimeUnit.SECONDS)
+                    .build();
+            oldOkHttpClient=new com.squareup.okhttp.OkHttpClient();
+            oldOkHttpClient.setConnectTimeout(15,TimeUnit.SECONDS);
+            oldOkHttpClient.setRetryOnConnectionFailure(true);
         }
         if (executorService == null) {
             executorService = Executors.newFixedThreadPool(DEFAULT_FIXED_THREAD);
@@ -68,6 +79,10 @@ public class OkHttpManager {
 
     public OkHttpClient getClient() {
         return okHttpClient;
+    }
+
+    public com.squareup.okhttp.OkHttpClient getOldClient() {
+        return oldOkHttpClient;
     }
 
     /**
@@ -124,7 +139,7 @@ public class OkHttpManager {
         this.getHttpOfPost(url,null,content,handler);
     }
 
-    public void getHttpOfPost(String url,FormBody formBody,final Handler handler) throws Exception {
+    public void getHttpOfPost(String url, FormBody formBody, final Handler handler) throws Exception {
         this.getHttpOfPost(url,formBody,null,handler);
     }
 

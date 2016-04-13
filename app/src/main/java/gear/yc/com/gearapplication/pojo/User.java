@@ -8,34 +8,34 @@ import android.text.style.AbsoluteSizeSpan;
  * GearApplication
  * Created by YichenZ on 2016/3/23 15:16.
  */
-public class User {
-    private String id;
-    private String user;
-    private String pwd;
+public class User{
+    private String uid;
+    private String username;
+    private String password;
     private String headPortrait;
 
-    public String getId() {
-        return id;
+    public String getUid() {
+        return uid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getHeadPortrait() {

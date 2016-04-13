@@ -43,9 +43,9 @@ public class RecyclerViewActivity extends BaseActivity{
         users=new ArrayList();
         for (int i='A';i<'z';i++){
             User user=new User();
-            user.setUser("joker:"+(char)i);
-            user.setHeadPortrait("");
-            user.setId("89723");
+            user.setUsername("joker:"+(char)i);
+            user.setHeadPortrait("http://img1.3lian.com/2015/w7/98/d/22.jpg");
+            user.setUid("89723");
             users.add(user);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

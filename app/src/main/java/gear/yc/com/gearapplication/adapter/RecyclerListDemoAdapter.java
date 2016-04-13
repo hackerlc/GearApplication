@@ -1,12 +1,15 @@
 package gear.yc.com.gearapplication.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
@@ -33,9 +36,10 @@ public class RecyclerListDemoAdapter extends RecyclerView.Adapter<RecyclerListDe
     @Override
     public void onBindViewHolder(DemoHolder holder, int position) {
         User data =mData.get(position);
-        holder.name.setText(data.getUser());
-        holder.content.setText(data.getId());
+        holder.name.setText(data.getUsername());
+        holder.content.setText(data.getUid());
         DisplayImg.getInstance().displayImg(context,holder.headPortrait,data.getHeadPortrait());
+        holder.bgImage.setImageURI(Uri.parse(data.getHeadPortrait()));
     }
 
     @Override
@@ -60,12 +64,14 @@ public class RecyclerListDemoAdapter extends RecyclerView.Adapter<RecyclerListDe
     class DemoHolder extends RecyclerView.ViewHolder{
 
         ImageView headPortrait;
+        SimpleDraweeView bgImage;
         TextView name;
         TextView content;
 
         public DemoHolder(View itemView) {
             super(itemView);
             headPortrait=(ImageView)itemView.findViewById(R.id.iv_head_portrait);
+            bgImage=(SimpleDraweeView)itemView.findViewById(R.id.sdv_bg_image);
             name=(TextView)itemView.findViewById(R.id.tv_name);
             content=(TextView)itemView.findViewById(R.id.tv_content);
         }
