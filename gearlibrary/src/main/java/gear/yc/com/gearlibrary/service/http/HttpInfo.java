@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.http;
+package gear.yc.com.gearlibrary.service.http;
 
 import android.os.Handler;
 import android.os.Message;

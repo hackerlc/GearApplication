@@ -23,8 +23,7 @@ public class GearActivity extends Activity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityManager.getInstance().getActivities().add(this);
-        initUI();
-        initData();
+
     }
 
     public void initUI(){}

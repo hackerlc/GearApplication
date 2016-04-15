@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.widget.TextView;
 
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
-import gear.yc.com.gearlibrary.http.OkHttpManager;
+import gear.yc.com.gearlibrary.service.http.HttpInfo;
+import gear.yc.com.gearlibrary.service.http.OkHttpManager;
 
 public class MainActivity extends BaseActivity {
     TextView hello_tv;
@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity {
      */
     public void testOkHttp(){
         try {
-            OkHttpManager.getInstance().getHttpOfGet("http://www.baidu.com",mHandler);
+            HttpInfo.getInstance().getHttpOfGet("http://www.baidu.com",mHandler);
         } catch (Exception e) {
             e.printStackTrace();
         }

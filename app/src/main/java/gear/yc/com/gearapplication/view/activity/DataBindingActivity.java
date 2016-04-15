@@ -25,7 +25,8 @@ public class DataBindingActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initUI();
+        initData();
         new Thread(runnable).start();
     }
 

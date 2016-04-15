@@ -3,11 +3,12 @@ package gear.yc.com.gearapplication;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp.OkHttpImagePipelineConfigFactory;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.squareup.okhttp.OkHttpClient;
 
+import gear.yc.com.gearapplication.config.APIConfig;
 import gear.yc.com.gearlibrary.GearApplication;
-import gear.yc.com.gearlibrary.http.OkHttpManager;
+import gear.yc.com.gearlibrary.service.http.OkHttpManager;
 import gear.yc.com.gearlibrary.manager.LogManager;
+import gear.yc.com.gearlibrary.service.api.GearHttpServiceManager;
 
 /**
  * GearApplication
@@ -21,6 +22,7 @@ public class BaseApplication extends GearApplication{
                 .newBuilder(this,OkHttpManager.getInstance().getOldClient())
                 .build();
         Fresco.initialize(this,config);
+        GearHttpServiceManager.getInstance().setBaseUrl(APIConfig.BASE_URL).build();
         LogManager.getInstance().setDebug(true);
     }
 }

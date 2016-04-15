@@ -1,7 +1,6 @@
 package gear.yc.com.gearapplication.view.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,7 +14,7 @@ import android.webkit.WebViewClient;
 
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
-import gear.yc.com.gearlibrary.web.BaseWeb;
+import gear.yc.com.gearlibrary.utils.web.BaseWeb;
 
 /**
  * GearApplication
@@ -38,6 +37,8 @@ public class WebViewActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initUI();
+        initData();
     }
 
     @Override
