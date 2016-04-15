@@ -25,3 +25,9 @@ Rx 暂时没有集成生命周期管理(集成后暂时无法upload JCenter)
 ```
 compile 'com.joker.gear:com-joker-gear:1.1.0'
 ```
+
+### new version
+#####v 1.1.1
+```
+修改Gearlibrary 支持最低sdk 14
+```
