@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.databinding.ActivityDatabindingBinding;
-import gear.yc.com.gearapplication.manager.API.APIServiceManager;
+import gear.yc.com.gearapplication.manager.api.APIServiceManager;
 import gear.yc.com.gearapplication.pojo.ResponseJson;
 import gear.yc.com.gearapplication.pojo.User;
 import rx.android.schedulers.AndroidSchedulers;

@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.manager.API;
+package gear.yc.com.gearapplication.manager.api;
 
 import gear.yc.com.gearapplication.api.service.APIService;
 import gear.yc.com.gearapplication.config.APIConfig;
