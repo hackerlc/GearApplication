@@ -3,23 +3,15 @@ package gear.yc.com.gearapplication.view.activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
-import gear.yc.com.gearapplication.api.service.APIService;
 import gear.yc.com.gearapplication.databinding.ActivityDatabindingBinding;
 import gear.yc.com.gearapplication.manager.API.APIServiceManager;
 import gear.yc.com.gearapplication.pojo.ResponseJson;
 import gear.yc.com.gearapplication.pojo.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Observable;
-import rx.Scheduler;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -57,7 +49,10 @@ public class DataBindingActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((ResponseJson<User> userResponseJson) -> {
-                    binding.setUser(userResponseJson.getData());
+                    Message msg =new Message();
+                    msg.obj=userResponseJson;
+                    msg.what=1;
+                    handler.sendMessage(msg);
                 });
     }
 
@@ -78,7 +73,16 @@ public class DataBindingActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            binding.setUser(user);
+            if(msg.obj!=null){
+                user=((ResponseJson<User>) msg.obj).getData();
+                if(user!=null){
+                    binding.setUser(user);
+                }else{
+
+                }
+            }else{
+
+            }
         }
     };
 }

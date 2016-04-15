@@ -59,7 +59,7 @@ public class RxJavaActivity extends BaseActivity{
 //    }
 
     //1.
-    Observable<String> mObservable = rx.Observable.create(new Observable.OnSubscribe<String>() {
+    Observable<String> mObservable = Observable.create(new Observable.OnSubscribe<String>() {
         @Override
         public void call(Subscriber<? super String> subscriber) {
             subscriber.onNext("Hello world");

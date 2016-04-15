@@ -15,7 +15,6 @@ import java.util.List;
 
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.pojo.User;
-import gear.yc.com.gearlibrary.ImageLoading.DisplayImg;
 
 /**
  * GearApplication
@@ -38,7 +37,6 @@ public class RecyclerListDemoAdapter extends RecyclerView.Adapter<RecyclerListDe
         User data =mData.get(position);
         holder.name.setText(data.getUsername());
         holder.content.setText(data.getUid());
-        DisplayImg.getInstance().displayImg(context,holder.headPortrait,data.getHeadPortrait());
         holder.bgImage.setImageURI(Uri.parse(data.getHeadPortrait()));
     }
 
