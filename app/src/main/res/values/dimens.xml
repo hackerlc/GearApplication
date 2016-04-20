@@ -4,4 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!--font size-->
+    <!--welcome layout-->
+    <dimen name="welcome_clock_hh_ss_dd">58sp</dimen>
+    <dimen name="welcome_clock_year">68sp</dimen>
 </resources>

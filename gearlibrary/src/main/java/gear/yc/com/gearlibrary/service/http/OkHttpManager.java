@@ -10,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * GearApplication
  * okHttp3 管理类，封装了okHttp的网络连接方法
  * 可以设置Gson解析
+ * OkHttp3 开启Stetho听诊器
  * Created by YichenZ on 2016/3/8 13:41.
  */
 public class OkHttpManager {

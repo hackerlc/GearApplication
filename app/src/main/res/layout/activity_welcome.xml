@@ -1,56 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <LinearLayout
+<?xml version="1.0" encoding="utf-8"?><!--欢迎页面显示一个时钟-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="gear.yc.com.gearapplication.pojo.Clock"/>
+        <variable
+            name="clock"
+            type="Clock"/>
+    </data>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
-        <Button
-            android:id="@+id/btn_main_activity"
+        <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/main_activity" />
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/welcome_clock_hh_ss_dd"
+            android:text="@{clock.time}"
+            tools:text="00:00:00" />
 
-        <Button
-            android:id="@+id/btn_data_binding"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/main_data_binding" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btn_RxJava"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/main_rx_java" />
-        <Button
-            android:id="@+id/btn_WebView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/main_web_view" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btn_recycler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/main_recycler" />
-
-    </LinearLayout>
-
-</LinearLayout>
+            android:layout_marginBottom="12dp"
+            android:layout_above="@id/tv_time"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/welcome_clock_year"
+            android:text="@{clock.year}"
+            tools:text="2016.4.19" />
+    </RelativeLayout>
+</layout>
