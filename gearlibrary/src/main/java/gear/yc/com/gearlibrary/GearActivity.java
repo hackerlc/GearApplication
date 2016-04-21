@@ -9,12 +9,15 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import gear.yc.com.gearlibrary.manager.ActivityManager;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * GearApplication
  * Created by YichenZ on 2016/3/23 11:23.
  */
 public class GearActivity extends Activity implements View.OnClickListener {
+    //暂时用下面的方式管理一下Rxjava生命周期
+    protected CompositeSubscription mCSub;
     //Activity跳转时默认的跳转参数
     protected static final String J_FLAG="FLAG";
     protected static final String J_FLAG2="FLAG2";
@@ -22,8 +25,28 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCSub=new CompositeSubscription();
         ActivityManager.getInstance().getActivities().add(this);
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mCSub=new CompositeSubscription();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCSub.unsubscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCSub.unsubscribe();
+        mCSub=null;
     }
 
     public void initUI(){}

@@ -3,6 +3,7 @@ package gear.yc.com.gearlibrary.service.http;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 
@@ -43,7 +44,15 @@ public class OkHttpManager {
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .retryOnConnectionFailure(true)
                     .connectTimeout(15,TimeUnit.SECONDS)
+                    .addInterceptor(chain -> {
+                        Request response =chain.request()
+                                .newBuilder()
+                                .addHeader("apikey","beae89ef686795322d5a3c48579875d5")
+                                .build();
+                        return chain.proceed(response);
+                    })
                     .build();
+
             oldOkHttpClient=new com.squareup.okhttp.OkHttpClient();
             oldOkHttpClient.setConnectTimeout(15,TimeUnit.SECONDS);
             oldOkHttpClient.setRetryOnConnectionFailure(true);
