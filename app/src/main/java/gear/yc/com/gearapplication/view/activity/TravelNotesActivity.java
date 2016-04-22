@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,18 +28,21 @@ import rx.schedulers.Schedulers;
  * GearApplication
  * Created by YichenZ on 2016/4/20 15:59.
  */
-public class TravelNotesActivity extends BaseActivity{
+public class TravelNotesActivity extends BaseActivity {
+    SwipeRefreshLayout mRefreshData;
     RecyclerView mRecyclerView;
     ImageView mBack;
     TextView mTitle;
     FloatingActionButton mSearch;
 
     TravelNotesAdapter mNotesAdapter;
+    LinearLayoutManager mLinearLayoutManager;
 
-    ArrayList<TravelNoteBook.Books> mBookses=new ArrayList<>();
-    int page =1;
-    String query="";
-    String initQuery="";
+    ArrayList<TravelNoteBook.Books> mBookses = new ArrayList<>();
+    int page = 1;
+    String query = "";
+    String initQuery = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,84 +59,133 @@ public class TravelNotesActivity extends BaseActivity{
     @Override
     protected void onRestart() {
         super.onRestart();
-        query=getIntent().getStringExtra(J_FLAG);
+        query = getIntent().getStringExtra(J_FLAG);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(!initQuery.equals(query) && query!=null){
-            initQuery=query;
+        if (!initQuery.equals(query) && query != null) {
+            initQuery = query;
             findData();
         }
     }
+
+    int lastVisibleItem;
 
     @Override
     public void initUI() {
         super.initUI();
         setContentView(R.layout.activity_travel_notes);
-        mRecyclerView=(RecyclerView)findViewById(R.id.rv_books);
-        mBack=(ImageView)findViewById(R.id.iv_back);
+        //加载进度条
+        mRefreshData = (SwipeRefreshLayout) findViewById(R.id.srl_refresh_data);
+        mRefreshData.setColorSchemeResources(new int[]{R.color.colorAccent, R.color.colorPrimary
+                , R.color.colorPrimaryDark});
+        mRefreshData.setOnRefreshListener(() -> {
+            page=1;
+            findData();
+        });
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_books);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView,
+                                             int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItem + 1 == mNotesAdapter.getItemCount()) {
+                    page++;
+                    mNotesAdapter.setMoreView(true);
+                    findData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+            }
+
+        });
+
+        mBack = (ImageView) findViewById(R.id.iv_back);
         mBack.setOnClickListener(this);
-        mTitle=(TextView)findViewById(R.id.tv_title);
+
+        mTitle = (TextView) findViewById(R.id.tv_title);
         mTitle.setText("游记");
     }
 
     @Override
     public void initData() {
         super.initData();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GearRecyclerItemDecoration(this,LinearLayoutManager.VERTICAL));
-        mNotesAdapter=new TravelNotesAdapter(this,mBookses);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.addItemDecoration(new GearRecyclerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mNotesAdapter = new TravelNotesAdapter(this, mBookses);
         mRecyclerView.setAdapter(mNotesAdapter);
-        mNotesAdapter.setOnItemClickListener((v,d) -> {
-            strActivity(this,TravelNotesBookDetailsActivity.class,false,false
-                    , ((TravelNoteBook.Books)d).getBookUrl()
+        mNotesAdapter.setOnItemClickListener((v, d) -> {
+            strActivity(this, TravelNotesBookDetailsActivity.class, false, false
+                    , ((TravelNoteBook.Books) d).getBookUrl()
                     , "游记详情");
         });
 
-        mSearch=(FloatingActionButton)findViewById(R.id.fab_search);
+        mSearch = (FloatingActionButton) findViewById(R.id.fab_search);
         mSearch.setOnClickListener(this);
         findData();
     }
 
     private void findData() {
+        mRefreshData.setRefreshing(true);
         mCSub.add(
                 APIServiceManager.getInstance()
-                .getTravelNotesAPI()
-                .getTravelNotesList(query,page+"")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {
-                    Message message=new Message();
-                    message.what=s.getErrcode();
-                    message.obj=s.getData().getBookses();
-                    mHandler.sendMessage(message);
-                })
+                        .getTravelNotesAPI()
+                        .getTravelNotesList(query, page + "")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+//                        .filter(s -> s.getData().getBookses()!=null && s.getData().getBookses().size()>0)
+                        .subscribe(s -> {
+                            Message message = new Message();
+                            message.what = s.getErrcode();
+                            message.obj = s.getData().getBookses();
+                            mHandler.sendMessage(message);
+                        })
         );
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
-            case R.id.iv_back:finish(true);break;
+        switch (v.getId()) {
+            case R.id.iv_back:
+                finish(true);
+                break;
             case R.id.fab_search:
-                strActivity(this,SearchBooksActivity.class,false,false);
+                strActivity(this, SearchBooksActivity.class, false, false);
                 break;
         }
     }
 
-    Handler mHandler =new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
-                case 0:
-                    mNotesAdapter.setData((ArrayList<TravelNoteBook.Books>) msg.obj);
-                    mNotesAdapter.notifyDataSetChanged();
-                    break;
+            mRefreshData.setRefreshing(false);
+            //处理msg是否成功
+
+            ArrayList<TravelNoteBook.Books> bookses= (ArrayList<TravelNoteBook.Books>)msg.obj;
+            if (page == 1) {
+                if(bookses.size()==0)
+                    return;
+                mNotesAdapter.setData(bookses);
+            } else {
+                if(bookses.size()==0){
+                    mNotesAdapter.setMoreView(false);
+                    return;
+                }
+                mNotesAdapter.getData().addAll(bookses);
             }
+            mNotesAdapter.notifyDataSetChanged();
         }
     };
 }

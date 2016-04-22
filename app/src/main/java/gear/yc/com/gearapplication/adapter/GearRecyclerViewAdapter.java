@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 /**
  * GearApplication
+ * 在最后调用super会自动加载Click事件
+ * 如果使用view或者不最后调用super，click事件不会被加载
+ * 也可以使用view.setOnClickLister(this)
  * Created by YichenZ on 2016/4/22 11:10.
  */
 public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<R>
@@ -57,4 +60,5 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         mListener = listener;
     }
+    
 }
