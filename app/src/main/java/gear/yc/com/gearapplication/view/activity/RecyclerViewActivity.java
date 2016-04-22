@@ -2,12 +2,10 @@ package gear.yc.com.gearapplication.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
@@ -21,7 +19,7 @@ import gear.yc.com.gearapplication.view.custom.GearRecyclerItemDecoration;
  */
 public class RecyclerViewActivity extends BaseActivity{
     private RecyclerView recyclerView;
-    private List<User> users;
+    private ArrayList<User> users;
     private RecyclerListDemoAdapter rListDemoAdapter;
 
     @Override
@@ -51,9 +49,7 @@ public class RecyclerViewActivity extends BaseActivity{
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new GearRecyclerItemDecoration(this,LinearLayoutManager.VERTICAL));
-        rListDemoAdapter=new RecyclerListDemoAdapter()
-                .setContext(this)
-                .setmData(users);
+        rListDemoAdapter=new RecyclerListDemoAdapter(this,users);
         recyclerView.setAdapter(rListDemoAdapter);
     }
 }

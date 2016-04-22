@@ -2,7 +2,6 @@ package gear.yc.com.gearapplication.api.service;
 
 import gear.yc.com.gearapplication.pojo.ResponseJson;
 import gear.yc.com.gearapplication.pojo.User;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -14,7 +13,7 @@ import rx.Observable;
  */
 public interface APIService {
     @GET("src/app/{path}")
-    ResponseJson<User> getUser(@Path("path") String path);
+    Observable<ResponseJson<User>> getUser(@Path("path") String path);
 
 //    @POST("src/app/demo.php")
 //    Call<ResponseJson<User>> getUser();

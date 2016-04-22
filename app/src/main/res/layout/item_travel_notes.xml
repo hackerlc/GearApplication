@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_books_img"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        fresco:placeholderImage="@drawable/bg_img"
+        fresco:placeholderImageScaleType="center"
+        fresco:actualImageScaleType="focusCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/sdv_books_img"
+        android:padding="6dp"
+        android:background="@drawable/bg_books_item_text_bg">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:maxLines="1"
+            tools:text="游记标题"/>
+    </RelativeLayout>
+
+</RelativeLayout>

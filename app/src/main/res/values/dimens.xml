@@ -9,4 +9,11 @@
     <!--welcome layout-->
     <dimen name="welcome_clock_hh_ss_dd">58sp</dimen>
     <dimen name="welcome_clock_year">68sp</dimen>
+
+    <!--main-->
+    <dimen name="main_title_height">46dp</dimen>
+
+    <!--font size-->
+    <!--main-->
+    <dimen name="main_title">22sp</dimen>
 </resources>

@@ -45,12 +45,24 @@
         <activity android:name=".view.activity.RecyclerViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
-        <!--一些功能列表页面 DEMO-->
+        <!--一些功能列表 DEMO-->
         <activity android:name=".view.activity.FunctionListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--首页-->
         <activity android:name=".view.activity.GearActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <!--游记列表-->
+        <activity android:name=".view.activity.TravelNotesActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <!--游记搜索-->
+        <activity android:name=".view.activity.SearchBooksActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <!--游记详情-->
+        <activity android:name=".view.activity.TravelNotesBookDetailsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
     </application>

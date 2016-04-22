@@ -44,17 +44,29 @@ public class DataBindingActivity extends BaseActivity {
         user.setUsername("Joker");
         user.setPassword("120.00");
         binding.setUser(user);
-        APIServiceManager.getInstance()
+        mCSub.add(APIServiceManager.getInstance()
                 .getApiService()
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((ResponseJson<User> userResponseJson) -> {
+                .subscribe(userResponseJson -> {
                     Message msg =new Message();
                     msg.obj=userResponseJson;
                     msg.what=1;
                     handler.sendMessage(msg);
-                });
+                }));
+
+        mCSub.add(APIServiceManager.getInstance()
+                .getTravelNotesAPI()
+                .getTravelNotesList("","1")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tnbs -> {
+                    Message msg =new Message();
+                    msg.obj=tnbs;
+                    msg.what=2;
+                    handler.sendMessage(msg);
+                }));
     }
 
     Runnable runnable =new Runnable() {
@@ -75,11 +87,13 @@ public class DataBindingActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(msg.obj!=null){
-                user=((ResponseJson<User>) msg.obj).getData();
-                if(user!=null){
-                    binding.setUser(user);
-                }else{
+                if(msg.what==1) {
+                    user = ((ResponseJson<User>) msg.obj).getData();
+                    if (user != null) {
+                        binding.setUser(user);
+                    } else {
 
+                    }
                 }
             }else{
 

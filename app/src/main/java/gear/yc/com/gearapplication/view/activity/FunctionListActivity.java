@@ -59,8 +59,10 @@ public class FunctionListActivity extends BaseActivity {
                 break;
             case R.id.btn_WebView:
                 strActivity(this,WebViewActivity.class);
+                break;
             case R.id.btn_recycler:
                 strActivity(this,RecyclerViewActivity.class);
+                break;
         }
     }
 }

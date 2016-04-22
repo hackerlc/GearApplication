@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MainTitle"
+    android:translationZ="2dp">
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/MainTitle.Text"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        tools:text="Title"/>
+    <ImageView
+        android:id="@+id/iv_back"
+        style="@style/MainTitle.Back"/>
+    <EditText
+        android:id="@+id/et_search_books"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:hint="搜索游记"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"/>
+</RelativeLayout>

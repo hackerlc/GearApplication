@@ -16,4 +16,24 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+    <!--main-->
+    <style name="MainTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/main_title_height</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+    <style name="MainTitle.Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/main_title</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+    <style name="MainTitle.Back">
+        <item name="android:layout_width">@dimen/main_title_height</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:src">@drawable/img_back</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
 </resources>

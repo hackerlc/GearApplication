@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.pojo.User;
@@ -20,14 +20,16 @@ import gear.yc.com.gearapplication.pojo.User;
  * GearApplication
  * Created by YichenZ on 2016/3/30 16:24.
  */
-public class RecyclerListDemoAdapter extends RecyclerView.Adapter<RecyclerListDemoAdapter.DemoHolder>{
+public class RecyclerListDemoAdapter extends GearRecyclerViewAdapter<User,RecyclerListDemoAdapter.DemoHolder>{
 
-    List<User> mData;
-    Context context;
+    public RecyclerListDemoAdapter(Context context, ArrayList<User> dates){
+        mContext=context;
+        mData=dates;
+    }
 
     @Override
     public DemoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        DemoHolder demoHolder=new DemoHolder(LayoutInflater.from(context)
+        DemoHolder demoHolder=new DemoHolder(LayoutInflater.from(mContext)
                 .inflate(R.layout.item_recycler_view,parent,false));
         return demoHolder;
     }
@@ -38,25 +40,6 @@ public class RecyclerListDemoAdapter extends RecyclerView.Adapter<RecyclerListDe
         holder.name.setText(data.getUsername());
         holder.content.setText(data.getUid());
         holder.bgImage.setImageURI(Uri.parse(data.getHeadPortrait()));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mData.size();
-    }
-
-    public List<User> getmData() {
-        return mData;
-    }
-
-    public RecyclerListDemoAdapter setmData(List<User> mData) {
-        this.mData = mData;
-        return this;
-    }
-
-    public RecyclerListDemoAdapter setContext(Context context) {
-        this.context = context;
-        return this;
     }
 
     class DemoHolder extends RecyclerView.ViewHolder{

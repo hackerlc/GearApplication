@@ -28,7 +28,6 @@ public class WelcomeActivity extends BaseActivity {
 
     long startTime;
     Subscription mSub;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +54,7 @@ public class WelcomeActivity extends BaseActivity {
      */
     private void gotoPage() {
         startTime= System.currentTimeMillis();
-        mSub=Observable.just(mClock)
+        mCSub.add(Observable.just(mClock)
                 .map(f -> {
                     while (true){
                         binding.setClock(f.setTime());
@@ -68,15 +67,14 @@ public class WelcomeActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    startActivity(new Intent(this,FunctionListActivity.class));
+                    startActivity(new Intent(this,TravelNotesActivity.class));
                     finish();
-                });
+                }));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSub.unsubscribe();
     }
 
     @Override

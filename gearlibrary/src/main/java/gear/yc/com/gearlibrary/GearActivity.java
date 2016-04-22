@@ -39,7 +39,6 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
-        mCSub.unsubscribe();
     }
 
     @Override
@@ -49,9 +48,9 @@ public class GearActivity extends Activity implements View.OnClickListener {
         mCSub=null;
     }
 
-    public void initUI(){}
+    protected void initUI(){}
 
-    public void initData(){}
+    protected void initData(){}
 
     @Override
     public void onClick(View v) {
@@ -138,10 +137,12 @@ public class GearActivity extends Activity implements View.OnClickListener {
 
     /**
      * 带跳转样式的关闭activity
+     * @param isOut 是否退出
      */
-    protected void finishActivity(){
+    protected boolean finish(boolean isOut){
         finish();
-        setGo(true);
+        setGo(isOut);
+        return true;
     }
 
     /**
@@ -171,8 +172,7 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            finishActivity();
-            return true;
+            return finish(true);
         }
         return super.onKeyDown(keyCode, event);
     }

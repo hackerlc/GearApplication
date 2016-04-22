@@ -57,6 +57,7 @@ public class WebViewActivity extends BaseActivity{
     }
 
     public void initData() {
+
         defUrl=getIntent().getStringExtra("defUrl");
         defTitle=getIntent().getStringExtra("defTitle");
         if(defUrl!=null && !defUrl.equals("")){
@@ -93,7 +94,7 @@ public class WebViewActivity extends BaseActivity{
 
             @Override
             public void onPageFinished(android.webkit.WebView view, String url) {
-                if(!settings.getLoadsImagesAutomatically()) {
+                if(settings !=null &&!settings.getLoadsImagesAutomatically()) {
                     settings.setLoadsImagesAutomatically(true);
                 }
             }

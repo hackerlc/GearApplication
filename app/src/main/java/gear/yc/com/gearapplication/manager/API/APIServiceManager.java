@@ -1,6 +1,7 @@
 package gear.yc.com.gearapplication.manager.api;
 
 import gear.yc.com.gearapplication.api.service.APIService;
+import gear.yc.com.gearapplication.api.service.TravelNotesAPI;
 import gear.yc.com.gearlibrary.service.api.GearHttpServiceManager;
 
 /**
@@ -21,12 +22,20 @@ public class APIServiceManager {
         return instance;
     }
 
-    private APIService apiService;
-
     public APIServiceManager(){
     }
 
+    private APIService apiService;
     public APIService getApiService() {
-        return apiService=GearHttpServiceManager.getInstance().getRetrofit().create(APIService.class);
+        return apiService==null ?
+        GearHttpServiceManager.getInstance().getRetrofit().create(APIService.class)
+        :apiService;
+    }
+
+    private TravelNotesAPI mTravelNotesAPI;
+    public TravelNotesAPI getTravelNotesAPI(){
+        return mTravelNotesAPI==null ?
+                GearHttpServiceManager.getInstance().getRetrofit().create(TravelNotesAPI.class)
+                : mTravelNotesAPI;
     }
 }
