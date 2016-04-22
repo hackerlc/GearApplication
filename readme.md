@@ -1,4 +1,5 @@
 ### GearApplication 
+### library
 集成OkHttp3(OkHttp) + Retrofit2 + Fresco + Rxjava(RxAndroid)
 Fresco 网络访问由OkHttp负责
 Retrofit2 网络访问由OkHttp3负责
