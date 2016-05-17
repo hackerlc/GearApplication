@@ -45,7 +45,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'io.reactivex:rxjava:1.1.2'
