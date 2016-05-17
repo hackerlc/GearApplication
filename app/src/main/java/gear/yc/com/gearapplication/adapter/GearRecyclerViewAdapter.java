@@ -60,5 +60,5 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         mListener = listener;
     }
-    
+
 }

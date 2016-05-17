@@ -52,7 +52,6 @@ public class OkHttpManager {
                         return chain.proceed(response);
                     })
                     .build();
-
             oldOkHttpClient=new com.squareup.okhttp.OkHttpClient();
             oldOkHttpClient.setConnectTimeout(15,TimeUnit.SECONDS);
             oldOkHttpClient.setRetryOnConnectionFailure(true);

@@ -137,6 +137,9 @@ public class TravelNotesActivity extends BaseActivity {
 
     private void findData() {
         mRefreshData.setRefreshing(true);
+        if(!isNetworkConnected()){
+            return;
+        }
         mCSub.add(
                 APIServiceManager.getInstance()
                         .getTravelNotesAPI()
