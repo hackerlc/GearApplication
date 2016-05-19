@@ -28,6 +28,11 @@ compile 'com.joker.gear:com-joker-gear:1.1.0'
 ```
 
 ### new version
+#####v 1.2.1
+```
+改变OKHttp创建方式，改为简单创建者方式构建
+
+```
 #####v 1.1.1
 ```
 修改Gearlibrary 支持最低sdk 14
