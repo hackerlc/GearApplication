@@ -1,6 +1,6 @@
 package gear.yc.com.gearlibrary.service.api;
 
-import gear.yc.com.gearlibrary.service.http.OkHttpManager;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,15 +35,11 @@ public class GearHttpServiceManager {
         return instance;
     }
 
-    public void build(){
+    public void build(OkHttpClient okHttpClient){
         if(sBaseUrl==null)
             new IllegalAccessException("need setBaseUrl");
-        init();
-    }
-
-    private void init() {
         retrofit=new Retrofit.Builder()
-                .client(OkHttpManager.getInstance().getClient())
+                .client(okHttpClient)
                 .baseUrl(sBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

@@ -33,29 +33,47 @@ public class OkHttpManager {
     private static OkHttpClient okHttpClient;
     private static com.squareup.okhttp.OkHttpClient oldOkHttpClient;
 
+    private int mTimeOut=15;
+    private String headerKey,headerValue;
+
     public OkHttpManager() {
-        init();
     }
 
-    //初始化一些参数
-    private void init() {
+    public OkHttpManager setHeader(String headerKey,String headerValue) {
+        this.headerKey = headerKey;
+        this.headerValue = headerValue;
+        return instance;
+    }
+
+    public OkHttpManager setTimeOut(int timeOut) {
+        mTimeOut = timeOut;
+        return instance;
+    }
+
+    public OkHttpManager build(){
         if (okHttpClient == null) {
             okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .retryOnConnectionFailure(true)
-                    .connectTimeout(15,TimeUnit.SECONDS)
+                    .connectTimeout(mTimeOut, TimeUnit.SECONDS)
                     .addInterceptor(chain -> {
-                        Request response =chain.request()
-                                .newBuilder()
-                                .addHeader("apikey","beae89ef686795322d5a3c48579875d5")
-                                .build();
+                        Request response = chain.request();
+                        if (headerKey != null) {
+                            response = chain.request()
+                                    .newBuilder()
+                                    .addHeader(headerKey, headerValue)
+                                    .build();
+                        }
                         return chain.proceed(response);
                     })
                     .build();
+        }
+        if(oldOkHttpClient==null){
             oldOkHttpClient=new com.squareup.okhttp.OkHttpClient();
-            oldOkHttpClient.setConnectTimeout(15,TimeUnit.SECONDS);
+            oldOkHttpClient.setConnectTimeout(mTimeOut,TimeUnit.SECONDS);
             oldOkHttpClient.setRetryOnConnectionFailure(true);
         }
+        return instance;
     }
 
     /**
