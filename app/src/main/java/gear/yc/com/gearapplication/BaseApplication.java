@@ -20,11 +20,18 @@ public class BaseApplication extends GearApplication{
     public void onCreate() {
         super.onCreate();
         ImagePipelineConfig config =OkHttpImagePipelineConfigFactory
-                .newBuilder(this,OkHttpManager.getInstance().getOldClient())
+                .newBuilder(this,OkHttpManager.getInstance().build().getOldClient())
                 .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
                 .build();
         Fresco.initialize(this,config);
-        GearHttpServiceManager.getInstance().setBaseUrl(APIConfig.BASE_URL).build();
+        GearHttpServiceManager.getInstance()
+                .setBaseUrl(APIConfig.BASE_URL)
+                .build(
+                OkHttpManager.getInstance()
+                        .setHeader("apikey","beae89ef686795322d5a3c48579875d5")
+                        .build()
+                        .getClient()
+        );
         LogManager.getInstance().setDebug(true);
     }
 }
