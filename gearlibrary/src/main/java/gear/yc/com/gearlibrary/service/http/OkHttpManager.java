@@ -10,7 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 /**
  * GearApplication
  * okHttp3 管理类，封装了okHttp的网络连接方法
- * 可以设置Gson解析
  * OkHttp3 开启Stetho听诊器
  * Created by YichenZ on 2016/3/8 13:41.
  */
@@ -31,7 +30,6 @@ public class OkHttpManager {
     }
 
     private static OkHttpClient okHttpClient;
-    private static com.squareup.okhttp.OkHttpClient oldOkHttpClient;
 
     private int mTimeOut=15;
     private String headerKey,headerValue;
@@ -58,7 +56,7 @@ public class OkHttpManager {
                     .connectTimeout(mTimeOut, TimeUnit.SECONDS)
                     .addInterceptor(chain -> {
                         Request response = chain.request();
-                        if (headerKey != null) {
+                        if (headerKey!=null) {
                             response = chain.request()
                                     .newBuilder()
                                     .addHeader(headerKey, headerValue)
@@ -68,11 +66,6 @@ public class OkHttpManager {
                     })
                     .build();
         }
-        if(oldOkHttpClient==null){
-            oldOkHttpClient=new com.squareup.okhttp.OkHttpClient();
-            oldOkHttpClient.setConnectTimeout(mTimeOut,TimeUnit.SECONDS);
-            oldOkHttpClient.setRetryOnConnectionFailure(true);
-        }
         return instance;
     }
 
@@ -81,14 +74,6 @@ public class OkHttpManager {
      */
     public OkHttpClient getClient() {
         return okHttpClient;
-    }
-
-    /**
-     *
-     * @return OkHttp Client
-     */
-    public com.squareup.okhttp.OkHttpClient getOldClient() {
-        return oldOkHttpClient;
     }
 
 }
