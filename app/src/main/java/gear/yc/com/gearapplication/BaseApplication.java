@@ -1,7 +1,7 @@
 package gear.yc.com.gearapplication;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.backends.okhttp.OkHttpImagePipelineConfigFactory;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 
@@ -19,19 +19,20 @@ public class BaseApplication extends GearApplication{
     @Override
     public void onCreate() {
         super.onCreate();
-        ImagePipelineConfig config =OkHttpImagePipelineConfigFactory
-                .newBuilder(this,OkHttpManager.getInstance().build().getOldClient())
-                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
-                .build();
-        Fresco.initialize(this,config);
         GearHttpServiceManager.getInstance()
                 .setBaseUrl(APIConfig.BASE_URL)
                 .build(
-                OkHttpManager.getInstance()
-                        .setHeader("apikey","beae89ef686795322d5a3c48579875d5")
-                        .build()
-                        .getClient()
-        );
+                        OkHttpManager.getInstance()
+                                .setHeader("apikey","beae89ef686795322d5a3c48579875d5")
+                                .build()
+                                .getClient()
+                );
+        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
+                .newBuilder(this,OkHttpManager.getInstance().getClient())
+                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+                .build();
+        Fresco.initialize(this,config);
+
         LogManager.getInstance().setDebug(true);
     }
 }
