@@ -22,7 +22,13 @@ public class GearFragment extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCSub.unsubscribe();
-        mCSub=null;
+        unSubscribe();
+    }
+
+    public void unSubscribe(){
+        if(mCSub!=null){
+            mCSub.unsubscribe();
+            mCSub=null;
+        }
     }
 }

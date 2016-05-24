@@ -9,6 +9,7 @@ import android.content.DialogInterface;
  * 圆形进度条加载
  * 可设置title以及点击返回按钮关闭activity
  * 也可以直接设置点击返回按钮之后的回调
+ * 有bug跳转B Activity 再回来调用show方法后会显示
  * Created by YichenZ on 2016/5/19 14:58.
  */
 public class ProgressDialogUtil {

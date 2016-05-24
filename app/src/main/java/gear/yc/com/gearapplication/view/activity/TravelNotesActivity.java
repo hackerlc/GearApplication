@@ -51,12 +51,6 @@ public class TravelNotesActivity extends BaseActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-    }
-
-    @Override
     protected void onRestart() {
         super.onRestart();
         query = getIntent().getStringExtra(J_FLAG);
@@ -69,6 +63,12 @@ public class TravelNotesActivity extends BaseActivity {
             initQuery = query;
             findData();
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     int lastVisibleItem;
@@ -114,6 +114,7 @@ public class TravelNotesActivity extends BaseActivity {
 
         mTitle = (TextView) findViewById(R.id.tv_title);
         mTitle.setText("游记");
+
     }
 
     @Override

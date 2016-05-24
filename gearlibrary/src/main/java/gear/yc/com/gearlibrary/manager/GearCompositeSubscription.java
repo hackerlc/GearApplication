@@ -3,7 +3,6 @@ package gear.yc.com.gearlibrary.manager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +87,6 @@ public final class GearCompositeSubscription implements Subscription {
         if (mNetworkInfo != null) {
             return mNetworkInfo.isAvailable();
         }
-        Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
         return false;
     }
 

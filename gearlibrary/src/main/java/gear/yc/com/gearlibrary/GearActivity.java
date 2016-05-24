@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import gear.yc.com.gearlibrary.manager.ActivityManager;
-import gear.yc.com.gearlibrary.manager.GearCompositeSubscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * GearApplication
@@ -20,7 +20,7 @@ import gear.yc.com.gearlibrary.manager.GearCompositeSubscription;
  */
 public class GearActivity extends Activity implements View.OnClickListener {
     //暂时用下面的方式管理一下Rxjava生命周期
-    protected GearCompositeSubscription mCSub;
+    protected CompositeSubscription mCSub;
     //Activity跳转时默认的跳转参数
     protected static final String J_FLAG = "FLAG";
     protected static final String J_FLAG2 = "FLAG2";
@@ -28,7 +28,7 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCSub = new GearCompositeSubscription(this);
+        mCSub = new CompositeSubscription();
         ActivityManager.getInstance().getActivities().add(this);
 
     }
@@ -36,7 +36,9 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
-        mCSub = new GearCompositeSubscription(this);
+        if(mCSub==null) {
+            mCSub = new CompositeSubscription();
+        }
     }
 
     @Override
@@ -47,8 +49,7 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCSub.unsubscribe();
-        mCSub = null;
+        unSubscribe();
     }
 
     protected void initUI() {
@@ -188,6 +189,13 @@ public class GearActivity extends Activity implements View.OnClickListener {
         }
         Toast.makeText(this, "没有网络", Toast.LENGTH_SHORT);
         return false;
+    }
+
+    public void unSubscribe(){
+        if(mCSub!=null){
+            mCSub.unsubscribe();
+            mCSub=null;
+        }
     }
 
     /**
