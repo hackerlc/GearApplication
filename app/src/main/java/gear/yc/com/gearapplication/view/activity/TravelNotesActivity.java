@@ -141,13 +141,13 @@ public class TravelNotesActivity extends BaseActivity {
         if(!isNetworkConnected()){
             return;
         }
+        unSubscribe();
         mCSub.add(
                 APIServiceManager.getInstance()
                         .getTravelNotesAPI()
                         .getTravelNotesList(query, page + "")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-//                        .filter(s -> s.getData().getBookses()!=null && s.getData().getBookses().size()>0)
                         .subscribe(s -> {
                             Message message = new Message();
                             message.what = s.getErrcode();

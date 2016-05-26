@@ -20,7 +20,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class GearActivity extends Activity implements View.OnClickListener {
     //暂时用下面的方式管理一下Rxjava生命周期
-    protected CompositeSubscription mCSub;
+    public static CompositeSubscription mCSub= new CompositeSubscription();
     //Activity跳转时默认的跳转参数
     protected static final String J_FLAG = "FLAG";
     protected static final String J_FLAG2 = "FLAG2";
@@ -28,7 +28,6 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCSub = new CompositeSubscription();
         ActivityManager.getInstance().getActivities().add(this);
 
     }
@@ -36,9 +35,6 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(mCSub==null) {
-            mCSub = new CompositeSubscription();
-        }
     }
 
     @Override
@@ -49,7 +45,7 @@ public class GearActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unSubscribe();
+       mCSub.unsubscribe();
     }
 
     protected void initUI() {
@@ -194,7 +190,7 @@ public class GearActivity extends Activity implements View.OnClickListener {
     public void unSubscribe(){
         if(mCSub!=null){
             mCSub.unsubscribe();
-            mCSub=null;
+            mCSub=new CompositeSubscription();
         }
     }
 
