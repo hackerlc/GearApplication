@@ -11,24 +11,24 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class GearFragment extends Fragment{
     //暂时用下面的方式管理一下Rxjava生命周期
-    protected CompositeSubscription mCSub;
+    protected CompositeSubscription mCSub=new CompositeSubscription();;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCSub=new CompositeSubscription();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unSubscribe();
+        mCSub.unsubscribe();
+        mCSub=null;
     }
 
     public void unSubscribe(){
         if(mCSub!=null){
             mCSub.unsubscribe();
-            mCSub=null;
+            mCSub=new CompositeSubscription();
         }
     }
 }

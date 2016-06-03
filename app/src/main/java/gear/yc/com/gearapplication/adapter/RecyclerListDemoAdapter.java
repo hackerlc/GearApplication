@@ -15,12 +15,13 @@ import java.util.ArrayList;
 
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.pojo.User;
+import gear.yc.com.gearlibrary.adapter.GearRecyclerViewAdapter;
 
 /**
  * GearApplication
  * Created by YichenZ on 2016/3/30 16:24.
  */
-public class RecyclerListDemoAdapter extends GearRecyclerViewAdapter<User,RecyclerListDemoAdapter.DemoHolder>{
+public class RecyclerListDemoAdapter extends GearRecyclerViewAdapter<User,RecyclerListDemoAdapter.DemoHolder> {
 
     public RecyclerListDemoAdapter(Context context, ArrayList<User> dates){
         mContext=context;

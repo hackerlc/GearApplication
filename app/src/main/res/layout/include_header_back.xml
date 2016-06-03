@@ -10,4 +10,7 @@
     <ImageView
         android:id="@+id/iv_back"
         style="@style/MainTitle.Back"/>
+    <ImageView
+        android:id="@+id/iv_left"
+        style="@style/MainTitle.Left"/>
 </RelativeLayout>

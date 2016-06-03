@@ -14,12 +14,13 @@ import java.util.ArrayList;
 
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
+import gear.yc.com.gearlibrary.adapter.GearRecyclerViewAdapter;
 
 /**
  * GearApplication
  * Created by YichenZ on 2016/4/21 14:09.
  */
-public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.Books,TravelNotesAdapter.Holder>{
+public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.Books,TravelNotesAdapter.Holder> {
 
     public TravelNotesAdapter(Context context,ArrayList<TravelNoteBook.Books> dates){
         mContext=context;
@@ -48,9 +49,8 @@ public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.B
         view =LayoutInflater.from(mContext).inflate(
                 R.layout.item_travel_notes,parent,false
         );
+        view.setOnClickListener(this);
         Holder holder =new Holder(view);
-        super.onCreateViewHolder(parent,viewType);
-
         return holder;
     }
 
@@ -88,9 +88,9 @@ public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.B
         void setMoreView(boolean more);
     }
 
-    protected setMoreViewListener mSetMoreViewListener= (m) -> {
+    protected setMoreViewListener mSetMoreViewListener= (more) -> {
         if(mFooterHolder!=null){
-            if(m)
+            if(more)
                 mFooterHolder.mFooter.setText("加载更多信息中...");
             else
                 mFooterHolder.mFooter.setText("已经加载全部信息");

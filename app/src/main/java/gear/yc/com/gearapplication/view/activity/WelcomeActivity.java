@@ -54,6 +54,7 @@ public class WelcomeActivity extends BaseActivity {
      */
     private void gotoPage() {
         startTime= System.currentTimeMillis();
+        unSubscribe();
         mCSub.add(Observable.just(mClock)
                 .map(f -> {
                     while (true){

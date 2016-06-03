@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,7 +21,7 @@ import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.adapter.TravelNotesAdapter;
 import gear.yc.com.gearapplication.manager.api.APIServiceManager;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
-import gear.yc.com.gearapplication.view.custom.GearRecyclerItemDecoration;
+import gear.yc.com.gearlibrary.utils.ToastUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,11 +33,16 @@ public class TravelNotesActivity extends BaseActivity {
     SwipeRefreshLayout mRefreshData;
     RecyclerView mRecyclerView;
     ImageView mBack;
+    ImageView mLeft;
     TextView mTitle;
     FloatingActionButton mSearch;
 
     TravelNotesAdapter mNotesAdapter;
     LinearLayoutManager mLinearLayoutManager;
+    GridLayoutManager mGridLayoutManager;
+
+    //负责记录list样式
+    boolean isLinear=true;
 
     ArrayList<TravelNoteBook.Books> mBookses = new ArrayList<>();
     int page = 1;
@@ -87,6 +93,24 @@ public class TravelNotesActivity extends BaseActivity {
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_books);
+
+        mBack = (ImageView) findViewById(R.id.iv_back);
+        mBack.setOnClickListener(this);
+        mLeft=(ImageView)findViewById(R.id.iv_left);
+        mLeft.setVisibility(View.VISIBLE);
+        mLeft.setImageResource(R.drawable.img_lv);
+        mLeft.setOnClickListener(this);
+
+        mTitle = (TextView) findViewById(R.id.tv_title);
+        mTitle.setText("游记");
+
+    }
+    @Override
+    public void initData() {
+        super.initData();
+        mLinearLayoutManager=new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+//        mRecyclerView.addItemDecoration(new GearRecyclerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -94,7 +118,7 @@ public class TravelNotesActivity extends BaseActivity {
                                              int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem + 1 == mNotesAdapter.getItemCount()) {
+                        && lastVisibleItem + (isLinear? 1 : 2) == mNotesAdapter.getItemCount()) {
                     page++;
                     mNotesAdapter.setMoreView(true);
                     findData();
@@ -104,32 +128,21 @@ public class TravelNotesActivity extends BaseActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                if (isLinear){
+                    lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+                }else{
+                    lastVisibleItem = mGridLayoutManager.findLastVisibleItemPosition()-1;
+                }
+
             }
 
         });
-
-        mBack = (ImageView) findViewById(R.id.iv_back);
-        mBack.setOnClickListener(this);
-
-        mTitle = (TextView) findViewById(R.id.tv_title);
-        mTitle.setText("游记");
-
-    }
-
-    @Override
-    public void initData() {
-        super.initData();
-        mLinearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.addItemDecoration(new GearRecyclerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mNotesAdapter = new TravelNotesAdapter(this, mBookses);
         mRecyclerView.setAdapter(mNotesAdapter);
-        mNotesAdapter.setOnItemClickListener((v, d) -> {
+        mNotesAdapter.setOnItemClickListener((v, d) ->
             strActivity(this, TravelNotesBookDetailsActivity.class, false, false
                     , ((TravelNoteBook.Books) d).getBookUrl()
-                    , "游记详情");
-        });
+                    , "游记详情"));
 
         mSearch = (FloatingActionButton) findViewById(R.id.fab_search);
         mSearch.setOnClickListener(this);
@@ -164,6 +177,25 @@ public class TravelNotesActivity extends BaseActivity {
             case R.id.iv_back:
                 finish(true);
                 break;
+            case R.id.iv_left:
+                if(isLinear){
+                    isLinear=false;
+                    mLeft.setImageResource(R.drawable.img_gridview);
+                    if(mGridLayoutManager==null) {
+                        mGridLayoutManager = new GridLayoutManager(this, 2);
+                    }
+                    mGridLayoutManager.scrollToPositionWithOffset(mLinearLayoutManager.findFirstVisibleItemPosition(),1);
+                    mRecyclerView.setLayoutManager(mGridLayoutManager);
+                }else{
+                    isLinear=true;
+                    mLeft.setImageResource(R.drawable.img_lv);
+                    if(mLinearLayoutManager==null){
+                        mLinearLayoutManager=new LinearLayoutManager(this);
+                    }
+                    mLinearLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.findFirstVisibleItemPosition(),-1);
+                    mRecyclerView.setLayoutManager(mLinearLayoutManager);
+                }
+                break;
             case R.id.fab_search:
                 strActivity(this, SearchBooksActivity.class, false, false);
                 break;
@@ -176,20 +208,23 @@ public class TravelNotesActivity extends BaseActivity {
             super.handleMessage(msg);
             mRefreshData.setRefreshing(false);
             //处理msg是否成功
-
-            ArrayList<TravelNoteBook.Books> bookses= (ArrayList<TravelNoteBook.Books>)msg.obj;
-            if (page == 1) {
-                if(bookses.size()==0)
-                    return;
-                mNotesAdapter.setData(bookses);
-            } else {
-                if(bookses.size()==0){
-                    mNotesAdapter.setMoreView(false);
-                    return;
+            if(msg.what==0){
+                ArrayList<TravelNoteBook.Books> bookses= (ArrayList<TravelNoteBook.Books>)msg.obj;
+                if (page == 1) {
+                    if(bookses.size()==0)
+                        return;
+                    mNotesAdapter.setData(bookses);
+                } else {
+                    if(bookses.size()==0){
+                        mNotesAdapter.setMoreView(false);
+                        return;
+                    }
+                    mNotesAdapter.getData().addAll(bookses);
                 }
-                mNotesAdapter.getData().addAll(bookses);
+                mNotesAdapter.notifyDataSetChanged();
+            }else{
+                ToastUtil.getInstance().makeShortToast(TravelNotesActivity.this,"请求失败");
             }
-            mNotesAdapter.notifyDataSetChanged();
         }
     };
 }

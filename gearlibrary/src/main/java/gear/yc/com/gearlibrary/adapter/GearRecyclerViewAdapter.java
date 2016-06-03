@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.adapter;
+package gear.yc.com.gearlibrary.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -23,8 +23,6 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
 
     @Override
     public R onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(view!=null)
-            view.setOnClickListener(this);
         return null;
     }
 
@@ -54,7 +52,7 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
     }
 
     public interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view,Object data);
+        void onItemClick(View view, Object data);
     }
 
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
