@@ -1,12 +1,14 @@
 ### GearApplication 
 ### library
 集成OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid)
-Fresco 网络访问由OkHttp负责
-Retrofit2 网络访问由OkHttp3负责
+
+Retrofit2，Fresco 网络访问由OkHttp3负责
+
 集成最简单的Rxjava 生命周期管理，并不成熟后期可能会替换掉，谨慎是使用
 
 ####Rxjava生命周期管理使用方式
 继承GearActivity
+
 如果已经继承其他activity也可以在activity中加入如下代码
 ```
     public static CompositeSubscription mCSub= new CompositeSubscription();
@@ -26,6 +28,7 @@ Retrofit2 网络访问由OkHttp3负责
 ```
 
 使用是先调用1出方法，会首先删除订阅
+
 第二步add订阅后的Sub
 
 ```
