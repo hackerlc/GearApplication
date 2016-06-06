@@ -21,6 +21,11 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
     protected OnRecyclerViewItemClickListener mListener;
     protected View view;
 
+    public GearRecyclerViewAdapter(Context mContext, ArrayList<T> mData){
+        this.mContext=mContext;
+        this.mData=mData;
+    }
+
     @Override
     public R onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;

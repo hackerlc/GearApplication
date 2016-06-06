@@ -11,7 +11,7 @@ import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.adapter.RecyclerListDemoAdapter;
 import gear.yc.com.gearapplication.pojo.User;
-import gear.yc.com.gearapplication.view.custom.GearRecyclerItemDecoration;
+import gear.yc.com.gearlibrary.view.custom.GearRecyclerItemDecoration;
 
 /**
  * GearApplication

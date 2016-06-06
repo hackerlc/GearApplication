@@ -15,16 +15,16 @@ import java.util.ArrayList;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
 import gear.yc.com.gearlibrary.adapter.GearRecyclerViewAdapter;
+import gear.yc.com.gearlibrary.intarface.GearRecyclerMore;
 
 /**
  * GearApplication
  * Created by YichenZ on 2016/4/21 14:09.
  */
-public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.Books,TravelNotesAdapter.Holder> {
+public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.Books,TravelNotesAdapter.Holder> implements GearRecyclerMore{
 
     public TravelNotesAdapter(Context context,ArrayList<TravelNoteBook.Books> dates){
-        mContext=context;
-        mData=dates;
+        super(context,dates);
     }
 
     @Override
@@ -83,12 +83,7 @@ public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.B
             mFooter=(TextView) itemView.findViewById(R.id.tv_foot_text);
         }
     }
-
-    protected interface setMoreViewListener{
-        void setMoreView(boolean more);
-    }
-
-    protected setMoreViewListener mSetMoreViewListener= (more) -> {
+    protected GearRecyclerMore mSetMoreViewListener= (more) -> {
         if(mFooterHolder!=null){
             if(more)
                 mFooterHolder.mFooter.setText("加载更多信息中...");

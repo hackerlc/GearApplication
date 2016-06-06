@@ -7,12 +7,11 @@ import android.util.Log;
  * Created by YichenZ on 2016/3/23 14:22.
  */
 public class LogManager {
-    private static Object obj =new Object();
     private static LogManager instance;
 
     public static LogManager getInstance(){
         if (instance==null){
-            synchronized (obj){
+            synchronized (LogManager.class){
                 if (instance==null){
                     instance=new LogManager();
                 }

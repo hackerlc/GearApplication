@@ -24,8 +24,7 @@ import gear.yc.com.gearlibrary.adapter.GearRecyclerViewAdapter;
 public class RecyclerListDemoAdapter extends GearRecyclerViewAdapter<User,RecyclerListDemoAdapter.DemoHolder> {
 
     public RecyclerListDemoAdapter(Context context, ArrayList<User> dates){
-        mContext=context;
-        mData=dates;
+        super(context,dates);
     }
 
     @Override

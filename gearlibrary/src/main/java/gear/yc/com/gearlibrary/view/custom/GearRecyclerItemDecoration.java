@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.view.custom;
+package gear.yc.com.gearlibrary.view.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;

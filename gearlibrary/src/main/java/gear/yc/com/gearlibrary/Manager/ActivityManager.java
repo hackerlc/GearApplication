@@ -10,12 +10,11 @@ import java.util.List;
  * Created by YichenZ on 2016/3/23 11:51.
  */
 public class ActivityManager {
-    private static Object obj =new Object();
     private static ActivityManager instance;
 
     public static ActivityManager getInstance(){
         if(instance==null){
-            synchronized (obj){
+            synchronized (ActivityManager.class){
                 if(instance==null){
                     instance=new ActivityManager();
                 }
