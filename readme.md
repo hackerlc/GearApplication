@@ -3,7 +3,46 @@
 集成OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid)
 Fresco 网络访问由OkHttp负责
 Retrofit2 网络访问由OkHttp3负责
-Rx 暂时没有集成生命周期管理(集成后暂时无法upload JCenter)
+集成最简单的Rxjava 生命周期管理，并不成熟后期可能会替换掉，谨慎是使用
+
+####Rxjava生命周期管理使用方式
+继承GearActivity
+如果已经继承其他activity也可以在activity中加入如下代码
+```
+    public static CompositeSubscription mCSub= new CompositeSubscription();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       mCSub.unsubscribe();
+    }
+    
+    public void unSubscribe(){
+        if(mCSub!=null){
+            mCSub.unsubscribe();
+            mCSub=new CompositeSubscription();
+        }
+    }
+```
+
+使用是先调用1出方法，会首先删除订阅
+第二步add订阅后的Sub
+
+```
+unSubscribe();//1
+        mCSub.add(//2
+                APIServiceManager.getInstance()
+                        .getTravelNotesAPI()
+                        .getTravelNotesList(query, page + "")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(s -> {
+                            RxBus.getInstance().post(s.getData().getBookses());
+                        })
+        );
+
+```
+引用
 ```
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.google.code.gson:gson:2.6.2'
@@ -22,7 +61,6 @@ Rx 暂时没有集成生命周期管理(集成后暂时无法upload JCenter)
 ```
 compile 'com.joker.gear:com-joker-gear:1.3.6'
 ```
-
 ### new version
 #####V 1.3.6
 ```
