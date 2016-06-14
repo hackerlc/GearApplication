@@ -8,8 +8,8 @@ import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 import gear.yc.com.gearapplication.config.APIConfig;
 import gear.yc.com.gearlibrary.GearApplication;
 import gear.yc.com.gearlibrary.manager.LogManager;
-import gear.yc.com.gearlibrary.service.api.GearHttpServiceManager;
-import gear.yc.com.gearlibrary.service.http.OkHttpManager;
+import gear.yc.com.gearlibrary.network.api.GearHttpServiceManager;
+import gear.yc.com.gearlibrary.network.http.OkHttpManager;
 
 /**
  * GearApplication
@@ -19,6 +19,10 @@ public class BaseApplication extends GearApplication{
     @Override
     public void onCreate() {
         super.onCreate();
+        init();
+    }
+
+    public void init(){
         GearHttpServiceManager.getInstance()
                 .setBaseUrl(APIConfig.BASE_URL)
                 .build(

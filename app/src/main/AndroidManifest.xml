@@ -16,7 +16,7 @@
         android:name=".BaseApplication">
         <!--启动闪屏-->
         <activity
-            android:name=".view.activity.WelcomeActivity"
+            android:name=".ui.activity.WelcomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
             <intent-filter>
@@ -26,43 +26,43 @@
             </intent-filter>
         </activity>
         <!--OkHttp DEMO-->
-        <activity android:name=".view.activity.MainActivity"
+        <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--DataBinding DEMO-->
-        <activity android:name=".view.activity.DataBindingActivity"
+        <activity android:name=".ui.activity.DataBindingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--RxJava DEMO-->
-        <activity android:name=".view.activity.RxJavaActivity"
+        <activity android:name=".ui.activity.RxJavaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--web DEMO-->
-        <activity android:name=".view.activity.WebViewActivity"
+        <activity android:name=".ui.activity.WebViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--RecyclerView DEMO-->
-        <activity android:name=".view.activity.RecyclerViewActivity"
+        <activity android:name=".ui.activity.RecyclerViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--一些功能列表 DEMO-->
-        <activity android:name=".view.activity.FunctionListActivity"
+        <activity android:name=".ui.activity.FunctionListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--首页-->
-        <activity android:name=".view.activity.GearActivity"
+        <activity android:name=".ui.activity.GearActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记列表-->
-        <activity android:name=".view.activity.TravelNotesActivity"
+        <activity android:name=".ui.activity.TravelNotesActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记搜索-->
-        <activity android:name=".view.activity.SearchBooksActivity"
+        <activity android:name=".ui.activity.SearchBooksActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记详情-->
-        <activity android:name=".view.activity.TravelNotesBookDetailsActivity"
+        <activity android:name=".ui.activity.TravelNotesBookDetailsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
     </application>

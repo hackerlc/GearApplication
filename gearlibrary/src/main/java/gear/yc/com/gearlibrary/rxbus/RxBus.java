@@ -37,4 +37,9 @@ public class RxBus {
         return bus;
     }
 
+    public <T> Observable<T> tObservable(Class<T> tClass){
+        return bus.ofType(tClass);
+    }
+
+
 }

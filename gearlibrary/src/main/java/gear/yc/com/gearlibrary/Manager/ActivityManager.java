@@ -22,6 +22,9 @@ public class ActivityManager {
         }
         return instance;
     }
+    public static final String J_FLAG = "FLAG";
+    public static final String J_FLAG2 = "FLAG2";
+
 
     private static List<Activity> activities;
 
@@ -41,5 +44,13 @@ public class ActivityManager {
                 activity.finish();
             }
         }
+    }
+
+    /**
+     * exit app
+     */
+    public void exitApp() {
+        clearAllActivity();
+        System.exit(0);
     }
 }
