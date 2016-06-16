@@ -7,7 +7,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Android on 2016/6/8.
  */
-public enum  ThreadMode {
+public enum EventThread {
     /**
      * 主线程
      */
@@ -35,7 +35,7 @@ public enum  ThreadMode {
 //    EXECUTOR,
 //    HANDLER;
 
-    public static Scheduler getScheduler(ThreadMode threadMode){
+    public static Scheduler getScheduler(EventThread threadMode){
         Scheduler scheduler;
         switch (threadMode){
             case MAIN_THREAD:scheduler=AndroidSchedulers.mainThread();break;

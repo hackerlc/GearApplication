@@ -22,6 +22,7 @@ import rx.schedulers.Schedulers;
 public class DataBindingActivity extends BaseActivity {
     User user;
     ActivityDatabindingBinding binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,37 +40,39 @@ public class DataBindingActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        user=new User();
+        user = new User();
         user.setUid("2213");
         user.setUsername("Joker");
         user.setPassword("120.00");
         binding.setUser(user);
-        mCSub.add(APIServiceManager.getInstance()
+        APIServiceManager.getInstance()
                 .getApiService()
                 .getUser()
+                .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userResponseJson -> {
-                    Message msg =new Message();
-                    msg.obj=userResponseJson;
-                    msg.what=1;
+                    Message msg = new Message();
+                    msg.obj = userResponseJson;
+                    msg.what = 1;
                     handler.sendMessage(msg);
-                }));
+                });
 
-        mCSub.add(APIServiceManager.getInstance()
+        APIServiceManager.getInstance()
                 .getTravelNotesAPI()
-                .getTravelNotesList("","1")
+                .getTravelNotesList("", "1")
+                .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tnbs -> {
-                    Message msg =new Message();
-                    msg.obj=tnbs;
-                    msg.what=2;
+                    Message msg = new Message();
+                    msg.obj = tnbs;
+                    msg.what = 2;
                     handler.sendMessage(msg);
-                }));
+                });
     }
 
-    Runnable runnable =new Runnable() {
+    Runnable runnable = new Runnable() {
         @Override
         public void run() {
             try {
@@ -82,12 +85,12 @@ public class DataBindingActivity extends BaseActivity {
         }
     };
 
-    Handler handler =new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.obj!=null){
-                if(msg.what==1) {
+            if (msg.obj != null) {
+                if (msg.what == 1) {
                     user = ((ResponseJson<User>) msg.obj).getData();
                     if (user != null) {
                         binding.setUser(user);
@@ -95,7 +98,7 @@ public class DataBindingActivity extends BaseActivity {
 
                     }
                 }
-            }else{
+            } else {
 
             }
         }

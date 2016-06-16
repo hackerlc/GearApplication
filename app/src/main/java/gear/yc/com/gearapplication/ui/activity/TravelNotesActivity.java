@@ -16,10 +16,14 @@ import java.util.ArrayList;
 
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
-import gear.yc.com.gearapplication.ui.adapter.TravelNotesAdapter;
 import gear.yc.com.gearapplication.network.APIServiceManager;
+import gear.yc.com.gearapplication.pojo.ResponseJson;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
+import gear.yc.com.gearapplication.ui.adapter.TravelNotesAdapter;
 import gear.yc.com.gearlibrary.rxbus.RxBus;
+import gear.yc.com.gearlibrary.rxbus.annotation.Subscribe;
+import gear.yc.com.gearlibrary.rxbus.thread.EventThread;
+import gear.yc.com.gearlibrary.utils.ToastUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -49,6 +53,7 @@ public class TravelNotesActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RxBus.getInstance().register(this);
         initUI();
         initData();
     }
@@ -67,6 +72,12 @@ public class TravelNotesActivity extends BaseActivity {
             page = 1;
             loadData();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.getInstance().unRegister(this);
     }
 
     @Override
@@ -101,13 +112,12 @@ public class TravelNotesActivity extends BaseActivity {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                page=1;
+                page = 1;
                 loadData();
             }
 
             @Override
             public void onLoadMore() {
-                page++;
                 loadData();
             }
         });
@@ -121,7 +131,6 @@ public class TravelNotesActivity extends BaseActivity {
         mSearch = (FloatingActionButton) findViewById(R.id.fab_search);
         mSearch.setOnClickListener(this);
         loadData();
-        dataBinding();
     }
 
     private void loadData() {
@@ -135,29 +144,30 @@ public class TravelNotesActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    RxBus.getInstance().post(s.getData().getBookses());
+                    if(s==null || s.getErrcode()!=0){
+                        RxBus.getInstance().post(-1,s);
+                    }else{
+                        RxBus.getInstance().post(0,s.getData().getBookses());
+                    }
                 });
     }
 
-    private void dataBinding() {
-        RxBus.getInstance().tObservable()
-                .compose(bindToLifecycle())
-                .subscribe(s -> {
-                    ArrayList<TravelNoteBook.Books> bookses = (ArrayList<TravelNoteBook.Books>) s;
-                    if (page == 1) {
-                        if (bookses.size() == 0)
-                            return;
-                        mNotesAdapter.setData(bookses);
-                        mRecyclerView.refreshComplete();
-                    } else {
-                        if (bookses.size() == 0) {
-                            return;
-                        }
-                        mNotesAdapter.getData().addAll(bookses);
-                        mRecyclerView.loadMoreComplete();
-                    }
-                    mNotesAdapter.notifyDataSetChanged();
-                });
+    @Subscribe(tag = 0, thread = EventThread.MAIN_THREAD)
+    private void dataBinding(ArrayList<TravelNoteBook.Books> bookses) {
+        if (page == 1) {
+            mNotesAdapter.setData(bookses);
+            mRecyclerView.refreshComplete();
+        } else {
+            mNotesAdapter.getData().addAll(bookses);
+            mRecyclerView.loadMoreComplete();
+        }
+        mNotesAdapter.notifyDataSetChanged();
+        page++;
+    }
+
+    @Subscribe(tag = -1, thread = EventThread.MAIN_THREAD)
+    private void dataError(ResponseJson responseJson) {
+        ToastUtil.getInstance().makeShortToast(this,responseJson.getErrmsg());
     }
 
     @Override
@@ -191,4 +201,5 @@ public class TravelNotesActivity extends BaseActivity {
                 break;
         }
     }
+
 }
