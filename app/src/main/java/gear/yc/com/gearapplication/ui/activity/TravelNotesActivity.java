@@ -23,7 +23,7 @@ import gear.yc.com.gearapplication.ui.adapter.TravelNotesAdapter;
 import gear.yc.com.gearlibrary.rxjava.helper.RxSchedulersHelper;
 import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
 import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
-import gear.yc.com.gearlibrary.rxjava.rxbus.thread.EventThread;
+import gear.yc.com.gearlibrary.rxjava.rxbus.event.EventThread;
 import gear.yc.com.gearlibrary.utils.ToastUtil;
 
 
@@ -148,7 +148,7 @@ public class TravelNotesActivity extends BaseActivity {
                         },
                         e -> {
                             e.printStackTrace();
-                            RxBus.getInstance().post(-1, e.getMessage());
+                            RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage());
                         });
     }
 
@@ -165,8 +165,13 @@ public class TravelNotesActivity extends BaseActivity {
         page++;
     }
 
-    @Subscribe(tag = -1, thread = EventThread.MAIN_THREAD)
+    @Subscribe(tag =RxBus.TAG_ERROR)
     private void dataError(String error) {
+        if (page == 1) {
+            mRecyclerView.refreshComplete();
+        } else {
+            mRecyclerView.loadMoreComplete();
+        }
         ToastUtil.getInstance().makeShortToast(this, error);
     }
 

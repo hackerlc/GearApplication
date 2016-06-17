@@ -10,7 +10,7 @@ import java.util.Map;
 
 import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
 import gear.yc.com.gearlibrary.rxjava.rxbus.pojo.Msg;
-import gear.yc.com.gearlibrary.rxjava.rxbus.thread.EventThread;
+import gear.yc.com.gearlibrary.rxjava.rxbus.event.EventThread;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;
@@ -37,8 +37,8 @@ public class RxBus {
         return instance;
     }
     //TAG默认值
-    public final int TAG_DEFAULT = 0;
-    public final int TAG_FAILER = -1;
+    public static final int TAG_DEFAULT = 0;
+    public static final int TAG_ERROR = -1;
     //发布者
     private final Subject bus;
 

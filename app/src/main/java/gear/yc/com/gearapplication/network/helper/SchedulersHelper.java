@@ -7,15 +7,18 @@ import rx.Observable;
  * Created by Android on 2016/6/16.
  */
 public class SchedulersHelper {
+    static String str="暂无数据";
 
     public static <T> Observable.Transformer<ResponseJson<T>, T> handleResult() {
         return responseJsonObservable -> responseJsonObservable.flatMap(
                 tResponseJson -> {
-                    if (tResponseJson == null || tResponseJson.getErrcode() != 0) {
-                        return Observable.error(new Throwable(tResponseJson.getErrmsg()));
-                    } else {
+                    if (tResponseJson == null) {
+                    } else if(tResponseJson.getErrcode() != 0){
+                        str=tResponseJson.getErrmsg();
+                    }else {
                         return createData(tResponseJson.getData());
                     }
+                    return Observable.error(new Throwable(str));
                 });
     }
 

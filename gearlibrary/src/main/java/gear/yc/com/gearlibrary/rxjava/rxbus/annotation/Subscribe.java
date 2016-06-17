@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import gear.yc.com.gearlibrary.rxjava.rxbus.thread.EventThread;
+import gear.yc.com.gearlibrary.rxjava.rxbus.event.EventThread;
 
 /**
  * Created by Android on 2016/6/8.
