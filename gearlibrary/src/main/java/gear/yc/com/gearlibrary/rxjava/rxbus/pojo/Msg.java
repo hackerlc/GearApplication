@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.rxbus.pojo;
+package gear.yc.com.gearlibrary.rxjava.rxbus.pojo;
 
 /**
  * Created by Android on 2016/6/15.

@@ -25,7 +25,17 @@ public class ResponseJson<T> implements Serializable {
     private String ret;
     private int errcode;
     private String errmsg;
+    private String errMsg;
     private String ver;
+    private int errNum;
+
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
+
+    public void setErrNum(int errNum) {
+        this.errNum = errNum;
+    }
 
     public String getRet() {
         return ret;
@@ -36,7 +46,7 @@ public class ResponseJson<T> implements Serializable {
     }
 
     public int getErrcode() {
-        return errcode;
+        return errNum==0 ? errcode:errNum;
     }
 
     public void setErrcode(int errcode) {
@@ -44,7 +54,7 @@ public class ResponseJson<T> implements Serializable {
     }
 
     public String getErrmsg() {
-        return errmsg;
+        return errmsg==null ? errMsg:errmsg;
     }
 
     public void setErrmsg(String errmsg) {

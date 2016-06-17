@@ -17,15 +17,15 @@ import java.util.ArrayList;
 import gear.yc.com.gearapplication.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.network.APIServiceManager;
-import gear.yc.com.gearapplication.pojo.ResponseJson;
+import gear.yc.com.gearapplication.network.helper.SchedulersHelper;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
 import gear.yc.com.gearapplication.ui.adapter.TravelNotesAdapter;
-import gear.yc.com.gearlibrary.rxbus.RxBus;
-import gear.yc.com.gearlibrary.rxbus.annotation.Subscribe;
-import gear.yc.com.gearlibrary.rxbus.thread.EventThread;
+import gear.yc.com.gearlibrary.rxjava.helper.RxSchedulersHelper;
+import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
+import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
+import gear.yc.com.gearlibrary.rxjava.rxbus.thread.EventThread;
 import gear.yc.com.gearlibrary.utils.ToastUtil;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+
 
 /**
  * GearApplication
@@ -141,15 +141,15 @@ public class TravelNotesActivity extends BaseActivity {
                 .getTravelNotesAPI()
                 .getTravelNotesList(query, page + "")
                 .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.io_main())
+                .compose(SchedulersHelper.handleResult())
                 .subscribe(s -> {
-                    if(s==null || s.getErrcode()!=0){
-                        RxBus.getInstance().post(-1,s);
-                    }else{
-                        RxBus.getInstance().post(0,s.getData().getBookses());
-                    }
-                });
+                            RxBus.getInstance().post(0, s.getBookses());
+                        },
+                        e -> {
+                            e.printStackTrace();
+                            RxBus.getInstance().post(-1, e.getMessage());
+                        });
     }
 
     @Subscribe(tag = 0, thread = EventThread.MAIN_THREAD)
@@ -166,8 +166,8 @@ public class TravelNotesActivity extends BaseActivity {
     }
 
     @Subscribe(tag = -1, thread = EventThread.MAIN_THREAD)
-    private void dataError(ResponseJson responseJson) {
-        ToastUtil.getInstance().makeShortToast(this,responseJson.getErrmsg());
+    private void dataError(String error) {
+        ToastUtil.getInstance().makeShortToast(this, error);
     }
 
     @Override

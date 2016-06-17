@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.rxbus;
+package gear.yc.com.gearlibrary.rxjava.rxbus;
 
 
 import java.lang.reflect.InvocationTargetException;
@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gear.yc.com.gearlibrary.rxbus.annotation.Subscribe;
-import gear.yc.com.gearlibrary.rxbus.pojo.Msg;
-import gear.yc.com.gearlibrary.rxbus.thread.EventThread;
+import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
+import gear.yc.com.gearlibrary.rxjava.rxbus.pojo.Msg;
+import gear.yc.com.gearlibrary.rxjava.rxbus.thread.EventThread;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;

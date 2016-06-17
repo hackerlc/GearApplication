@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.rxbus.thread;
+package gear.yc.com.gearlibrary.rxjava.rxbus.thread;
 
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
