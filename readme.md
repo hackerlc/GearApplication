@@ -30,9 +30,13 @@ Retrofit2，Fresco 网络访问由OkHttp3负责
 ```
 ### Use
 ```
-compile 'com.joker.gear:com-joker-gear:1.4.0'
+compile 'com.joker.gear:com-joker-gear:1.4.1'
 ```
 ### new version
+##### 1.4.1
+```
+RxBus优化
+```
 ##### 1.4.0
 ```
 以 Rxlifecycle 来管理Rx生命周期
