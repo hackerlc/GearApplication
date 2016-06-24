@@ -8,6 +8,8 @@
 集成OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid) +Rxlifecycle 
 事件总线由rxbus负责
 Retrofit2，Fresco 网络访问由OkHttp3负责
+
+简书：http://www.jianshu.com/users/02266b406caa/latest_articles
 #### GearApplication 引用
 ````
     compile 'com.android.support:design:23.1.1'
