@@ -1,6 +1,8 @@
 ### GearApplication 
 使用OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid) +Rxlifecycle +Rxbus构建的DEMO项目
+
 暂时没有使用 MVP 或者 MVVM 的方式构建项目
+
 可直接导入项目并运行
 ### library
 集成OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid) +Rxlifecycle 
