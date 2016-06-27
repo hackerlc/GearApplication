@@ -1,8 +1,15 @@
 ### GearApplication 
-### library
-集成OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid) +Rxlifecycle
+使用OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid) +Rxlifecycle +Rxbus构建的DEMO项目
 
+暂时没有使用 MVP 或者 MVVM 的方式构建项目
+
+可直接导入项目并运行
+### library
+集成OkHttp3(OkHttp) + Retrofit2 + Rxjava(RxAndroid) +Rxlifecycle 
+事件总线由rxbus负责
 Retrofit2，Fresco 网络访问由OkHttp3负责
+
+简书：http://www.jianshu.com/users/02266b406caa/latest_articles
 #### GearApplication 引用
 ````
     compile 'com.android.support:design:23.1.1'
@@ -30,9 +37,13 @@ Retrofit2，Fresco 网络访问由OkHttp3负责
 ```
 ### Use
 ```
-compile 'com.joker.gear:com-joker-gear:1.4.0'
+compile 'com.joker.gear:com-joker-gear:1.4.1'
 ```
 ### new version
+##### 1.4.1
+```
+RxBus优化
+```
 ##### 1.4.0
 ```
 以 Rxlifecycle 来管理Rx生命周期
