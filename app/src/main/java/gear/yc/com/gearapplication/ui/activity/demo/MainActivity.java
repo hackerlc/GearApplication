@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.activity;
+package gear.yc.com.gearapplication.ui.activity.demo;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -6,7 +6,7 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.widget.TextView;
 
-import gear.yc.com.gearapplication.BaseActivity;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearlibrary.network.http.HttpInfo;
 

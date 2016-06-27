@@ -7,20 +7,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import gear.yc.com.gearlibrary.manager.ActivityManager;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * GearApplication
+ * @version 1.1
+ * 删除了自带的rx生命周期管理
  * Created by YichenZ on 2016/3/23 11:23.
  */
 public class GearActivity extends Activity implements View.OnClickListener {
-    //暂时用下面的方式管理一下Rxjava生命周期
-    public static CompositeSubscription mCSub= new CompositeSubscription();
     //Activity跳转时默认的跳转参数
     protected static final String J_FLAG = "FLAG";
     protected static final String J_FLAG2 = "FLAG2";
@@ -30,22 +28,6 @@ public class GearActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         ActivityManager.getInstance().getActivities().add(this);
 
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-       mCSub.unsubscribe();
     }
 
     protected void initUI() {
@@ -172,6 +154,18 @@ public class GearActivity extends Activity implements View.OnClickListener {
     }
 
     /**
+     * 获取已经约定的数据
+     * @return
+     */
+    public String getStrIntent(){
+        return getIntent().getStringExtra(J_FLAG);
+    }
+
+    public String getStr2Intent(){
+        return getIntent().getStringExtra(J_FLAG2);
+    }
+
+    /**
      * 网络判断
      *
      * @return
@@ -185,28 +179,6 @@ public class GearActivity extends Activity implements View.OnClickListener {
         }
         Toast.makeText(this, "没有网络", Toast.LENGTH_SHORT);
         return false;
-    }
-
-    public void unSubscribe(){
-        if(mCSub!=null){
-            mCSub.unsubscribe();
-            mCSub=new CompositeSubscription();
-        }
-    }
-
-    /**
-     * 返回按钮finish activity
-     *
-     * @param keyCode
-     * @param event
-     * @return true or false
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            return finish(true);
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
 }

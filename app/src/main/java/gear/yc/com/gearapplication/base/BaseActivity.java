@@ -1,9 +1,11 @@
-package gear.yc.com.gearapplication;
+package gear.yc.com.gearapplication.base;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.view.KeyEvent;
 
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.ActivityLifecycleProvider;
@@ -11,6 +13,7 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 
 import gear.yc.com.gearlibrary.GearActivity;
+import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -47,7 +50,9 @@ public class BaseActivity extends GearActivity implements ActivityLifecycleProvi
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RxBus.getInstance().register(this);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
+
     }
 
     @Override
@@ -82,6 +87,28 @@ public class BaseActivity extends GearActivity implements ActivityLifecycleProvi
     @CallSuper
     protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
+        RxBus.getInstance().unRegister(this);
         super.onDestroy();
+    }
+
+
+    /**
+     * 返回按钮finish activity
+     *
+     * @param keyCode
+     * @param event
+     * @return true or false
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                finishAfterTransition();
+            }else{
+                finish(true);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.activity;
+package gear.yc.com.gearapplication.ui.activity.demo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import gear.yc.com.gearapplication.BaseActivity;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.ui.adapter.RecyclerListDemoAdapter;
 import gear.yc.com.gearapplication.pojo.User;

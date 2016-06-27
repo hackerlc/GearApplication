@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import gear.yc.com.gearapplication.BaseActivity;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.databinding.ActivityWelcomeBinding;
 import gear.yc.com.gearapplication.pojo.Clock;
@@ -54,8 +54,8 @@ public class WelcomeActivity extends BaseActivity {
      */
     private void gotoPage() {
         startTime= System.currentTimeMillis();
-        unSubscribe();
-        mCSub.add(Observable.just(mClock)
+        Observable.just(mClock)
+                .compose(bindToLifecycle())
                 .map(f -> {
                     while (true){
                         binding.setClock(f.setTime());
@@ -70,7 +70,7 @@ public class WelcomeActivity extends BaseActivity {
                 .subscribe(s -> {
                     startActivity(new Intent(this,TravelNotesActivity.class));
                     finish();
-                }));
+                });
     }
 
     @Override

@@ -18,7 +18,7 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
         implements View.OnClickListener{
     protected ArrayList<T> mData;
     protected Context mContext;
-    protected OnRecyclerViewItemClickListener mListener;
+    protected OnRecyclerViewItemClickListener<T> mListener;
     protected View view;
 
     public GearRecyclerViewAdapter(Context mContext, ArrayList<T> mData){
@@ -52,12 +52,12 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
     @Override
     public void onClick(View v) {
         if(mListener!=null){
-            mListener.onItemClick(v,v.getTag());
+            mListener.onItemClick(v,(T)v.getTag());
         }
     }
 
-    public interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view, Object data);
+    public interface OnRecyclerViewItemClickListener<T> {
+        void onItemClick(View view, T data);
     }
 
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {

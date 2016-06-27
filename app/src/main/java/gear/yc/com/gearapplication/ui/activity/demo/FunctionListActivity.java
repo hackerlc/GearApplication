@@ -1,11 +1,11 @@
-package gear.yc.com.gearapplication.ui.activity;
+package gear.yc.com.gearapplication.ui.activity.demo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
-import gear.yc.com.gearapplication.BaseActivity;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
 
 /**

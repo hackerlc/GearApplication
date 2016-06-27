@@ -1,6 +1,7 @@
 package gear.yc.com.gearapplication.ui.activity;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
@@ -14,8 +15,10 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import gear.yc.com.gearapplication.BaseActivity;
+import com.bumptech.glide.Glide;
+
 import gear.yc.com.gearapplication.R;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearlibrary.utils.web.BaseWeb;
 
 /**
@@ -24,7 +27,7 @@ import gear.yc.com.gearlibrary.utils.web.BaseWeb;
  */
 public class TravelNotesBookDetailsActivity extends BaseActivity{
     WebView dataWv;
-    ImageView mBack;
+    ImageView mBack,mImageUrl;
     TextView mTitle;
 
     final String[] BASE_URL={"https://github.com/hackerlc/wiki"};
@@ -57,8 +60,20 @@ public class TravelNotesBookDetailsActivity extends BaseActivity{
     public void initUI() {
         setContentView(R.layout.activity_travel_notes_book_details);
         dataWv=(WebView)findViewById(R.id.wv_web_view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dataWv.setTransitionGroup(true);
+        }
+
         mBack=(ImageView)findViewById(R.id.iv_back);
         mBack.setOnClickListener(this);
+
+        mImageUrl=(ImageView) findViewById(R.id.sdv_books_img);
+        Glide.with(this)
+                .load(getIntent().getStringExtra("imgUrl"))
+                .placeholder(R.drawable.bg_img)
+                .crossFade()
+                .into(mImageUrl);
+
         mTitle=(TextView)findViewById(R.id.tv_title);
     }
 
@@ -131,7 +146,13 @@ public class TravelNotesBookDetailsActivity extends BaseActivity{
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()){
-            case R.id.iv_back:finish(true);break;
+            case R.id.iv_back:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                }else{
+                    finish(true);
+                }
+                break;
         }
     }
 

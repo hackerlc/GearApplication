@@ -8,4 +8,7 @@
     <string name="main_rx_java">RxJava</string>
     <string name="main_web_view">WebView</string>
     <string name="main_recycler">RecyclerDemo</string>
+
+    <!--transitionName-->
+    <string name="tra_name_list_img">tra name list img</string>
 </resources>

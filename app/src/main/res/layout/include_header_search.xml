@@ -14,10 +14,12 @@
         style="@style/MainTitle.Back"/>
     <EditText
         android:id="@+id/et_search_books"
-        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:hint="搜索游记"
         android:textColorHint="@color/white"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:layout_width="220dp" />
 </RelativeLayout>

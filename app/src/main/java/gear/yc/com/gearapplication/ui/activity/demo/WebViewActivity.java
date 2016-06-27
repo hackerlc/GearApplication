@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.activity;
+package gear.yc.com.gearapplication.ui.activity.demo;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import gear.yc.com.gearapplication.BaseActivity;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearlibrary.utils.web.BaseWeb;
 

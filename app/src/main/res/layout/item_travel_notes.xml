@@ -3,12 +3,14 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_data"
+    android:transitionName="@string/tra_name_list_img"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardBackgroundColor="@android:color/white"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    android:layout_marginBottom="12dp"
+    android:layout_marginTop="12dp"
     card_view:cardCornerRadius="6dp"
     card_view:cardElevation="8dp"
     android:clickable="true"
@@ -19,13 +21,11 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/sdv_books_img"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            fresco:actualImageScaleType="focusCrop"
-            fresco:placeholderImage="@drawable/bg_img"
-            fresco:placeholderImageScaleType="center" />
+            android:scaleType="fitXY"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

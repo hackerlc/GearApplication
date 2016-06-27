@@ -13,7 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".BaseApplication">
+        android:name=".base.BaseApplication">
         <!--启动闪屏-->
         <activity
             android:name=".ui.activity.WelcomeActivity"
@@ -26,27 +26,27 @@
             </intent-filter>
         </activity>
         <!--OkHttp DEMO-->
-        <activity android:name=".ui.activity.MainActivity"
+        <activity android:name=".ui.activity.demo.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--DataBinding DEMO-->
-        <activity android:name=".ui.activity.DataBindingActivity"
+        <activity android:name=".ui.activity.demo.DataBindingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--RxJava DEMO-->
-        <activity android:name=".ui.activity.RxJavaActivity"
+        <activity android:name=".ui.activity.demo.RxJavaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--web DEMO-->
-        <activity android:name=".ui.activity.WebViewActivity"
+        <activity android:name=".ui.activity.demo.WebViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--RecyclerView DEMO-->
-        <activity android:name=".ui.activity.RecyclerViewActivity"
+        <activity android:name=".ui.activity.demo.RecyclerViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--一些功能列表 DEMO-->
-        <activity android:name=".ui.activity.FunctionListActivity"
+        <activity android:name=".ui.activity.demo.FunctionListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--首页-->
@@ -64,7 +64,11 @@
         <!--游记详情-->
         <activity android:name=".ui.activity.TravelNotesBookDetailsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

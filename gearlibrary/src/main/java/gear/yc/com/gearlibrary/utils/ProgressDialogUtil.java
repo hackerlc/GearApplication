@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 /**
- * 圆形进度条加载
+ * 系统默认圆形进度条加载
  * 可设置title以及点击返回按钮关闭activity
  * 也可以直接设置点击返回按钮之后的回调
- * 有bug跳转B Activity 再回来调用show方法后会显示
+ * @version 1.1
+ * 增加了show()方法显示时候判断context是否为空以及progressDialog为空默认build
+ * 增加了dismiss()方法最后解除context 以及 progressDialog 引用，防止activity finish后继续持有context
  * Created by YichenZ on 2016/5/19 14:58.
  */
 public class ProgressDialogUtil {
@@ -69,8 +71,10 @@ public class ProgressDialogUtil {
     }
 
     public void show(){
-        if(progressDialog==null){
+        if(mContext==null){
             new IllegalAccessException("please build()");
+        }else if(progressDialog==null){
+            build(mContext);
         }
         if(progressDialog.isShowing()){
             progressDialog.dismiss();
@@ -81,6 +85,8 @@ public class ProgressDialogUtil {
     public void dismiss(){
         if(progressDialog!=null && progressDialog.isShowing()){
             progressDialog.dismiss();
+            progressDialog=null;
+            mContext=null;
         }
     }
 

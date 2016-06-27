@@ -3,24 +3,29 @@ package gear.yc.com.gearlibrary.rxjava.rxbus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
-import gear.yc.com.gearlibrary.rxjava.rxbus.pojo.Msg;
 import gear.yc.com.gearlibrary.rxjava.rxbus.event.EventThread;
+import gear.yc.com.gearlibrary.rxjava.rxbus.pojo.Msg;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
+import rx.subscriptions.CompositeSubscription;
 
 /**
- * V1.0
+ * @version 1.1
+ * List形式管理Sub改为 CompositeSubscription 管理00                                        ·
+ * 取消注册改为rx写法
+ * @version 1.0
  * 使用RxBus发布网络数据，订阅者通过注册的方式订阅数据
+ *
+ * @question
+ * 如果订阅者不同但同时存在于序列并且都被订阅，那么code相同的情况下是否会出现都收到通知的情况
  * Created by Android on 2016/6/6.
  */
 public class RxBus {
@@ -43,7 +48,7 @@ public class RxBus {
     private final Subject bus;
 
     //存放订阅者信息
-    private Map<Object, List<Subscription>> subscriptions = new HashMap<>();
+    private Map<Object, CompositeSubscription> subscriptions = new HashMap<>();
 
     /**
      * PublishSubject 创建一个可以在订阅之后把数据传输给订阅者Subject
@@ -84,7 +89,7 @@ public class RxBus {
                     @Override
                     public Boolean call(Msg o) {
                         //过滤code和eventType都相同的事件
-                        return o.code == code;//&& eventType.isInstance(o.object)
+                        return o.code == code;
                     }
                 })
                 .map(new Func1<Msg, Object>() {
@@ -103,6 +108,7 @@ public class RxBus {
     public void register(Object subscriber) {
         Observable.just(subscriber)
                 .filter(s -> s != null)//判断订阅者不为空
+                .filter(s -> subscriptions.get(subscriber)==null) //判断订阅者没有在序列中
                 .map(s -> s.getClass())
                 .flatMap(s -> Observable.from(s.getDeclaredMethods()))//获取订阅者方法并且用Observable装载
                 .filter(m -> m.isAnnotationPresent(Subscribe.class))//方法必须被Subscribe注解
@@ -149,9 +155,9 @@ public class RxBus {
      * @param subscription 订阅者 Subscription
      */
     private void putSubscriptionsData(Object subscriber,Subscription subscription){
-        List<Subscription> subs = subscriptions.get(subscriber);
+        CompositeSubscription subs = subscriptions.get(subscriber);
         if (subs == null) {
-            subs = new ArrayList<>();
+            subs = new CompositeSubscription();
         }
         subs.add(subscription);
         subscriptions.put(subscriber, subs);
@@ -163,27 +169,14 @@ public class RxBus {
      * @param subscriber 订阅者
      */
     public void unRegister(Object subscriber) {
-//        Observable.just(subscriber)
-//                .filter(s -> s!=null)
-//                .map(s -> subscriptions.get(s))
-//                .filter(subs -> subs!=null)
-//                .flatMap(subs -> Observable.from(subs))
-//                .filter(sub -> sub!=null)
-//                .map(sub -> {
-//                    sub.unsubscribe();
-//                    return sub;})
-//                .subscribe(s -> subscriptions.remove(subscriber));
-        if (subscriber == null) {
-            return;
-        }
-        List<Subscription> subs = subscriptions.get(subscriber);
-        if (subs != null) {
-            for (Subscription sub : subs) {
-                if (sub != null)
-                    sub.unsubscribe();
-            }
-            subscriptions.remove(subscriber);
-        }
+        Observable.just(subscriber)
+                .filter(s -> s!=null)
+                .map(s -> subscriptions.get(s))
+                .filter(subs -> subs!=null)
+                .subscribe(subs -> {
+                    subs.unsubscribe();
+                    subscriptions.remove(subscriber);
+                });
     }
 
 }
