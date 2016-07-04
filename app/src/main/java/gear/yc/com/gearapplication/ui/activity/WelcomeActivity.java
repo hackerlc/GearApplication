@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
+import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.databinding.ActivityWelcomeBinding;
 import gear.yc.com.gearapplication.pojo.Clock;
 import rx.Observable;
@@ -68,7 +68,7 @@ public class WelcomeActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    startActivity(new Intent(this,TravelNotesActivity.class));
+                    startActivity(new Intent(this, gear.yc.com.gearapplication.ui.mvpdemo.travelnotes.TravelNotesActivity.class));
                     finish();
                 });
     }

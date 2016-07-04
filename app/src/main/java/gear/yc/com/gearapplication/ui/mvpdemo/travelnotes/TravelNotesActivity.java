@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.activity;
+package gear.yc.com.gearapplication.ui.mvpdemo.travelnotes;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -20,23 +20,20 @@ import java.util.ArrayList;
 
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.base.BaseActivity;
-import gear.yc.com.gearapplication.network.APIServiceManager;
-import gear.yc.com.gearapplication.network.helper.SchedulersHelper;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
+import gear.yc.com.gearapplication.ui.activity.SearchBooksActivity;
+import gear.yc.com.gearapplication.ui.activity.TravelNotesBookDetailsActivity;
 import gear.yc.com.gearapplication.ui.adapter.TravelNotesAdapter;
-import gear.yc.com.gearlibrary.rxjava.helper.RxSchedulersHelper;
-import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
-import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
-import gear.yc.com.gearlibrary.rxjava.rxbus.event.EventThread;
 import gear.yc.com.gearlibrary.ui.adapter.GearRecyclerViewAdapter;
-import gear.yc.com.gearlibrary.utils.ToastUtil;
 
 
 /**
  * GearApplication
  * Created by YichenZ on 2016/4/20 15:59.
  */
-public class TravelNotesActivity extends BaseActivity implements GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books>{
+public class TravelNotesActivity extends BaseActivity implements TravelNotesContract.View,GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books>{
+    TravelNotesPresenter presenter;
+
     RecyclerView mRecyclerView;
     ImageView mBack;
     ImageView mLeft;
@@ -51,14 +48,13 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
     //负责记录list样式
     boolean isLinear = true;
 
-    int page = 1;
-    String query = "";
-    String initQuery = "";
     int lastVisibleItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter= new TravelNotesPresenter(this, this);
+        presenter.start();
         initUI();
         initData();
     }
@@ -66,21 +62,18 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
     @Override
     protected void onRestart() {
         super.onRestart();
-        query = getIntent().getStringExtra(J_FLAG);
+        presenter.setQuery(getIntent().getStringExtra(J_FLAG));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!initQuery.equals(query) && query != null) {
-            initQuery = query;
-            page = 1;
-            loadData();
-        }
+        presenter.onResumeData();
     }
 
     @Override
     protected void onDestroy() {
+        presenter.close();
         super.onDestroy();
     }
 
@@ -96,10 +89,7 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
         setContentView(R.layout.activity_travel_notes);
         refresh=(SwipeRefreshLayout) findViewById(R.id.srl_refresh);
         refresh.setColorSchemeColors(R.color.colorPrimary,R.color.colorAccent);
-        refresh.setOnRefreshListener(() -> {
-            page=1;
-            loadData();
-        });
+        refresh.setOnRefreshListener(() -> presenter.RefreshData());
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_books);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -122,7 +112,7 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
     @Override
     public void initData() {
         super.initData();
-        mNotesAdapter = new TravelNotesAdapter(this, new ArrayList<>());
+        mNotesAdapter = new TravelNotesAdapter(this, new ArrayList());
         mRecyclerView.setAdapter(mNotesAdapter);
         mNotesAdapter.setOnItemClickListener(this);
 
@@ -130,43 +120,7 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
         mSearch.setOnClickListener(this);
 
         mRecyclerView.setOnScrollListener(rScrollListener);
-        loadData();
-    }
-
-    private void loadData() {
-        refresh.setRefreshing(true);
-        APIServiceManager.getInstance()
-                .getTravelNotesAPI()
-                .getTravelNotesList(query, page + "")
-                .compose(bindToLifecycle())
-                .compose(RxSchedulersHelper.io_main())
-                .compose(SchedulersHelper.handleResult())
-                .doOnTerminate(() -> refresh.setRefreshing(false))
-                .subscribe(s -> {
-                            RxBus.getInstance().post(0, s.getBookses());
-                        },
-                        e -> {
-                            RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage());
-                        });
-    }
-
-    @Subscribe(tag = 0, thread = EventThread.MAIN_THREAD)
-    private void dataBinding(ArrayList<TravelNoteBook.Books> bookies) {
-        if (page == 1) {
-            mNotesAdapter.setData(bookies);
-        } else {
-            mNotesAdapter.getData().addAll(bookies);
-        }
-        if(bookies.size()==0){
-            mNotesAdapter.setMoreView(false);
-        }
-        mNotesAdapter.notifyDataSetChanged();
-        page++;
-    }
-
-    @Subscribe(tag = RxBus.TAG_ERROR)
-    private void dataError(String error) {
-        ToastUtil.getInstance().makeShortToast(this, error);
+        presenter.loadData();
     }
 
     @Override
@@ -175,10 +129,9 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
         switch (v.getId()) {
             case R.id.iv_left:
 //                changeListView();
-
                 break;
             case R.id.fab_search:
-                strActivity(this, SearchBooksActivity.class, false, false,initQuery);
+                strActivity(this, SearchBooksActivity.class, false, false,presenter.getInitQuery());
                 break;
         }
     }
@@ -186,7 +139,8 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
     /**
      * 切换列表显示方式
      */
-    private void changeListView(){
+    @Override
+    public void changeListView(){
         if (isLinear) {
             isLinear = false;
             mLeft.setImageResource(R.drawable.img_gridview);
@@ -206,6 +160,37 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
         }
     }
 
+    @Override
+    public void showDialog() {
+        refresh.setRefreshing(true);
+    }
+
+    @Override
+    public void disDialog() {
+        refresh.setRefreshing(false);
+    }
+
+    @Override
+    public void setListData(ArrayList<TravelNoteBook.Books> bookies) {
+        mNotesAdapter.setData(bookies);
+    }
+
+    @Override
+    public void setListMoreData(ArrayList<TravelNoteBook.Books> bookies) {
+        mNotesAdapter.getData().addAll(bookies);
+    }
+
+    @Override
+    public void setListMoreView() {
+        mNotesAdapter.setMoreView(false);
+    }
+
+    @Override
+    public void upListData() {
+        mNotesAdapter.notifyDataSetChanged();
+    }
+
+
     RecyclerView.OnScrollListener rScrollListener =new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView,
@@ -213,7 +198,7 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem +1 == mNotesAdapter.getItemCount()) {
-                loadData();
+                presenter.loadData();
             }
         }
 
@@ -246,4 +231,5 @@ public class TravelNotesActivity extends BaseActivity implements GearRecyclerVie
                         view.findViewById(R.id.cv_data),getString(R.string.tra_name_list_img));
         ActivityCompat.startActivity(this, intent, options.toBundle());
     }
+
 }

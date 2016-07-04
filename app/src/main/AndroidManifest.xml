@@ -49,12 +49,12 @@
         <activity android:name=".ui.activity.demo.FunctionListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
-        <!--首页-->
-        <activity android:name=".ui.activity.GearActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
         <!--游记列表-->
         <activity android:name=".ui.activity.TravelNotesActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <!--游记列表MVP-->
+        <activity android:name=".ui.mvpdemo.travelnotes.TravelNotesActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记搜索-->
@@ -64,8 +64,7 @@
         <!--游记详情-->
         <activity android:name=".ui.activity.TravelNotesBookDetailsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

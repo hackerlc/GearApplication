@@ -25,22 +25,23 @@ import gear.yc.com.gearlibrary.utils.web.BaseWeb;
  * GearApplication
  * Created by YichenZ on 2016/3/29 15:11.
  */
-public class TravelNotesBookDetailsActivity extends BaseActivity{
+public class TravelNotesBookDetailsActivity extends BaseActivity {
     WebView dataWv;
-    ImageView mBack,mImageUrl;
+    ImageView mBack,mImgdata;
     TextView mTitle;
 
-    final String[] BASE_URL={"https://github.com/hackerlc/wiki"};
-    final String[] BASE_URL_TOP={"https://github.com/hackerlc/wiki"};
+    final String[] BASE_URL = {"https://github.com/hackerlc/wiki"};
+    final String[] BASE_URL_TOP = {"https://github.com/hackerlc/wiki"};
 
     //缓存当前URL
-    String cacheUrl="";
+    String cacheUrl = "";
 
     WebSettings settings;
     BaseWeb baseWeb;
 
     String defUrl;
     String defTitle;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,33 +52,29 @@ public class TravelNotesBookDetailsActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(baseWeb!=null) {
-            settings=null;
+        if (baseWeb != null) {
+            settings = null;
             baseWeb = null;
         }
     }
 
     public void initUI() {
         setContentView(R.layout.activity_travel_notes_book_details);
-        dataWv=(WebView)findViewById(R.id.wv_web_view);
+        dataWv = (WebView) findViewById(R.id.wv_web_view);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dataWv.setTransitionGroup(true);
         }
 
-        mBack=(ImageView)findViewById(R.id.iv_back);
+        mImgdata=(ImageView)findViewById(R.id.iv_img_data);
+        Glide.with(this).load(getIntent().getStringExtra("imgUrl")).thumbnail(0.1f).into(mImgdata);
+
+        mBack = (ImageView) findViewById(R.id.iv_back);
         mBack.setOnClickListener(this);
 
-        mImageUrl=(ImageView) findViewById(R.id.sdv_books_img);
-        Glide.with(this)
-                .load(getIntent().getStringExtra("imgUrl"))
-                .placeholder(R.drawable.bg_img)
-                .crossFade()
-                .into(mImageUrl);
-
-        mTitle=(TextView)findViewById(R.id.tv_title);
+        mTitle = (TextView) findViewById(R.id.tv_title);
     }
 
-    WebViewClient mWebViewClient =new WebViewClient() {
+    WebViewClient mWebViewClient = new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -87,25 +84,25 @@ public class TravelNotesBookDetailsActivity extends BaseActivity{
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            cacheUrl=url;
+            cacheUrl = url;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if(settings !=null &&!settings.getLoadsImagesAutomatically()) {
+            if (settings != null && !settings.getLoadsImagesAutomatically()) {
                 settings.setLoadsImagesAutomatically(true);
             }
-            super.onPageFinished(view,url);
+            dataWv.setVisibility(View.VISIBLE);
+            super.onPageFinished(view, url);
         }
     };
 
-
-    WebChromeClient webChromeClient =new WebChromeClient(){
+    WebChromeClient webChromeClient = new WebChromeClient() {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            if(defTitle!=null){
-                title=defTitle;
+            if (defTitle != null) {
+                title = defTitle;
             }
             mTitle.setText(title);
         }
@@ -127,29 +124,28 @@ public class TravelNotesBookDetailsActivity extends BaseActivity{
     };
 
     public void initData() {
-        defUrl=getIntent().getStringExtra(J_FLAG);
-        defTitle=getIntent().getStringExtra(J_FLAG2);
-        if(defUrl!=null && !defUrl.equals("")){
-            BASE_URL[0]=defUrl;
-            BASE_URL_TOP[0]=defUrl;
+        defUrl = getIntent().getStringExtra(J_FLAG);
+        defTitle = getIntent().getStringExtra(J_FLAG2);
+        if (defUrl != null && !defUrl.equals("")) {
+            BASE_URL[0] = defUrl;
+            BASE_URL_TOP[0] = defUrl;
         }
-        baseWeb=new BaseWeb();
+        baseWeb = new BaseWeb();
         dataWv.setWebViewClient(mWebViewClient);
         dataWv.setWebChromeClient(webChromeClient);
         baseWeb.setSettings(dataWv.getSettings());
-        settings=baseWeb.setWeb(this);
+        settings = baseWeb.setWeb(this);
         dataWv.loadUrl(BASE_URL[0]);
-
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAfterTransition();
-                }else{
+                } else {
                     finish(true);
                 }
                 break;
@@ -163,10 +159,14 @@ public class TravelNotesBookDetailsActivity extends BaseActivity{
         return super.onKeyDown(keyCode, event);
     }
 
-    private boolean isGoBack(){
-        for(String url:BASE_URL){
-            if(cacheUrl.equals(url)){
-                finish();
+    private boolean isGoBack() {
+        for (String url : BASE_URL) {
+            if (cacheUrl.equals(url)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else {
+                    finish(true);
+                }
                 return true;
             }
         }

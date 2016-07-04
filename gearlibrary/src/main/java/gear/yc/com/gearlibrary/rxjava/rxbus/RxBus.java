@@ -1,6 +1,8 @@
 package gear.yc.com.gearlibrary.rxjava.rxbus;
 
 
+import android.support.annotation.NonNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -18,14 +20,17 @@ import rx.subjects.Subject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
+ * @version 1.2
+ * setAccessible(true) 提前一步
  * @version 1.1
- * List形式管理Sub改为 CompositeSubscription 管理00                                        ·
+ * List形式管理Sub改为 CompositeSubscription 管理
  * 取消注册改为rx写法
  * @version 1.0
  * 使用RxBus发布网络数据，订阅者通过注册的方式订阅数据
  *
  * @question
- * 如果订阅者不同但同时存在于序列并且都被订阅，那么code相同的情况下是否会出现都收到通知的情况
+ * Q.如果订阅者不同但同时存在于序列并且都被订阅，那么code相同的情况下是否会出现都收到通知的情况
+ * A.测试了一下，在订阅者不同但code相同的相框下，并没有出现订阅者都接到通知的情况
  * Created by Android on 2016/6/6.
  */
 public class RxBus {
@@ -58,7 +63,7 @@ public class RxBus {
         bus = new SerializedSubject<>(PublishSubject.create());
     }
 
-    public void post(Object obj) {
+    public void post(@NonNull Object obj) {
         post(TAG_DEFAULT, obj);
     }
 
@@ -67,7 +72,7 @@ public class RxBus {
      * @param code
      * @param obj
      */
-    public void post(int code, Object obj) {
+    public void post(@NonNull int code,@NonNull Object obj) {
         bus.onNext(new Msg(code, obj));
     }
 
@@ -88,7 +93,7 @@ public class RxBus {
                 .filter(new Func1<Msg, Boolean>() {
                     @Override
                     public Boolean call(Msg o) {
-                        //过滤code和eventType都相同的事件
+                        //过滤code同的事件
                         return o.code == code;
                     }
                 })
@@ -105,14 +110,14 @@ public class RxBus {
      * 订阅者注册
      * @param subscriber
      */
-    public void register(Object subscriber) {
+    public void register(@NonNull Object subscriber) {
         Observable.just(subscriber)
                 .filter(s -> s != null)//判断订阅者不为空
                 .filter(s -> subscriptions.get(subscriber)==null) //判断订阅者没有在序列中
                 .map(s -> s.getClass())
                 .flatMap(s -> Observable.from(s.getDeclaredMethods()))//获取订阅者方法并且用Observable装载
+                .map(m -> {m.setAccessible(true);return m;})//使非public方法可以被invoke,并且关闭安全检查提升反射效率
                 .filter(m -> m.isAnnotationPresent(Subscribe.class))//方法必须被Subscribe注解
-                .doOnNext(m -> m.setAccessible(true))//使非public方法可以被invoke
                 .subscribe(m -> {
                     addSubscription(m,subscriber);
                 });
@@ -165,7 +170,6 @@ public class RxBus {
 
     /**
      * 解除订阅者
-     * 可以使用Rx的方式解除，但是因为对 from 不明白所以暂时使用传统方式
      * @param subscriber 订阅者
      */
     public void unRegister(Object subscriber) {
