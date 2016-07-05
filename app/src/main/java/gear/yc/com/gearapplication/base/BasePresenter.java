@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.mvpdemo;
+package gear.yc.com.gearapplication.base;
 
 /**
  * GearApplication
@@ -8,6 +8,4 @@ package gear.yc.com.gearapplication.ui.mvpdemo;
 public interface BasePresenter{
 
     void start();
-
-    void close();
 }

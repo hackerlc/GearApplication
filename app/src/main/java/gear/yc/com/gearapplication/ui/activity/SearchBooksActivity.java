@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;
+import gear.yc.com.gearapplication.ui.mvp.travelnotes.TravelNotesActivity;
 
 /**
  * GearApplication

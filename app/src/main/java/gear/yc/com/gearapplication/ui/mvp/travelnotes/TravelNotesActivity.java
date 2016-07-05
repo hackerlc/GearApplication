@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.mvpdemo.travelnotes;
+package gear.yc.com.gearapplication.ui.mvp.travelnotes;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -23,15 +23,17 @@ import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
 import gear.yc.com.gearapplication.ui.activity.SearchBooksActivity;
 import gear.yc.com.gearapplication.ui.activity.TravelNotesBookDetailsActivity;
-import gear.yc.com.gearapplication.ui.adapter.TravelNotesAdapter;
+import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
+import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
 import gear.yc.com.gearlibrary.ui.adapter.GearRecyclerViewAdapter;
+import gear.yc.com.gearlibrary.utils.ToastUtil;
 
 
 /**
  * GearApplication
  * Created by YichenZ on 2016/4/20 15:59.
  */
-public class TravelNotesActivity extends BaseActivity implements TravelNotesContract.View,GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books>{
+public class TravelNotesActivity extends BaseActivity implements TravelNotesContract.View, GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books> {
     TravelNotesPresenter presenter;
 
     RecyclerView mRecyclerView;
@@ -47,14 +49,16 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
 
     //负责记录list样式
     boolean isLinear = true;
-
+    private int page = 1;
+    private String query = "";
+    private String initQuery = "";
     int lastVisibleItem;
+    boolean isMore=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter= new TravelNotesPresenter(this, this);
-        presenter.start();
+        presenter = new TravelNotesPresenter(this, this);
         initUI();
         initData();
     }
@@ -62,18 +66,20 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     @Override
     protected void onRestart() {
         super.onRestart();
-        presenter.setQuery(getIntent().getStringExtra(J_FLAG));
+        query = getIntent().getStringExtra(J_FLAG);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResumeData();
+        if (!initQuery.equals(query) && query != null) {
+            initQuery = query;
+            page = presenter.refreshData(query, page);
+        }
     }
 
     @Override
     protected void onDestroy() {
-        presenter.close();
         super.onDestroy();
     }
 
@@ -87,9 +93,9 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     public void initUI() {
         super.initUI();
         setContentView(R.layout.activity_travel_notes);
-        refresh=(SwipeRefreshLayout) findViewById(R.id.srl_refresh);
-        refresh.setColorSchemeColors(R.color.colorPrimary,R.color.colorAccent);
-        refresh.setOnRefreshListener(() -> presenter.RefreshData());
+        refresh = (SwipeRefreshLayout) findViewById(R.id.srl_refresh);
+        refresh.setColorSchemeColors(R.color.colorPrimary, R.color.colorAccent);
+        refresh.setOnRefreshListener(() -> page = presenter.refreshData(query, page));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_books);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -120,7 +126,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         mSearch.setOnClickListener(this);
 
         mRecyclerView.setOnScrollListener(rScrollListener);
-        presenter.loadData();
+        presenter.loadData(query, page);
     }
 
     @Override
@@ -131,16 +137,38 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
 //                changeListView();
                 break;
             case R.id.fab_search:
-                strActivity(this, SearchBooksActivity.class, false, false,presenter.getInitQuery());
+                strActivity(this, SearchBooksActivity.class, false, false, initQuery);
                 break;
         }
     }
+
+    @Subscribe(tag = RxBus.TAG_DEFAULT)
+    private void dataBinding(ArrayList<TravelNoteBook.Books> bookies) {
+        if (page == 1) {
+            mNotesAdapter.setData(bookies);
+        } else {
+            mNotesAdapter.getData().addAll(bookies);
+        }
+        if (bookies.size() == 0) {
+            isMore=false;
+        }else {
+            isMore=true;
+        }
+        mNotesAdapter.notifyDataSetChanged();
+        page++;
+    }
+
+    @Subscribe(tag = RxBus.TAG_ERROR)
+    private void dataError(String error) {
+        ToastUtil.getInstance().makeShortToast(this, error);
+    }
+
 
     /**
      * 切换列表显示方式
      */
     @Override
-    public void changeListView(){
+    public void changeListView() {
         if (isLinear) {
             isLinear = false;
             mLeft.setImageResource(R.drawable.img_gridview);
@@ -170,50 +198,29 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         refresh.setRefreshing(false);
     }
 
-    @Override
-    public void setListData(ArrayList<TravelNoteBook.Books> bookies) {
-        mNotesAdapter.setData(bookies);
-    }
-
-    @Override
-    public void setListMoreData(ArrayList<TravelNoteBook.Books> bookies) {
-        mNotesAdapter.getData().addAll(bookies);
-    }
-
-    @Override
-    public void setListMoreView() {
-        mNotesAdapter.setMoreView(false);
-    }
-
-    @Override
-    public void upListData() {
-        mNotesAdapter.notifyDataSetChanged();
-    }
-
-
-    RecyclerView.OnScrollListener rScrollListener =new RecyclerView.OnScrollListener() {
+    RecyclerView.OnScrollListener rScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView,
                                          int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem +1 == mNotesAdapter.getItemCount()) {
-                presenter.loadData();
+            if (isMore && newState == RecyclerView.SCROLL_STATE_IDLE
+                    && lastVisibleItem + 1 == mNotesAdapter.getItemCount()) {
+                presenter.loadData(query, page);
             }
         }
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if(isLinear){
+            if (isLinear) {
                 lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
-            }else{
+            } else {
                 lastVisibleItem = mGridLayoutManager.findLastVisibleItemPosition();
             }
 
-            if(dy>=1){
+            if (dy >= 1) {
                 mSearch.hide();
-            }else{
+            } else {
                 mSearch.show();
             }
         }
@@ -224,11 +231,11 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
 
         Intent intent = new Intent(this, TravelNotesBookDetailsActivity.class);
         intent.putExtra(J_FLAG, data.getBookUrl());
-        intent.putExtra(J_FLAG2,"游记详情");
-        intent.putExtra("imgUrl",data.getHeadImage());
+        intent.putExtra(J_FLAG2, "游记详情");
+        intent.putExtra("imgUrl", data.getHeadImage());
         ActivityOptionsCompat options =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        view.findViewById(R.id.cv_data),getString(R.string.tra_name_list_img));
+                        view.findViewById(R.id.cv_data), getString(R.string.tra_name_list_img));
         ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 

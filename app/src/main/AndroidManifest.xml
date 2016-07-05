@@ -50,11 +50,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记列表-->
-        <activity android:name=".ui.activity.TravelNotesActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
         <!--游记列表MVP-->
-        <activity android:name=".ui.mvpdemo.travelnotes.TravelNotesActivity"
+        <activity android:name=".ui.mvp.travelnotes.TravelNotesActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记搜索-->

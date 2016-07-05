@@ -68,7 +68,7 @@ public class WelcomeActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    startActivity(new Intent(this, gear.yc.com.gearapplication.ui.mvpdemo.travelnotes.TravelNotesActivity.class));
+                    startActivity(new Intent(this, gear.yc.com.gearapplication.ui.mvp.travelnotes.TravelNotesActivity.class));
                     finish();
                 });
     }

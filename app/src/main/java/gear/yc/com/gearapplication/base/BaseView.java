@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.mvpdemo;
+package gear.yc.com.gearapplication.base;
 
 /**
  * GearApplication
