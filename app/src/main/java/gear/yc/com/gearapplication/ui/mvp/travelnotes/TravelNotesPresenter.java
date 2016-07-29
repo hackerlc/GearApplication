@@ -9,7 +9,6 @@ import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
  * GearApplication
  * Created by YichenZ on 2016/7/4 15:56.
  */
-
 public class TravelNotesPresenter implements TravelNotesContract.Presenter {
     private TravelNotesContract.View view;
     public TravelNotesActivity obj;
@@ -20,9 +19,13 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
     }
 
     @Override
-    public int refreshData(String key,int page) {
+    public int refreshData(String key,int page,boolean isNote) {
         page = 1;
-        loadData(key,page);
+        if(isNote) {
+            loadData(key, page);
+        }else{
+            loadData(key, page,10);
+        }
         return page;
     }
 
@@ -45,6 +48,30 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
     }
 
     @Override
+    public void loadData(String key,int page,int count){
+        page=(page-1)*count;
+        view.showDialog();
+        APIServiceManager.getInstance()
+                .getBreadtripAPI()
+                .getTravelNotesList(key,String.valueOf(page) ,count+"","trip")
+                .compose(obj.bindToLifecycle())
+                .compose(RxSchedulersHelper.io_main())
+                .compose(SchedulersHelper.handleResultBread())
+                .doOnTerminate(() -> view.disDialog())
+                .subscribe(s -> {
+                            RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses());
+                        },
+                        e -> {
+                            RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage());
+                        });
+    }
+
+    @Override
     public void start() {
+    }
+
+    @Override
+    public void close() {
+        obj=null;
     }
 }

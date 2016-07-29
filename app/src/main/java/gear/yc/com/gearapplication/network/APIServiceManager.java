@@ -1,6 +1,7 @@
 package gear.yc.com.gearapplication.network;
 
 import gear.yc.com.gearapplication.network.service.APIService;
+import gear.yc.com.gearapplication.network.service.BreadtripAPI;
 import gear.yc.com.gearapplication.network.service.TravelNotesAPI;
 import gear.yc.com.gearlibrary.network.api.GearHttpServiceManager;
 
@@ -38,4 +39,13 @@ public class APIServiceManager {
                 GearHttpServiceManager.getInstance().getRetrofit().create(TravelNotesAPI.class)
                 : mTravelNotesAPI;
     }
+
+    private BreadtripAPI mBreadtripAPI;
+    public BreadtripAPI getBreadtripAPI(){
+        return mBreadtripAPI==null ?
+                GearHttpServiceManager.getInstance().getRetrofit().create(BreadtripAPI.class)
+                : mBreadtripAPI;
+    }
+
+
 }

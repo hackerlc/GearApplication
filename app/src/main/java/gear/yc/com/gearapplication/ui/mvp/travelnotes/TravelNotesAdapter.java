@@ -21,6 +21,7 @@ import gear.yc.com.gearlibrary.ui.adapter.GearRecyclerViewAdapter;
  */
 public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.Books,TravelNotesAdapter.Holder>{
     private static int oldPos=0;
+
     public TravelNotesAdapter(Context context,ArrayList<TravelNoteBook.Books> dates){
         super(context,dates);
     }
@@ -49,11 +50,12 @@ public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.B
         TravelNoteBook.Books data=mData.get(position);
         holder.binding.setBook(data);
         Glide.with(mContext)
-                .load(data.getHeadImage())
+                .load(data.getImgUrl())
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.bg_img)
                 .crossFade()
                 .into(holder.binding.sdvBooksImg);
+        holder.binding.getRoot().setTag(data);
         oldPos=position;
         data=null;
     }

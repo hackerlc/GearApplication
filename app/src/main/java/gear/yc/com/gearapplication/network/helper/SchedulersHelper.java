@@ -22,6 +22,24 @@ public class SchedulersHelper {
                 });
     }
 
+    /**
+     * 检测面包旅行
+     * @param <T>
+     * @return
+     */
+    public static <T> Observable.Transformer<ResponseJson<T>, T> handleResultBread() {
+        return responseJsonObservable -> responseJsonObservable.flatMap(
+                tResponseJson -> {
+                    if (tResponseJson == null) {
+                    } else if(tResponseJson.getStatus() != 0){
+                        str=tResponseJson.getMessage();
+                    }else {
+                        return createData(tResponseJson.getData());
+                    }
+                    return Observable.error(new Throwable(str));
+                });
+    }
+
     private static <T> Observable<T> createData(T data) {
         return Observable.create(subscriber -> {
             subscriber.onNext(data);

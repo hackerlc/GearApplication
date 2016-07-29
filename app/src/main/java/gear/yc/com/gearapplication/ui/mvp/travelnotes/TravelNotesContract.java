@@ -19,9 +19,11 @@ public interface TravelNotesContract {
     }
 
     interface Presenter extends BasePresenter{
-        int refreshData(String key,int page);
+        int refreshData(String key,int page,boolean isNote);
 
         void loadData(String key,int page);
+
+        void loadData(String key,int page,int count);
     }
 
 }

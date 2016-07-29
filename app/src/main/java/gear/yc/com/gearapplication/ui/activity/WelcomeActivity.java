@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import javax.inject.Inject;
+
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.base.BaseActivity;
+import gear.yc.com.gearapplication.component.DaggerComponentManager;
 import gear.yc.com.gearapplication.databinding.ActivityWelcomeBinding;
 import gear.yc.com.gearapplication.pojo.Clock;
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -24,10 +26,11 @@ public class WelcomeActivity extends BaseActivity {
     //几秒之后跳转页面
     static final short TIME_COUNT=3000;
     ActivityWelcomeBinding binding;
+
+    @Inject
     Clock mClock;
 
     long startTime;
-    Subscription mSub;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,7 @@ public class WelcomeActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        mClock=new Clock();
+        DaggerComponentManager.builder().build().inject(this);
     }
 
     /**

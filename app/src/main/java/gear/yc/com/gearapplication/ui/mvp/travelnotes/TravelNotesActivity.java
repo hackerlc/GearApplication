@@ -18,8 +18,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.base.BaseActivity;
+import gear.yc.com.gearapplication.component.DaggerComponentPresenter;
+import gear.yc.com.gearapplication.component.medules.ModulePresenter;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
 import gear.yc.com.gearapplication.ui.activity.SearchBooksActivity;
 import gear.yc.com.gearapplication.ui.activity.TravelNotesBookDetailsActivity;
@@ -34,7 +38,10 @@ import gear.yc.com.gearlibrary.utils.ToastUtil;
  * Created by YichenZ on 2016/4/20 15:59.
  */
 public class TravelNotesActivity extends BaseActivity implements TravelNotesContract.View, GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books> {
+    @Inject
     TravelNotesPresenter presenter;
+    @Inject
+    TravelNotesAdapter mNotesAdapter;
 
     RecyclerView mRecyclerView;
     ImageView mBack;
@@ -43,7 +50,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     FloatingActionButton mSearch;
     SwipeRefreshLayout refresh;
 
-    TravelNotesAdapter mNotesAdapter;
+
     LinearLayoutManager mLinearLayoutManager;
     GridLayoutManager mGridLayoutManager;
 
@@ -55,10 +62,11 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     int lastVisibleItem;
     boolean isMore=false;
 
+    boolean isNote=true;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new TravelNotesPresenter(this, this);
+        DaggerComponentPresenter.builder().modulePresenter(new ModulePresenter(this,this)).build().inject(this);
         initUI();
         initData();
     }
@@ -74,12 +82,13 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         super.onResume();
         if (!initQuery.equals(query) && query != null) {
             initQuery = query;
-            page = presenter.refreshData(query, page);
+            page = presenter.refreshData(query, page,isNote);
         }
     }
 
     @Override
     protected void onDestroy() {
+        presenter.close();
         super.onDestroy();
     }
 
@@ -95,7 +104,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         setContentView(R.layout.activity_travel_notes);
         refresh = (SwipeRefreshLayout) findViewById(R.id.srl_refresh);
         refresh.setColorSchemeColors(R.color.colorPrimary, R.color.colorAccent);
-        refresh.setOnRefreshListener(() -> page = presenter.refreshData(query, page));
+        refresh.setOnRefreshListener(() -> page = presenter.refreshData(query, page,isNote));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_books);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -105,7 +114,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         mBack.setVisibility(View.INVISIBLE);
 
         mLeft = (ImageView) findViewById(R.id.iv_left);
-        mLeft.setVisibility(View.VISIBLE);
+        mLeft.setVisibility(View.GONE);
         mLeft.setImageResource(R.drawable.img_lv);
         mLeft.setOnClickListener(this);
 
@@ -118,7 +127,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     @Override
     public void initData() {
         super.initData();
-        mNotesAdapter = new TravelNotesAdapter(this, new ArrayList());
+//        mNotesAdapter = new TravelNotesAdapter(this, new ArrayList());
         mRecyclerView.setAdapter(mNotesAdapter);
         mNotesAdapter.setOnItemClickListener(this);
 
@@ -127,6 +136,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
 
         mRecyclerView.setOnScrollListener(rScrollListener);
         presenter.loadData(query, page);
+
     }
 
     @Override
@@ -161,6 +171,11 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     @Subscribe(tag = RxBus.TAG_ERROR)
     private void dataError(String error) {
         ToastUtil.getInstance().makeShortToast(this, error);
+    }
+
+    @Subscribe(tag = 100)
+    private void setNote(boolean isNote){
+        this.isNote=isNote;
     }
 
 
@@ -205,7 +220,11 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
             super.onScrollStateChanged(recyclerView, newState);
             if (isMore && newState == RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem + 1 == mNotesAdapter.getItemCount()) {
-                presenter.loadData(query, page);
+                if(isNote) {
+                    presenter.loadData(query, page);
+                }else{
+                    presenter.loadData(query, page,10);
+                }
             }
         }
 
@@ -230,9 +249,9 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     public void onItemClick(View view, TravelNoteBook.Books data) {
 
         Intent intent = new Intent(this, TravelNotesBookDetailsActivity.class);
-        intent.putExtra(J_FLAG, data.getBookUrl());
+        intent.putExtra(J_FLAG, data.getHtml());
         intent.putExtra(J_FLAG2, "游记详情");
-        intent.putExtra("imgUrl", data.getHeadImage());
+        intent.putExtra("imgUrl", data.getImgUrl());
         ActivityOptionsCompat options =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                         view.findViewById(R.id.cv_data), getString(R.string.tra_name_list_img));

@@ -56,5 +56,6 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    testCompile 'junit:junit:4.12'
 }
 apply from: 'bintray.gradle'

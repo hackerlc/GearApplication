@@ -28,6 +28,25 @@ public class ResponseJson<T> implements Serializable {
     private String errMsg;
     private String ver;
     private int errNum;
+    //bread
+    private int status;
+    private String message;
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
