@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 16
-        versionName "1.4.1"
+        versionCode 17
+        versionName "1.4.2"
     }
 
     buildTypes {
@@ -45,17 +45,16 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.squareup.okio:okio:1.6.0'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'io.reactivex:rxjava:1.1.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.squareup.okio:okio:1.9.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.1'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-    testCompile 'junit:junit:4.12'
 }
 apply from: 'bintray.gradle'

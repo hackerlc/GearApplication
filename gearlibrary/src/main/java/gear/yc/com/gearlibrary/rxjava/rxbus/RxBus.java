@@ -28,7 +28,6 @@ import rx.subscriptions.CompositeSubscription;
  * @version 1.0
  * 使用RxBus发布网络数据，订阅者通过注册的方式订阅数据
  *
- * @question
  * Q.如果订阅者不同但同时存在于序列并且都被订阅，那么code相同的情况下是否会出现都收到通知的情况
  * A.测试了一下，在订阅者不同但code相同的相框下，并没有出现订阅者都接到通知的情况
  * Created by Android on 2016/6/6.

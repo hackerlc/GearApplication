@@ -7,9 +7,12 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
 /**
+ *
  * 系统默认圆形进度条加载
  * 可设置title以及点击返回按钮关闭activity
  * 也可以直接设置点击返回按钮之后的回调
+ * @version 1.3
+ * setTitle 后如果dialog显示那么可以改变文字
  * @version 1.2
  * build时 先判断是否为null 并且isShow ,如果为true则先dis
  * @version 1.1
@@ -43,6 +46,10 @@ public class ProgressDialogUtil {
 
     public ProgressDialogUtil setTitle(String title) {
         this.title = title;
+        if(progressDialog!=null && progressDialog.isShowing()) {
+            progressDialog.setMessage(title);
+            progressDialog.notify();
+        }
         return instance;
     }
 

@@ -127,7 +127,6 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     @Override
     public void initData() {
         super.initData();
-//        mNotesAdapter = new TravelNotesAdapter(this, new ArrayList());
         mRecyclerView.setAdapter(mNotesAdapter);
         mNotesAdapter.setOnItemClickListener(this);
 
