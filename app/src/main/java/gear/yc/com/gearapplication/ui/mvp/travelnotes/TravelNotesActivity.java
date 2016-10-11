@@ -35,7 +35,13 @@ import gear.yc.com.gearlibrary.utils.ToastUtil;
 
 /**
  * GearApplication
+ * 采用MVP的写法分离activity数据操作到Presenter中
+ * 使用Dagger2统一初始化
  * Created by YichenZ on 2016/4/20 15:59.
+ * @version 1.3 使用DataBinding方式修改界面 TODO:
+ * @version 1.2 添加Dagger2方式初始化相关类
+ * @version 1.1 添加刷新方式
+ * @version 1.0 创建
  */
 public class TravelNotesActivity extends BaseActivity implements TravelNotesContract.View, GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books> {
     @Inject
@@ -49,7 +55,6 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     TextView mTitle;
     FloatingActionButton mSearch;
     SwipeRefreshLayout refresh;
-
 
     LinearLayoutManager mLinearLayoutManager;
     GridLayoutManager mGridLayoutManager;

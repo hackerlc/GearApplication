@@ -6,6 +6,7 @@ import gear.yc.com.gearapplication.ui.activity.WelcomeActivity;
 
 /**
  * GearApplication
+ * 需要初始化的activity 并分配Module
  * Created by YichenZ on 2016/7/22 14:02.
  */
 @Component(modules = {ModulePojo.class})

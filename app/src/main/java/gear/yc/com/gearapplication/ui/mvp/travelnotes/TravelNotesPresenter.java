@@ -7,6 +7,7 @@ import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
 
 /**
  * GearApplication
+ * MVP数据逻辑类，承接数据与界面的交互，通过Dagger的方式初始化
  * Created by YichenZ on 2016/7/4 15:56.
  */
 public class TravelNotesPresenter implements TravelNotesContract.Presenter {
@@ -35,16 +36,11 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
         APIServiceManager.getInstance()
                 .getTravelNotesAPI()
                 .getTravelNotesList(key, page + "")
-                .compose(obj.bindToLifecycle())
                 .compose(RxSchedulersHelper.io_main())
                 .compose(SchedulersHelper.handleResult())
                 .doOnTerminate(() -> view.disDialog())
-                .subscribe(s -> {
-                            RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses());
-                        },
-                        e -> {
-                            RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage());
-                        });
+                .subscribe(s -> RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses()),
+                        e -> RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage()));
     }
 
     @Override
@@ -54,16 +50,11 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
         APIServiceManager.getInstance()
                 .getBreadtripAPI()
                 .getTravelNotesList(key,String.valueOf(page) ,count+"","trip")
-                .compose(obj.bindToLifecycle())
                 .compose(RxSchedulersHelper.io_main())
                 .compose(SchedulersHelper.handleResultBread())
                 .doOnTerminate(() -> view.disDialog())
-                .subscribe(s -> {
-                            RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses());
-                        },
-                        e -> {
-                            RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage());
-                        });
+                .subscribe(s -> RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses()),
+                        e -> RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage()));
     }
 
     @Override

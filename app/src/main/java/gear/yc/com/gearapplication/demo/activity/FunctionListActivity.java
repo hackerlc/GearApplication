@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.activity.demo;
+package gear.yc.com.gearapplication.demo.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

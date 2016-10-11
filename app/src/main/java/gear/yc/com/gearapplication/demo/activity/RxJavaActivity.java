@@ -1,11 +1,13 @@
-package gear.yc.com.gearapplication.ui.activity.demo;
+package gear.yc.com.gearapplication.demo.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import gear.yc.com.gearapplication.base.BaseActivity;
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observable;
 
 /**
  * GearApplication
@@ -54,24 +56,29 @@ public class RxJavaActivity extends BaseActivity{
 //        return Observable.create(Observable<List<String>>);
 //    }
 
-    //1.
-    Observable<String> mObservable = Observable.create(new Observable.OnSubscribe<String>() {
-        @Override
-        public void call(Subscriber<? super String> subscriber) {
-            subscriber.onNext("Hello world");
-            subscriber.onCompleted();
-        }
-    });
+//    //1.
+//    Flowable<String> mObservable = Flowable.create(new FlowableOnSubscribe<String>() {
+//        @Override
+//        public void subscribe(FlowableEmitter<String> e) throws Exception {
+//            e.onNext("Hello world");
+//            e.onComplete();
+//        }
+//    });
 
     //1.
     Subscriber<String> mSubscriber =new Subscriber<String>() {
         @Override
-        public void onCompleted() {
+        public void onError(Throwable e) {
 
         }
 
         @Override
-        public void onError(Throwable e) {
+        public void onComplete() {
+
+        }
+
+        @Override
+        public void onSubscribe(Subscription s) {
 
         }
 

@@ -26,27 +26,27 @@
             </intent-filter>
         </activity>
         <!--OkHttp DEMO-->
-        <activity android:name=".ui.activity.demo.MainActivity"
+        <activity android:name=".demo.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--DataBinding DEMO-->
-        <activity android:name=".ui.activity.demo.DataBindingActivity"
+        <activity android:name=".demo.activity.DataBindingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--RxJava DEMO-->
-        <activity android:name=".ui.activity.demo.RxJavaActivity"
+        <activity android:name=".demo.activity.RxJavaActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--web DEMO-->
-        <activity android:name=".ui.activity.demo.WebViewActivity"
+        <activity android:name=".demo.activity.WebViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--RecyclerView DEMO-->
-        <activity android:name=".ui.activity.demo.RecyclerViewActivity"
+        <activity android:name=".demo.activity.RecyclerViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--一些功能列表 DEMO-->
-        <activity android:name=".ui.activity.demo.FunctionListActivity"
+        <activity android:name=".demo.activity.FunctionListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
         <!--游记列表-->

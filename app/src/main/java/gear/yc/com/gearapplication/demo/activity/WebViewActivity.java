@@ -1,21 +1,16 @@
-package gear.yc.com.gearapplication.ui.activity.demo;
+package gear.yc.com.gearapplication.demo.activity;
 
 import android.app.AlertDialog;
-import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import java.util.List;
 
 import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.R;

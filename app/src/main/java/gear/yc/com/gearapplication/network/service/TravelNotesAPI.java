@@ -3,9 +3,9 @@ package gear.yc.com.gearapplication.network.service;
 import gear.yc.com.gearapplication.config.APIConfig;
 import gear.yc.com.gearapplication.pojo.ResponseJson;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * GearApplication
@@ -13,5 +13,5 @@ import rx.Observable;
  */
 public interface TravelNotesAPI {
     @GET(APIConfig.BASE_URL_TRAVEL_NOTES+"travellist?")
-    Observable<ResponseJson<TravelNoteBook>> getTravelNotesList(@Query("query") String query, @Query("page") String page);
+    Flowable<ResponseJson<TravelNoteBook>> getTravelNotesList(@Query("query") String query, @Query("page") String page);
 }

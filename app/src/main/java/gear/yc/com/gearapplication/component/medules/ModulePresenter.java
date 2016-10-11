@@ -9,6 +9,9 @@ import gear.yc.com.gearapplication.ui.mvp.travelnotes.TravelNotesPresenter;
 
 /**
  * GearApplication
+ * Presenter的Module类
+ * 两个变量表示Presenter所需要的初始化的数据
+ * @Provides 标识我们所提供的依赖
  * Created by YichenZ on 2016/7/22 14:58.
  */
 @Module

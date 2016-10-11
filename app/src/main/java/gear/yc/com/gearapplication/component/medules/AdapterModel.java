@@ -10,6 +10,9 @@ import gear.yc.com.gearapplication.ui.mvp.travelnotes.TravelNotesAdapter;
 
 /**
  * GearApplication
+ * Dagger中相关Adapter所需要使用的model，初始化相关的adapter，可复用
+ * @Module 意思为表明此类为Module类
+ * @ActivityScope 标示此类的生命周期与activity相同
  * Created by YichenZ on 2016/7/29 17:35.
  */
 @Module

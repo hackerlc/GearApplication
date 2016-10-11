@@ -13,9 +13,9 @@ import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.component.DaggerComponentManager;
 import gear.yc.com.gearapplication.databinding.ActivityWelcomeBinding;
 import gear.yc.com.gearapplication.pojo.Clock;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * GearApplication
@@ -58,7 +58,6 @@ public class WelcomeActivity extends BaseActivity {
     private void gotoPage() {
         startTime= System.currentTimeMillis();
         Observable.just(mClock)
-                .compose(bindToLifecycle())
                 .map(f -> {
                     while (true){
                         binding.setClock(f.setTime());

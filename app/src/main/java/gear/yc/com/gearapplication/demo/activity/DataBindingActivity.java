@@ -1,4 +1,4 @@
-package gear.yc.com.gearapplication.ui.activity.demo;
+package gear.yc.com.gearapplication.demo.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -12,8 +12,7 @@ import gear.yc.com.gearapplication.databinding.ActivityDatabindingBinding;
 import gear.yc.com.gearapplication.network.APIServiceManager;
 import gear.yc.com.gearapplication.pojo.ResponseJson;
 import gear.yc.com.gearapplication.pojo.User;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import gear.yc.com.gearlibrary.rxjava.helper.RxSchedulersHelper;
 
 /**
  * GearApplication
@@ -29,6 +28,7 @@ public class DataBindingActivity extends BaseActivity {
         initUI();
         initData();
         new Thread(runnable).start();
+
     }
 
     @Override
@@ -48,9 +48,7 @@ public class DataBindingActivity extends BaseActivity {
         APIServiceManager.getInstance()
                 .getApiService()
                 .getUser()
-                .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.io_main())
                 .subscribe(userResponseJson -> {
                     Message msg = new Message();
                     msg.obj = userResponseJson;
@@ -61,9 +59,7 @@ public class DataBindingActivity extends BaseActivity {
         APIServiceManager.getInstance()
                 .getTravelNotesAPI()
                 .getTravelNotesList("", "1")
-                .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulersHelper.io_main())
                 .subscribe(tnbs -> {
                     Message msg = new Message();
                     msg.obj = tnbs;
