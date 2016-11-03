@@ -1,10 +1,5 @@
 package gear.yc.com.gearapplication.base;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
-
 import gear.yc.com.gearapplication.config.APIConfig;
 import gear.yc.com.gearapplication.manager.CommonManager;
 import gear.yc.com.gearlibrary.GearApplication;
@@ -31,12 +26,6 @@ public class BaseApplication extends GearApplication{
                                 .build()
                                 .getClient()
                 );
-        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-                .newBuilder(this,OkHttpManager.getInstance().getClient())
-                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
-                .build();
-        Fresco.initialize(this,config);
-
         CommonManager.getInstance(this);
     }
 }

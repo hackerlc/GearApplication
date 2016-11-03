@@ -3,8 +3,8 @@ package gear.yc.com.gearapplication.network.helper;
 import org.reactivestreams.Publisher;
 
 import gear.yc.com.gearapplication.pojo.ResponseJson;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.functions.Function;
 
@@ -51,6 +51,6 @@ public class SchedulersHelper {
         return Flowable.create(subscriber -> {
             subscriber.onNext(data);
             subscriber.onComplete();
-        }, FlowableEmitter.BackpressureMode.NONE);
+        }, BackpressureStrategy.BUFFER);
     }
 }

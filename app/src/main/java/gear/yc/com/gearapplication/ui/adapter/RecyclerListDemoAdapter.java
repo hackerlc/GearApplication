@@ -1,7 +1,6 @@
 package gear.yc.com.gearapplication.ui.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -39,20 +38,20 @@ public class RecyclerListDemoAdapter extends GearRecyclerViewAdapter<User,Recycl
         User data =mData.get(position);
         holder.name.setText(data.getUsername());
         holder.content.setText(data.getUid());
-        holder.bgImage.setImageURI(Uri.parse(data.getHeadPortrait()));
+        Glide.with(mContext).load(data.getHeadPortrait()).into(holder.bgImage);
     }
 
     class DemoHolder extends RecyclerView.ViewHolder{
 
         ImageView headPortrait;
-        SimpleDraweeView bgImage;
+        ImageView bgImage;
         TextView name;
         TextView content;
 
         public DemoHolder(View itemView) {
             super(itemView);
             headPortrait=(ImageView)itemView.findViewById(R.id.iv_head_portrait);
-            bgImage=(SimpleDraweeView)itemView.findViewById(R.id.sdv_bg_image);
+            bgImage=(ImageView)itemView.findViewById(R.id.sdv_bg_image);
             name=(TextView)itemView.findViewById(R.id.tv_name);
             content=(TextView)itemView.findViewById(R.id.tv_content);
         }

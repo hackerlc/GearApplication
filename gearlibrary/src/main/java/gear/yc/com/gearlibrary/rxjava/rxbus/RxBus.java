@@ -24,6 +24,8 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 /**
+ * @version 1.4
+ * bus重新改为线程安全对象
  * @version 1.3
  * RxJava修改为RxJava2方式
  * @version 1.2
@@ -65,7 +67,7 @@ public class RxBus {
      * SerializedSubject 序列化Subject为线程安全的Subject RxJava2 暂无
      */
     public RxBus() {
-        bus = PublishSubject.create();
+        bus = PublishSubject.create().toSerialized();
     }
 
     public void post(@NonNull Object obj) {
