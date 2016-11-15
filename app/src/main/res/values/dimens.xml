@@ -7,8 +7,9 @@
 
     <!--font size-->
     <!--welcome layout-->
-    <dimen name="welcome_clock_hh_ss_dd">58sp</dimen>
-    <dimen name="welcome_clock_year">68sp</dimen>
+    <dimen name="welcome_clock_hh_ss_dd">12sp</dimen>
+    <dimen name="welcome_clock_year">12sp</dimen>
+    <dimen name="welcome_title">40sp</dimen>
 
     <!--main-->
     <dimen name="main_title_height">46dp</dimen>

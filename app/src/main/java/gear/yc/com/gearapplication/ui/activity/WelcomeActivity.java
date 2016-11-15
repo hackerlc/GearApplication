@@ -2,9 +2,15 @@ package gear.yc.com.gearapplication.ui.activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 
 import javax.inject.Inject;
 
@@ -24,16 +30,21 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class WelcomeActivity extends BaseActivity {
     //几秒之后跳转页面
-    static final short TIME_COUNT=3000;
+    static final short TIME_COUNT=5000;
     ActivityWelcomeBinding binding;
 
     @Inject
     Clock mClock;
 
     long startTime;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //设置全屏效果
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         initUI();
         initData();
 
@@ -44,12 +55,25 @@ public class WelcomeActivity extends BaseActivity {
     public void initUI() {
         super.initUI();
         binding= DataBindingUtil.setContentView(this,R.layout.activity_welcome);
+
+        AnimationSet animationSet=new AnimationSet(true);
+        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                3.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mHiddenAction.setDuration(3000);
+        AlphaAnimation alphaAnimation =new AlphaAnimation(0.1f,1.0f);
+        alphaAnimation.setDuration(2000);
+        animationSet.addAnimation(mHiddenAction);
+        animationSet.addAnimation(alphaAnimation);
+        binding.tvTitle.setAnimation(animationSet);
     }
 
     @Override
     public void initData() {
         super.initData();
         DaggerComponentManager.builder().build().inject(this);
+        Uri uri =Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.guide_1);
+        binding.cvvVideoData.palyVideo(uri);
     }
 
     /**
@@ -77,6 +101,7 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        binding.cvvVideoData.stopPlayback();
         super.onDestroy();
     }
 
