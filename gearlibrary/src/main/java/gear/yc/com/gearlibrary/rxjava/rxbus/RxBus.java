@@ -192,7 +192,6 @@ public class RxBus {
                     @Override
                     public void onNext(CompositeDisposable compositeDisposable) {
                         compositeDisposable.dispose();
-                        compositeDisposable.clear();
                         subscriptions.remove(subscriber);
                     }
 
