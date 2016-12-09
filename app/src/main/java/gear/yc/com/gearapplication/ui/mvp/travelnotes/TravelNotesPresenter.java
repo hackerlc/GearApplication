@@ -36,6 +36,7 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
         APIServiceManager.getInstance()
                 .getTravelNotesAPI()
                 .getTravelNotesList(key, page + "")
+                .compose(obj.bindToLifecycle())
                 .compose(RxSchedulersHelper.io_main())
                 .compose(SchedulersHelper.handleResult())
                 .doOnTerminate(() -> view.disDialog())

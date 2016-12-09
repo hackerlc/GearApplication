@@ -11,6 +11,10 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import javax.inject.Inject;
 
 import gear.yc.com.gearapplication.R;
@@ -37,6 +41,8 @@ public class WelcomeActivity extends BaseActivity {
     Clock mClock;
 
     long startTime;
+
+    List<String> strUrl=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +77,9 @@ public class WelcomeActivity extends BaseActivity {
     public void initData() {
         super.initData();
         DaggerComponentManager.builder().build().inject(this);
-        Uri uri =Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.guide_1);
+        strUrl.add("android.resource://" + getPackageName() + "/" + R.raw.guide_1);
+        strUrl.add("android.resource://" + getPackageName() + "/" + R.raw.guide_2);
+        Uri uri =Uri.parse(strUrl.get(new Random().nextInt(2)));
         binding.cvvVideoData.palyVideo(uri);
     }
 
