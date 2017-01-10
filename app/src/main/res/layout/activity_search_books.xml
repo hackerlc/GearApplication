@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <include layout="@layout/include_header_search"/>
+    <include
+        android:id="@+id/title_search"
+        layout="@layout/include_header_search"/>
 </RelativeLayout>
+</layout>

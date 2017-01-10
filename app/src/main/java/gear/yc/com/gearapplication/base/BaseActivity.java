@@ -46,7 +46,12 @@ public class BaseActivity extends GearActivity{
     @CallSuper
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RxBus.getInstance().register(this);
+        try {
+            RxBus.getInstance().init(this);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        //        RxBus.getInstance().register(this);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
     }
 

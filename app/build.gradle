@@ -11,7 +11,7 @@ android {
     buildToolsVersion '23.0.2'
 
     defaultConfig {
-        applicationId "gear.yc.com.gearapplication"
+        applicationId "gear.yc.com.explore"
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 2
@@ -50,7 +50,7 @@ android {
 
         if (variant.buildType.name.equals('release')) {
             variant.outputs.each { output ->
-                def appName = 'Gear'
+                def appName = 'Explore'
                 def oldFile = output.outputFile
                 def releaseApkName
                 releaseApkName = appName + getVersionNameFromManifest()   + '.apk'

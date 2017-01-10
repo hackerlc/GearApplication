@@ -121,6 +121,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/reload-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/restart-dex" />
@@ -151,7 +152,7 @@
     <orderEntry type="library" exported="" name="support-core-utils-25.0.0" level="project" />
     <orderEntry type="library" exported="" name="library-1.2.1" level="project" />
     <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-2.0.1" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-2.0.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-25.0.0" level="project" />
     <orderEntry type="library" exported="" name="reactive-streams-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="rxlifecycle-2.0.1" level="project" />
@@ -177,10 +178,8 @@
     <orderEntry type="library" exported="" name="converter-gson-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit2-rxjava2-adapter-1.0.0-RC3" level="project" />
     <orderEntry type="library" exported="" name="okhttp-3.4.1" level="project" />
-    <orderEntry type="library" exported="" name="rxandroid-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.3.0" level="project" />
     <orderEntry type="library" exported="" name="logging-interceptor-3.4.1" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.3.0" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-23.3.0" level="project" />
     <orderEntry type="library" exported="" name="animated-vector-drawable-23.3.0" level="project" />
