@@ -4,23 +4,23 @@
 
 事件消息
 
-[**RxJava Help**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#RxJava Help)
+[**RxJava Help**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#rxjava-help)
 
 RxJava帮助
 
-[**GearHttpServiceManager**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#GearHttpServiceManager)
+[**GearHttpServiceManager**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#gearhttpservicemanager)
 
 retrofit 管理类
 
-**OkHttpManager**
+[**OkHttpManager**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#gearhttpservicemanager)
 
 OKHttp帮助管理类
 
-**ProgressDialogUtil**
+[**ProgressDialogUtil**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#okhttpmanager)
 
-ProgressDialog 进度条
+进度条
 
-**BaseWeb**
+[**BaseWeb**](https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#baseweb)
 
 Web帮助类
 
