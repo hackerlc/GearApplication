@@ -86,8 +86,8 @@ public class RxBus {
 
     /**
      * 发布事件
-     * @param code
-     * @param obj
+     * @param code 值使用RxBus.getInstance().getTag(class,value)获取
+     * @param obj 为需要被处理的事件
      */
     public void post(@NonNull int code,@NonNull Object obj) {
         bus.onNext(new Msg(code, obj));
@@ -125,7 +125,7 @@ public class RxBus {
     /**
      * 判断是否需要订阅，如果需要订阅那么自动控制生命周期
      */
-    public void init(@NonNull Object object) throws NoSuchMethodException {
+    public void init(@NonNull Object object){
         Flowable.just(object)
                 .map(o -> o.getClass().getAnnotation(UseRxBus.class))
                 .filter(a -> a!=null)
@@ -203,6 +203,13 @@ public class RxBus {
         tag--;
     }
 
+    /**
+     * tag值使用RxBus.getInstance().getTag(class,value)获取
+     * 使用getTag主要用于后期维护方便，可以及时找到发布事件的对应处理。
+     * @param cla 为Rxbus事件处理的类
+     * @param value 是事件处理的tag
+     * @return tag
+     */
     public int getTag(Class cla,int value){
         return tag4Class.get(cla).intValue()+value;
     }
