@@ -1,6 +1,6 @@
 ## GearLibrary
 ###主要功能
-**RxBus**
+[https://github.com/hackerlc/GearApplication/blob/master/gearlibrary/readme.md#rxbus]**RxBus**
 
 事件消息
 
