@@ -1,12 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.alibaba.android.apmplus'
 
 repositories{
-    maven{
-        url 'http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/'
-    }
 
 }
 
@@ -15,7 +11,7 @@ android {
     buildToolsVersion '25'
 
     defaultConfig {
-        applicationId "gear.yc.com.gearapplication"
+        applicationId "gear.yc.com.explore"
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 2
@@ -54,7 +50,7 @@ android {
 
         if (variant.buildType.name.equals('release')) {
             variant.outputs.each { output ->
-                def appName = 'Gear'
+                def appName = 'Explore'
                 def oldFile = output.outputFile
                 def releaseApkName
                 releaseApkName = appName + getVersionNameFromManifest()   + '.apk'
@@ -73,17 +69,10 @@ def getVersionNameFromManifest() {
     return android.defaultConfig.versionName+"-"+android.defaultConfig.versionCode
 }
 
-/** apmplus 配置  见apmplus详情 */
-apmplus{
-    appKey '23512544'
-    appSecret 'b72fac765fc90e96716ef35669e3ba9e'
-}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':gearlibrary')
-
-    compile 'com.alibaba.apmplus:android-agent:1.1.1'
 
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.4.0'
@@ -93,6 +82,10 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
 
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 

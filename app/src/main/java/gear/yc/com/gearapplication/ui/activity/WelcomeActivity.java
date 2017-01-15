@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -19,6 +22,7 @@ import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.component.DaggerComponentManager;
 import gear.yc.com.gearapplication.databinding.ActivityWelcomeBinding;
 import gear.yc.com.gearapplication.pojo.Clock;
+import gear.yc.com.gearapplication.ui.custom.animation.ManagerAnimation;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -38,6 +42,8 @@ public class WelcomeActivity extends BaseActivity {
 
     long startTime;
 
+    List<String> strUrl=new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,23 +62,24 @@ public class WelcomeActivity extends BaseActivity {
         super.initUI();
         binding= DataBindingUtil.setContentView(this,R.layout.activity_welcome);
 
-        AnimationSet animationSet=new AnimationSet(true);
-        TranslateAnimation mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                3.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-        mHiddenAction.setDuration(3000);
-        AlphaAnimation alphaAnimation =new AlphaAnimation(0.1f,1.0f);
-        alphaAnimation.setDuration(2000);
-        animationSet.addAnimation(mHiddenAction);
-        animationSet.addAnimation(alphaAnimation);
-        binding.tvTitle.setAnimation(animationSet);
+        ManagerAnimation.builder()
+                .setTranslateAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+                        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                        3.0f, Animation.RELATIVE_TO_SELF, 0.0f))
+                .setTranslateDuration(3000)
+                .setAlphaAnimation(new AlphaAnimation(0.1f,1.0f))
+                .setAlphaDuration(2000)
+                .build()
+                .inject(binding.tvTitle);
     }
 
     @Override
     public void initData() {
         super.initData();
         DaggerComponentManager.builder().build().inject(this);
-        Uri uri =Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.guide_1);
+        strUrl.add("android.resource://" + getPackageName() + "/" + R.raw.guide_1);
+        strUrl.add("android.resource://" + getPackageName() + "/" + R.raw.guide_2);
+        Uri uri =Uri.parse(strUrl.get(new Random().nextInt(2)));
         binding.cvvVideoData.palyVideo(uri);
     }
 

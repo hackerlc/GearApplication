@@ -2,19 +2,16 @@ package gear.yc.com.gearapplication.ui.mvp.travelnotes;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,11 +21,13 @@ import gear.yc.com.gearapplication.R;
 import gear.yc.com.gearapplication.base.BaseActivity;
 import gear.yc.com.gearapplication.component.DaggerComponentPresenter;
 import gear.yc.com.gearapplication.component.medules.ModulePresenter;
+import gear.yc.com.gearapplication.databinding.ActivityTravelNotesBinding;
 import gear.yc.com.gearapplication.pojo.TravelNoteBook;
 import gear.yc.com.gearapplication.ui.activity.SearchBooksActivity;
 import gear.yc.com.gearapplication.ui.activity.TravelNotesBookDetailsActivity;
 import gear.yc.com.gearlibrary.rxjava.rxbus.RxBus;
 import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
+import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.UseRxBus;
 import gear.yc.com.gearlibrary.ui.adapter.GearRecyclerViewAdapter;
 import gear.yc.com.gearlibrary.utils.ToastUtil;
 
@@ -38,23 +37,19 @@ import gear.yc.com.gearlibrary.utils.ToastUtil;
  * 采用MVP的写法分离activity数据操作到Presenter中
  * 使用Dagger2统一初始化
  * Created by YichenZ on 2016/4/20 15:59.
- * @version 1.3 使用DataBinding方式修改界面 TODO:
+ * @version 1.3 使用DataBinding方式修改界面
  * @version 1.2 添加Dagger2方式初始化相关类
  * @version 1.1 添加刷新方式
  * @version 1.0 创建
  */
+@UseRxBus
 public class TravelNotesActivity extends BaseActivity implements TravelNotesContract.View, GearRecyclerViewAdapter.OnRecyclerViewItemClickListener<TravelNoteBook.Books> {
     @Inject
     TravelNotesPresenter presenter;
     @Inject
     TravelNotesAdapter mNotesAdapter;
 
-    RecyclerView mRecyclerView;
-    ImageView mBack;
-    ImageView mLeft;
-    TextView mTitle;
-    FloatingActionButton mSearch;
-    SwipeRefreshLayout refresh;
+    ActivityTravelNotesBinding mBinding;
 
     LinearLayoutManager mLinearLayoutManager;
     GridLayoutManager mGridLayoutManager;
@@ -68,6 +63,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     boolean isMore=false;
 
     boolean isNote=true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,39 +102,29 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     @Override
     public void initUI() {
         super.initUI();
-        setContentView(R.layout.activity_travel_notes);
-        refresh = (SwipeRefreshLayout) findViewById(R.id.srl_refresh);
-        refresh.setColorSchemeColors(R.color.colorPrimary, R.color.colorAccent);
-        refresh.setOnRefreshListener(() -> page = presenter.refreshData(query, page,isNote));
+        mBinding= DataBindingUtil.setContentView(this,R.layout.activity_travel_notes);
+        mBinding.setOnClick(this);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_books);
+        mBinding.srlRefresh.setColorSchemeColors(R.color.colorPrimary, R.color.colorAccent);
+        mBinding.srlRefresh.setOnRefreshListener(() -> page = presenter.refreshData(query, page,isNote));
+
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mBinding.rvBooks.setLayoutManager(mLinearLayoutManager);
 
-        mBack = (ImageView) findViewById(R.id.iv_back);
-        mBack.setVisibility(View.INVISIBLE);
+        mBinding.title.setTitle("游记");
+        mBinding.title.ivBack.setVisibility(View.INVISIBLE);
 
-        mLeft = (ImageView) findViewById(R.id.iv_left);
-        mLeft.setVisibility(View.GONE);
-        mLeft.setImageResource(R.drawable.img_lv);
-        mLeft.setOnClickListener(this);
-
-        mTitle = (TextView) findViewById(R.id.tv_title);
-        mTitle.setText("游记");
-
+        mBinding.title.ivLeft.setVisibility(View.GONE);
+        mBinding.title.ivLeft.setImageResource(R.drawable.img_lv);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void initData() {
         super.initData();
-        mRecyclerView.setAdapter(mNotesAdapter);
+        mBinding.rvBooks.setAdapter(mNotesAdapter);
         mNotesAdapter.setOnItemClickListener(this);
-
-        mSearch = (FloatingActionButton) findViewById(R.id.fab_search);
-        mSearch.setOnClickListener(this);
-
-        mRecyclerView.setOnScrollListener(rScrollListener);
+        mBinding.rvBooks.setOnScrollListener(rScrollListener);
         presenter.loadData(query, page);
 
     }
@@ -156,7 +142,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         }
     }
 
-    @Subscribe(tag = RxBus.TAG_DEFAULT)
+    @Subscribe(tag = RxBus.TAG_UPDATE)
     private void dataBinding(ArrayList<TravelNoteBook.Books> bookies) {
         if (page == 1) {
             mNotesAdapter.setData(bookies);
@@ -177,7 +163,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         ToastUtil.getInstance().makeShortToast(this, error);
     }
 
-    @Subscribe(tag = 100)
+    @Subscribe(tag = RxBus.TAG_CHANGE)
     private void setNote(boolean isNote){
         this.isNote=isNote;
     }
@@ -190,31 +176,31 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     public void changeListView() {
         if (isLinear) {
             isLinear = false;
-            mLeft.setImageResource(R.drawable.img_gridview);
+            mBinding.title.ivLeft.setImageResource(R.drawable.img_gridview);
             if (mGridLayoutManager == null) {
                 mGridLayoutManager = new GridLayoutManager(this, 2);
             }
             mGridLayoutManager.scrollToPositionWithOffset(mLinearLayoutManager.findFirstVisibleItemPosition(), 1);
-            mRecyclerView.setLayoutManager(mGridLayoutManager);
+            mBinding.rvBooks.setLayoutManager(mGridLayoutManager);
         } else {
             isLinear = true;
-            mLeft.setImageResource(R.drawable.img_lv);
+            mBinding.title.ivLeft.setImageResource(R.drawable.img_lv);
             if (mLinearLayoutManager == null) {
                 mLinearLayoutManager = new LinearLayoutManager(this);
             }
             mLinearLayoutManager.scrollToPositionWithOffset(mGridLayoutManager.findFirstVisibleItemPosition(), -1);
-            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            mBinding.rvBooks.setLayoutManager(mLinearLayoutManager);
         }
     }
 
     @Override
     public void showDialog() {
-        refresh.setRefreshing(true);
+        mBinding.srlRefresh.setRefreshing(true);
     }
 
     @Override
     public void disDialog() {
-        refresh.setRefreshing(false);
+        mBinding.srlRefresh.setRefreshing(false);
     }
 
     RecyclerView.OnScrollListener rScrollListener = new RecyclerView.OnScrollListener() {
@@ -242,9 +228,9 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
             }
 
             if (dy >= 1) {
-                mSearch.hide();
+                mBinding.fabSearch.hide();
             } else {
-                mSearch.show();
+                mBinding.fabSearch.show();
             }
         }
     };

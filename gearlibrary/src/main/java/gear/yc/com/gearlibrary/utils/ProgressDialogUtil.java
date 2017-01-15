@@ -44,6 +44,11 @@ public class ProgressDialogUtil {
     private ProgressDialogUtil() {
     }
 
+    /**
+     * 设置加载信息
+     * @param title
+     * @return
+     */
     public ProgressDialogUtil setTitle(String title) {
         this.title = title;
         if(progressDialog!=null && progressDialog.isShowing()) {
@@ -53,12 +58,24 @@ public class ProgressDialogUtil {
         return instance;
     }
 
+    /**
+     * 设置点击返回后关闭activity
+     * @param isBackDismiss
+     * @param activity
+     * @return
+     */
     public ProgressDialogUtil setBackDismiss(boolean isBackDismiss, Activity activity) {
         this.isBackDismiss = isBackDismiss;
         mActivity=activity;
         return instance;
     }
 
+    /**
+     * 设置点击返回后的事件
+     * @param isBackDismiss
+     * @param mListener
+     * @return
+     */
     public ProgressDialogUtil setBackDismiss(boolean isBackDismiss, DialogInterface.OnCancelListener mListener) {
         this.isBackDismiss = isBackDismiss;
         this.mListener=mListener;
@@ -78,8 +95,9 @@ public class ProgressDialogUtil {
         if(isBackDismiss){
             if(mListener!=null){
                 progressDialog.setOnCancelListener(mListener);
+            }else {
+                progressDialog.setOnCancelListener(l -> mActivity.finish());
             }
-            progressDialog.setOnCancelListener(l -> mActivity.finish());
         }
         return instance;
     }

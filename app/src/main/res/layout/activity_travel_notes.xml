@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener"/>
+    </data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
         android:id="@+id/title"
-        layout="@layout/include_header_back" />
+        layout="@layout/include_header_back"
+        bind:onClick="@{onClick}"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_refresh"
@@ -33,5 +41,7 @@
         android:layout_marginRight="16dp"
         android:src="@drawable/img_search"
         android:translationZ="2dp"
-        app:elevation="10dp" />
+        app:elevation="10dp"
+        android:onClick="@{onClick}"/>
 </RelativeLayout>
+</layout>

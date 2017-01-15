@@ -36,11 +36,14 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
         APIServiceManager.getInstance()
                 .getTravelNotesAPI()
                 .getTravelNotesList(key, page + "")
+                .compose(obj.bindToLifecycle())
                 .compose(RxSchedulersHelper.io_main())
                 .compose(SchedulersHelper.handleResult())
                 .doOnTerminate(() -> view.disDialog())
-                .subscribe(s -> RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses()),
-                        e -> RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage()));
+                .subscribe(s -> RxBus.getInstance().post(RxBus.getInstance()
+                        .getTag(obj.getClass(),RxBus.TAG_UPDATE), s.getBookses()),
+                        e -> RxBus.getInstance().post(RxBus.getInstance()
+                                .getTag(obj.getClass(),RxBus.TAG_ERROR), e.getMessage()));
     }
 
     @Override
@@ -53,8 +56,10 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
                 .compose(RxSchedulersHelper.io_main())
                 .compose(SchedulersHelper.handleResultBread())
                 .doOnTerminate(() -> view.disDialog())
-                .subscribe(s -> RxBus.getInstance().post(RxBus.TAG_DEFAULT, s.getBookses()),
-                        e -> RxBus.getInstance().post(RxBus.TAG_ERROR, e.getMessage()));
+                .subscribe(s -> RxBus.getInstance().post(RxBus.getInstance()
+                                .getTag(obj.getClass(),RxBus.TAG_UPDATE), s.getBookses()),
+                        e -> RxBus.getInstance().post(RxBus.getInstance()
+                                .getTag(obj.getClass(),RxBus.TAG_ERROR), e.getMessage()));
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.Subscribe;
+import gear.yc.com.gearlibrary.rxjava.rxbus.annotation.UseRxBus;
 import gear.yc.com.gearlibrary.rxjava.rxbus.event.EventThread;
 import gear.yc.com.gearlibrary.rxjava.rxbus.pojo.Msg;
 import io.reactivex.Flowable;
@@ -24,6 +25,10 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 /**
+ * @version 2.0
+ * 增加默认状态以及状态值
+ * 使用注解方式注册，检测activity的onCreate是否有UseRxBus注解
+ * 增加tag4Class管理跳转序列
  * @version 1.4
  * bus重新改为线程安全对象
  * @version 1.3
@@ -54,8 +59,13 @@ public class RxBus {
         return instance;
     }
     //TAG默认值
-    public static final int TAG_DEFAULT = 0;
-    public static final int TAG_ERROR = -1;
+    public static final int TAG_DEFAULT = -1000;
+    public static final int TAG_UPDATE = -1010;
+    public static final int TAG_CHANGE = -1020;
+    public static final int TAG_OTHER = -1030;
+    public static final int TAG_ERROR = -1090;
+    //TAG-class
+    private static Map<Class,Integer> tag4Class=new HashMap<>();
     //发布者
     private final Subject bus;
 
@@ -76,8 +86,8 @@ public class RxBus {
 
     /**
      * 发布事件
-     * @param code
-     * @param obj
+     * @param code 值使用RxBus.getInstance().getTag(class,value)获取
+     * @param obj 为需要被处理的事件
      */
     public void post(@NonNull int code,@NonNull Object obj) {
         bus.onNext(new Msg(code, obj));
@@ -113,20 +123,29 @@ public class RxBus {
     }
 
     /**
+     * 判断是否需要订阅，如果需要订阅那么自动控制生命周期
+     */
+    public void init(@NonNull Object object){
+        Flowable.just(object)
+                .map(o -> o.getClass().getAnnotation(UseRxBus.class))
+                .filter(a -> a!=null)
+                .subscribe(u -> {
+                    addTag4Class(object.getClass());
+                    register(object);
+                },e -> e.getMessage());
+    }
+
+    /**
      * 订阅者注册
      * @param subscriber
      */
     public void register(@NonNull Object subscriber) {
-        Flowable.just(subscriber)
-                .filter(s -> s != null)//判断订阅者不为空
-                .filter(s -> subscriptions.get(subscriber)==null) //判断订阅者没有在序列中
-                .map(s -> s.getClass())
-                .flatMap(s -> Flowable.fromArray(s.getDeclaredMethods()))//获取订阅者方法并且用Observable装载
-                .map(m -> {m.setAccessible(true);return m;})//使非public方法可以被invoke,并且关闭安全检查提升反射效率
-                .filter(m -> m.isAnnotationPresent(Subscribe.class))//方法必须被Subscribe注解
-                .subscribe(m -> {
-                    addSubscription(m,subscriber);
-                });
+            Flowable.just(subscriber)
+                    .filter(s -> subscriptions.get(subscriber)==null) //判断订阅者没有在序列中
+                    .flatMap(s -> Flowable.fromArray(s.getClass().getDeclaredMethods()))
+                    .map(m -> {m.setAccessible(true);return m;})
+                    .filter(m -> m.isAnnotationPresent(Subscribe.class))
+                    .subscribe(m -> addSubscription(m,subscriber));
     }
 
     /**
@@ -145,7 +164,7 @@ public class RxBus {
         //获取注解
         Subscribe sub = m.getAnnotation(Subscribe.class);
         //订阅事件
-        Disposable disposable = tObservable(sub.tag(), cla)
+        Disposable disposable = tObservable(getTag(subscriber.getClass(),sub.tag()), cla)
                 .observeOn(EventThread.getScheduler(sub.thread()))
                 .subscribe(o -> {
                             try {
@@ -172,6 +191,27 @@ public class RxBus {
         }
         subs.add(disposable);
         subscriptions.put(subscriber, subs);
+    }
+
+    /**
+     * 添加序列
+     * 根据object 生成唯一id
+     */
+    private Integer tag=-1000;
+    private void addTag4Class(Class cla){
+        tag4Class.put(cla,tag);
+        tag--;
+    }
+
+    /**
+     * tag值使用RxBus.getInstance().getTag(class,value)获取
+     * 使用getTag主要用于后期维护方便，可以及时找到发布事件的对应处理。
+     * @param cla 为Rxbus事件处理的类
+     * @param value 是事件处理的tag
+     * @return tag
+     */
+    public int getTag(Class cla,int value){
+        return tag4Class.get(cla).intValue()+value;
     }
 
     /**
