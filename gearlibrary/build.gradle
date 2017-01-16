@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 17
-        versionName "1.4.2"
+        versionCode 18
+        versionName "1.5.0"
     }
 
     buildTypes {
@@ -63,4 +63,4 @@ dependencies {
 
     compile 'com.android.support:recyclerview-v7:23.1.1'
 }
-//apply from: 'bintray.gradle'
+apply from: 'bintray.gradle'
