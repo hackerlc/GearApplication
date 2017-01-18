@@ -45,7 +45,7 @@ public class DataBindingActivity extends BaseActivity {
         user.setUsername("Joker");
         user.setPassword("120.00");
         binding.setUser(user);
-        APIServiceManager.getInstance()
+        APIServiceManager
                 .getApiService()
                 .getUser()
                 .compose(RxSchedulersHelper.io_main())
@@ -56,7 +56,7 @@ public class DataBindingActivity extends BaseActivity {
                     handler.sendMessage(msg);
                 });
 
-        APIServiceManager.getInstance()
+        APIServiceManager
                 .getTravelNotesAPI()
                 .getTravelNotesList("", "1")
                 .compose(RxSchedulersHelper.io_main())

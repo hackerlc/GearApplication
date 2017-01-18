@@ -62,7 +62,7 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     int lastVisibleItem;
     boolean isMore=false;
 
-    boolean isNote=true;
+    boolean isNote=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,7 +125,11 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
         mBinding.rvBooks.setAdapter(mNotesAdapter);
         mNotesAdapter.setOnItemClickListener(this);
         mBinding.rvBooks.setOnScrollListener(rScrollListener);
-        presenter.loadData(query, page);
+        if(isNote) {
+            presenter.loadData(query, page);
+        }else{
+            presenter.loadData(query, page,10);
+        }
 
     }
 
@@ -143,7 +147,8 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     }
 
     @Subscribe(tag = RxBus.TAG_UPDATE)
-    private void dataBinding(ArrayList<TravelNoteBook.Books> bookies) {
+    public void dataBinding(TravelNoteBook data) {
+        ArrayList<TravelNoteBook.Books> bookies =data.getBookses();
         if (page == 1) {
             mNotesAdapter.setData(bookies);
         } else {
@@ -159,13 +164,17 @@ public class TravelNotesActivity extends BaseActivity implements TravelNotesCont
     }
 
     @Subscribe(tag = RxBus.TAG_ERROR)
-    private void dataError(String error) {
-        ToastUtil.getInstance().makeShortToast(this, error);
+    public void dataError(Throwable error) {
+        ToastUtil.getInstance().makeShortToast(this, error.getMessage());
     }
 
+    /**
+     * 百度去哪API下架，所以不提供换源功能，并且api默认为面包
+     * @param isNote
+     */
     @Subscribe(tag = RxBus.TAG_CHANGE)
     private void setNote(boolean isNote){
-        this.isNote=isNote;
+//        this.isNote=isNote;
     }
 
 

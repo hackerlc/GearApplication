@@ -11,7 +11,8 @@ import retrofit2.http.Path;
  * GearApplication
  * Created by YichenZ on 2016/4/13 14:37.
  */
-public interface APIService {
+@com.gear.apifinder.annotation.APIService
+public interface ApiService {
     @GET("src/app/{path}")
     Flowable<ResponseJson<User>> getUser(@Path("path") String path);
 

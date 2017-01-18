@@ -35,6 +35,11 @@ public class SearchBooksActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void initUI() {
         super.initUI();
         setContentView(R.layout.activity_search_books);

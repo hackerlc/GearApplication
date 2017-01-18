@@ -2,8 +2,8 @@ package gear.yc.com.gearapplication.base;
 
 import gear.yc.com.gearapplication.config.APIConfig;
 import gear.yc.com.gearapplication.manager.CommonManager;
+import gear.yc.com.gearapplication.network.HttpServiceManager;
 import gear.yc.com.gearlibrary.GearApplication;
-import gear.yc.com.gearlibrary.network.api.GearHttpServiceManager;
 import gear.yc.com.gearlibrary.network.http.OkHttpManager;
 
 /**
@@ -18,7 +18,7 @@ public class BaseApplication extends GearApplication{
     }
 
     public void init(){
-        GearHttpServiceManager.getInstance()
+        HttpServiceManager.getInstance()
                 .setBaseUrl(APIConfig.BASE_URL)
                 .build(
                         OkHttpManager.getInstance()
