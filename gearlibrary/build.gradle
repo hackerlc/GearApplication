@@ -46,21 +46,16 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.squareup.okio:okio:1.9.0'
-
     compile 'com.google.code.gson:gson:2.7'
-
     compile 'io.reactivex.rxjava2:rxjava:2.0.2'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
     compile 'com.android.support:appcompat-v7:23.3.0'
-
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0-RC3'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile project(':gearapifinder-annotation')
 }
 apply from: 'bintray.gradle'

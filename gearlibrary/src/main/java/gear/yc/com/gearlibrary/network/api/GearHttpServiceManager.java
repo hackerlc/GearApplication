@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by YichenZ on 2016/4/13 14:41.
  */
 public class GearHttpServiceManager {
-    private static GearHttpServiceManager instance;
+    protected static GearHttpServiceManager instance;
 
     public static GearHttpServiceManager getInstance(){
         if(instance==null){
@@ -24,9 +24,9 @@ public class GearHttpServiceManager {
         return instance;
     }
 
-    private static String sBaseUrl;
+    protected static String sBaseUrl;
 
-    Retrofit retrofit;
+    protected Retrofit retrofit;
 
     public GearHttpServiceManager(){
     }
