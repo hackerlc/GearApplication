@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GearApplication.iml" filepath="$PROJECT_DIR$/GearApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gearapifinder-annotation/gearapifinder-annotation.iml" filepath="$PROJECT_DIR$/gearapifinder-annotation/gearapifinder-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gearapifinder-compiler/gearapifinder-compiler.iml" filepath="$PROJECT_DIR$/gearapifinder-compiler/gearapifinder-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/gearlibrary/gearlibrary.iml" filepath="$PROJECT_DIR$/gearlibrary/gearlibrary.iml" />
     </modules>
   </component>
