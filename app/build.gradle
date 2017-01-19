@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
 
 repositories{
 
@@ -83,10 +82,10 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    apt 'com.google.guava:guava:19.0'
+    annotationProcessor 'com.google.guava:guava:19.0'
     compile 'com.google.dagger:dagger:2.4'
-    apt 'com.google.dagger:dagger-compiler:2.4'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.4'
     provided 'javax.annotation:jsr250-api:1.0'
     testCompile 'junit:junit:4.12'
-    apt project(':gearapifinder-compiler')
+    annotationProcessor project(':gearapifinder-compiler')
 }

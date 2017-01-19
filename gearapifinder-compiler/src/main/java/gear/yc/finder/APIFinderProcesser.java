@@ -12,6 +12,7 @@ import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -29,10 +30,15 @@ import javax.lang.model.util.Elements;
 
 @AutoService(Processor.class)
 public class APIFinderProcesser extends AbstractProcessor {
-
+    final String CLASS_NAME="APIServiceManager";
     private Filer mFiler;//文件相关
     private Elements mElementUtils;//元素相关
     private Messager mMessager;//日志相关
+    private boolean isGenerate=true;
+    List<Element> mServiceElements=new ArrayList<>();
+    List<Element> mManagerElements =new ArrayList<>();
+
+
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -62,17 +68,20 @@ public class APIFinderProcesser extends AbstractProcessor {
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
     }
-    final String CLASS_NAME="APIServiceManager";
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        if(!isGenerate){
+            return isGenerate;
+        }
         //have a @APIService annotation
         processOnAPIService(roundEnv);
         processOnManager(roundEnv);
 
         //Field list
-        ArrayList<FieldSpec> fieldSpecs =new ArrayList<>();
+        List<FieldSpec> fieldSpecs =new ArrayList<>();
         //Method list
-        ArrayList<MethodSpec> methodSpecs =new ArrayList<>();
+        List<MethodSpec> methodSpecs =new ArrayList<>();
         for (int i=0;i<mServiceElements.size();i++) {
             Element element =mServiceElements.get(i);
             TypeName typeName =TypeName.get(element.asType());
@@ -101,8 +110,9 @@ public class APIFinderProcesser extends AbstractProcessor {
                 .addFields(fieldSpecs)
                 .build();
         //Construct java
+        String packageName=mElementUtils.getPackageOf(mManagerElements.get(0)).getQualifiedName().toString();
         JavaFile javaFile =JavaFile
-                .builder("gear.yc.com.gearapplication.network",typeClass)
+                .builder(packageName,typeClass)
                 .build();
         try {
             javaFile.writeTo(mFiler);
@@ -113,25 +123,23 @@ public class APIFinderProcesser extends AbstractProcessor {
         return false;
     }
 
-    ArrayList<Element> mServiceElements=new ArrayList<>();
     private void processOnAPIService(RoundEnvironment environment){
         for (Element element : environment.getElementsAnnotatedWith(APIService.class)) {
             mServiceElements.add(element);
         }
         if(mServiceElements.size()==0){
-            //TODO:new error APIService annotation is not null
+            isGenerate=false;
         }
     }
-    ArrayList<Element> mManagerElements =new ArrayList<>();
     private void processOnManager(RoundEnvironment environment){
         for (Element element:environment.getElementsAnnotatedWith(APIManager.class)){
             mManagerElements.add(element);
         }
         if(mManagerElements.size()==0){
-            //TODO:new error APIManager annotation is null
+            isGenerate=false;
         }
         if(mManagerElements.size()>=2){
-            //TODO:new error only one APIManager annotation
+            isGenerate=false;
         }
     }
 
