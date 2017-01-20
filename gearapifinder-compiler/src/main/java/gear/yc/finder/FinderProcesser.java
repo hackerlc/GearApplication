@@ -6,11 +6,11 @@ import com.google.auto.service.AutoService;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,23 +22,31 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
+import gear.yc.finder.anno.handler.APIManagerHandler;
+import gear.yc.finder.anno.handler.APIServiceHandler;
+import gear.yc.finder.model.APIManagerElementModel;
+import gear.yc.finder.model.ServiceElementModel;
+import gear.yc.finder.utils.MtdMark;
+import gear.yc.finder.utils.StrHandling;
+
 
 @AutoService(Processor.class)
-public class APIFinderProcesser extends AbstractProcessor {
-    final String CLASS_NAME="APIServiceManager";
+public class FinderProcesser extends AbstractProcessor {
     private Filer mFiler;//文件相关
     private Elements mElementUtils;//元素相关
     private Messager mMessager;//日志相关
+
     private boolean isGenerate=true;
-    List<Element> mServiceElements=new ArrayList<>();
-    List<Element> mManagerElements =new ArrayList<>();
 
+    APIManagerHandler apiHandler;
+    APIServiceHandler apiSrvHandler;
 
+    List<ServiceElementModel> mServiceElements=new ArrayList<>();
+    APIManagerElementModel apiModel;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -46,6 +54,8 @@ public class APIFinderProcesser extends AbstractProcessor {
         mFiler=processingEnv.getFiler();
         mElementUtils=processingEnv.getElementUtils();
         mMessager=processingEnv.getMessager();
+        apiHandler=new APIManagerHandler();
+        apiSrvHandler=new APIServiceHandler();
     }
 
     /**
@@ -57,7 +67,7 @@ public class APIFinderProcesser extends AbstractProcessor {
         Set<String> types=new LinkedHashSet<>();
         types.add(APIManager.class.getCanonicalName());
         types.add(APIService.class.getCanonicalName());
-        return types;
+        return Collections.unmodifiableSet(types);
     }
 
     /**
@@ -71,48 +81,46 @@ public class APIFinderProcesser extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        isGenerate=apiHandler.processorOnAnnotation(roundEnv);
+        isGenerate=apiSrvHandler.processorOnAnnotation(roundEnv);
+
         if(!isGenerate){
             return isGenerate;
         }
-        //have a @APIService annotation
-        processOnAPIService(roundEnv);
-        processOnManager(roundEnv);
+
+        mServiceElements=apiSrvHandler.getEleModel();
+        apiModel=apiHandler.getEleModel();
 
         //Field list
         List<FieldSpec> fieldSpecs =new ArrayList<>();
         //Method list
-        List<MethodSpec> methodSpecs =new ArrayList<>();
-        for (int i=0;i<mServiceElements.size();i++) {
-            Element element =mServiceElements.get(i);
-            TypeName typeName =TypeName.get(element.asType());
-            String fieldName=firstUpperToLetter(element.getSimpleName().toString());
-            FieldSpec fieldSpec = FieldSpec.builder(typeName,fieldName)
+        List<MethodSpec> mtdSpecs =new ArrayList<>();
+
+        for (ServiceElementModel sModel : mServiceElements) {
+            FieldSpec fieldSpec = FieldSpec.builder(sModel.getTypeName(),sModel.getFieldName4Letter())
                     .addModifiers(Modifier.PRIVATE,Modifier.STATIC)
                     .build();
             fieldSpecs.add(fieldSpec);
 
-            TypeName typename4Manager=TypeName.get(mManagerElements.get(0).asType());
             //Construct Method
-            MethodSpec methodSpec = MethodSpec.methodBuilder("get"+element.getSimpleName().toString())
+            MethodSpec mtdSpec = MethodSpec.methodBuilder(StrHandling.getMtdStr(MtdMark.GET,sModel.getFieldName()))
                     .addModifiers(Modifier.PUBLIC,Modifier.STATIC)
-                    .returns(typeName)
-                    .addStatement("return "+fieldName+"==null ?\n" +
-                            "        $T.getInstance().getRetrofit().create($T.class)\n" +
-                            "        :"+fieldName,typename4Manager,typeName)
+                    .returns(sModel.getTypeName())
+                    .addStatement(StrHandling
+                            .getReturnStr(sModel.getFieldName4Letter(),apiModel.getAnnotation())
+                            ,apiModel.getTypeName(),sModel.getTypeName())
                     .build();
-            methodSpecs.add(methodSpec);
+            mtdSpecs.add(mtdSpec);
         }
-
         //Construct Class
-        TypeSpec typeClass = TypeSpec.classBuilder(CLASS_NAME)
+        TypeSpec typeClass = TypeSpec.classBuilder(apiModel.getClassName())
                 .addModifiers(Modifier.PUBLIC)
-                .addMethods(methodSpecs)//添加方法
+                .addMethods(mtdSpecs)//添加方法
                 .addFields(fieldSpecs)
                 .build();
         //Construct java
-        String packageName=mElementUtils.getPackageOf(mManagerElements.get(0)).getQualifiedName().toString();
         JavaFile javaFile =JavaFile
-                .builder(packageName,typeClass)
+                .builder(apiModel.getPackageName(mElementUtils),typeClass)
                 .build();
         try {
             javaFile.writeTo(mFiler);
@@ -123,29 +131,4 @@ public class APIFinderProcesser extends AbstractProcessor {
         return false;
     }
 
-    private void processOnAPIService(RoundEnvironment environment){
-        for (Element element : environment.getElementsAnnotatedWith(APIService.class)) {
-            mServiceElements.add(element);
-        }
-        if(mServiceElements.size()==0){
-            isGenerate=false;
-        }
-    }
-    private void processOnManager(RoundEnvironment environment){
-        for (Element element:environment.getElementsAnnotatedWith(APIManager.class)){
-            mManagerElements.add(element);
-        }
-        if(mManagerElements.size()==0){
-            isGenerate=false;
-        }
-        if(mManagerElements.size()>=2){
-            isGenerate=false;
-        }
-    }
-
-    public static String firstUpperToLetter(String str){
-        char[] array = str.toCharArray();
-        array[0] += 32;
-        return String.valueOf(array);
-    }
 }

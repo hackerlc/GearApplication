@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * GearApplication
  * Created by YichenZ on 2017/1/17 10:29.
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface APIService {
 }
