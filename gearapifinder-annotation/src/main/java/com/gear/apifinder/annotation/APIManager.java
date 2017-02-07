@@ -7,6 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * GearApplication
+ * 需要标识在你应用中返回唯一的Retrofit引用类上，只能标识在主app模块中
+ * 不能在Library上标识，annotation会无法识别
+ * 如果不对任何类做标识那么程序将不会生成Retrofit API管理类
  * Created by YichenZ on 2017/1/17 10:31.
  */
 @Retention(RetentionPolicy.SOURCE)

@@ -59,11 +59,11 @@ public class RxBus {
         return instance;
     }
     //TAG默认值
-    protected static final int TAG_DEFAULT = -1000;
-    protected static final int TAG_UPDATE = -1010;
-    protected static final int TAG_CHANGE = -1020;
-    protected static final int TAG_OTHER = -1030;
-    protected static final int TAG_ERROR = -1090;
+    public static final int TAG_DEFAULT = -1000;
+    public static final int TAG_UPDATE = -1010;
+    public static final int TAG_CHANGE = -1020;
+    public static final int TAG_OTHER = -1030;
+    public static final int TAG_ERROR = -1090;
     //TAG-class
     protected static Map<Class,Integer> tag4Class=new HashMap<>();
     //发布者
