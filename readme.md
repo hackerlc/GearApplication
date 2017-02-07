@@ -4,7 +4,7 @@
 主要模块使用MVP+MVVM的方式构建，按照功能分包
 
 可直接导入项目并运行
-### [https://github.com/hackerlc/GearApplication/tree/master/gearlibrary](gearlibrary 主项目基础架构程序)
+### [gearlibrary 主项目基础架构程序](https://github.com/hackerlc/GearApplication/tree/master/gearlibrary)
 集成OkHttp3(OkHttp) + Retrofit2 + Rxjava2(RxAndroid2) +Rxbus
 事件总线由rxbus负责
 Retrofit2，Fresco 网络访问由OkHttp3负责
