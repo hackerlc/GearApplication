@@ -4,12 +4,15 @@
 主要模块使用MVP+MVVM的方式构建，按照功能分包
 
 可直接导入项目并运行
-### [Gearlibrary 主项目基础架构程序](https://github.com/hackerlc/GearApplication/tree/master/gearlibrary)
+### [Gearlibrary 主项目基础架构框架](https://github.com/hackerlc/GearApplication/tree/master/gearlibrary)
 集成OkHttp3(OkHttp) + Retrofit2 + Rxjava2(RxAndroid2) +Rxbus
 事件总线由rxbus负责
 Retrofit2，Fresco 网络访问由OkHttp3负责
 
 简书：http://www.jianshu.com/users/02266b406caa/latest_articles
+
+### [GearApifinder-compiler 自动生成相关类框架](https://github.com/hackerlc/GearApplication/tree/master/gearapifinder-compiler)
+### [GearApifinder-annotation 自动生成类框架annotation](https://github.com/hackerlc/GearApplication/tree/master/gearapifinder-annotation)
 #### GearApplication 引用
 ````
     compile fileTree(include: ['*.jar'], dir: 'libs')
