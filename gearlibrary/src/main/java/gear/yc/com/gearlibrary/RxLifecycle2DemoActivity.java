@@ -1,14 +1,14 @@
 package gear.yc.com.gearlibrary;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * 演示类，如果你使用了rxlifecycle2那么就可以复制类的信息到你的BaseActivity中
  * Created by YichenZ on 2016/3/23 11:26.
  */
-public class RxLifecycle2DemoActivity extends AppCompatActivity{
+public class RxLifecycle2DemoActivity extends Activity{
 //
 //    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 //

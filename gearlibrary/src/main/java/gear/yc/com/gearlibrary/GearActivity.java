@@ -1,12 +1,12 @@
 package gear.yc.com.gearlibrary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,7 +18,7 @@ import gear.yc.com.gearlibrary.manager.ActivityManager;
  * 删除了自带的rx生命周期管理
  * Created by YichenZ on 2016/3/23 11:23.
  */
-public class GearActivity extends AppCompatActivity implements View.OnClickListener {
+public class GearActivity extends Activity implements View.OnClickListener {
     //Activity跳转时默认的跳转参数
     protected static final String J_FLAG = "FLAG";
     protected static final String J_FLAG2 = "FLAG2";
