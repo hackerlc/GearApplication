@@ -63,7 +63,7 @@ public class FinderProcesser extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         boolean isGenerate=mAPIManagerWrite.getInstance().init(mElementUtils,roundEnv);
 
-        if(isGenerate){
+        if(!isGenerate){
             return false;
         }
 

@@ -16,13 +16,13 @@ import android.view.View;
 public class GearRecyclerItemDecoration extends RecyclerView.ItemDecoration{
 
     // use android divider
-    private static final int[] ARRTS =new int[]{
+    protected static final int[] ARRTS =new int[]{
             android.R.attr.listDivider
     };
     //h or  v line
-    private int mOrientation;
+    protected int mOrientation;
 
-    private Drawable mDivider;
+    protected Drawable mDivider;
 
     public GearRecyclerItemDecoration(Context context,int orientation){
         final TypedArray a =context.obtainStyledAttributes(ARRTS);

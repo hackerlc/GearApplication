@@ -18,13 +18,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * 创建
  */
 public class OkHttpManager {
-
-    private static Object obj = new Object();
-    private static OkHttpManager instance;
+    protected static OkHttpManager instance;
 
     public static OkHttpManager getInstance() {
         if (instance == null) {
-            synchronized (obj) {
+            synchronized (OkHttpManager.class) {
                 if (instance == null) {
                     instance = new OkHttpManager();
                 }
@@ -33,11 +31,11 @@ public class OkHttpManager {
         return instance;
     }
 
-    private static OkHttpClient okHttpClient;
+    protected static OkHttpClient okHttpClient;
 
-    private int mTimeOut=15;
-    private String headerKey,headerValue;
-    private boolean isLog=true;
+    protected int mTimeOut=15;
+    protected String headerKey,headerValue;
+    protected boolean isLog=true;
 
     public OkHttpManager() {
     }

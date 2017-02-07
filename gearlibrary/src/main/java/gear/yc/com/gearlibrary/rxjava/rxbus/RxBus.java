@@ -46,7 +46,7 @@ import io.reactivex.subjects.Subject;
  * Created by Android on 2016/6/6.
  */
 public class RxBus {
-    private static RxBus instance;
+    protected static RxBus instance;
 
     public static RxBus getInstance() {
         if (instance == null) {
@@ -59,18 +59,18 @@ public class RxBus {
         return instance;
     }
     //TAG默认值
-    public static final int TAG_DEFAULT = -1000;
-    public static final int TAG_UPDATE = -1010;
-    public static final int TAG_CHANGE = -1020;
-    public static final int TAG_OTHER = -1030;
-    public static final int TAG_ERROR = -1090;
+    protected static final int TAG_DEFAULT = -1000;
+    protected static final int TAG_UPDATE = -1010;
+    protected static final int TAG_CHANGE = -1020;
+    protected static final int TAG_OTHER = -1030;
+    protected static final int TAG_ERROR = -1090;
     //TAG-class
-    private static Map<Class,Integer> tag4Class=new HashMap<>();
+    protected static Map<Class,Integer> tag4Class=new HashMap<>();
     //发布者
-    private final Subject bus;
+    protected final Subject bus;
 
     //存放订阅者信息
-    private Map<Object, CompositeDisposable> subscriptions = new HashMap<>();
+    protected Map<Object, CompositeDisposable> subscriptions = new HashMap<>();
 
     /**
      * PublishSubject 创建一个可以在订阅之后把数据传输给订阅者Subject
@@ -153,7 +153,7 @@ public class RxBus {
      * @param m 方法
      * @param subscriber 订阅者
      */
-    private void addSubscription(Method m,Object subscriber){
+    protected void addSubscription(Method m,Object subscriber){
         //获取方法内参数
         Class[] parameterType = m.getParameterTypes();
         //只获取第一个方法参数，否则默认为Object
@@ -184,7 +184,7 @@ public class RxBus {
      * @param subscriber 订阅者
      * @param disposable 订阅者 Subscription
      */
-    private void putSubscriptionsData(Object subscriber,Disposable disposable){
+    protected void putSubscriptionsData(Object subscriber,Disposable disposable){
         CompositeDisposable subs = subscriptions.get(subscriber);
         if (subs == null) {
             subs = new CompositeDisposable();
@@ -197,8 +197,8 @@ public class RxBus {
      * 添加序列
      * 根据object 生成唯一id
      */
-    private Integer tag=-1000;
-    private void addTag4Class(Class cla){
+    protected Integer tag=-1000;
+    protected void addTag4Class(Class cla){
         tag4Class.put(cla,tag);
         tag--;
     }

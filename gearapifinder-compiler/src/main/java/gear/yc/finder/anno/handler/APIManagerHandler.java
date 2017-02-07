@@ -17,6 +17,9 @@ public class APIManagerHandler extends AbstractAnnotationHandler<APIManagerEleme
     @Override
     public boolean processorOnAnnotation(RoundEnvironment environment) {
         for (Element element:environment.getElementsAnnotatedWith(APIManager.class)){
+            if(element==null){
+                return false;
+            }
             mEleModel=new APIManagerElementModel(element);
         }
         if(mEleModel==null){

@@ -23,9 +23,9 @@ import okhttp3.Response;
  * Created by YichenZ on 2016/4/15 11:30.
  */
 public class HttpInfo {
-    private final String MEDIA_TYPE_JSON="application/json";
+    protected final String MEDIA_TYPE_JSON="application/json";
 
-    private static HttpInfo instance;
+    protected static HttpInfo instance;
 
     public static HttpInfo getInstance(){
         if(instance==null){
@@ -38,15 +38,15 @@ public class HttpInfo {
         return instance;
     }
 
-    private OkHttpClient okHttpClient;
+    protected OkHttpClient okHttpClient;
 
     //连接池大小
-    private static final int DEFAULT_FIXED_THREAD = 2;
+    protected static final int DEFAULT_FIXED_THREAD = 2;
     //线程连接池
-    private ExecutorService executorService;
+    protected ExecutorService executorService;
     //Gson解析类型
-    private  Class<?> tClass;
-    private Gson gson;
+    protected  Class<?> tClass;
+    protected Gson gson;
 
     public HttpInfo(){
         okHttpClient=OkHttpManager.getInstance().getClient();

@@ -29,7 +29,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * GearApplication
- * 欢饮页面并在页面中显示一个时钟，时钟计时为Rx方式
+ * 欢迎页面并在页面中显示一个时钟，时钟计时为Rx方式
  * Created by YichenZ on 2016/3/23 11:14.
  */
 public class WelcomeActivity extends BaseActivity {

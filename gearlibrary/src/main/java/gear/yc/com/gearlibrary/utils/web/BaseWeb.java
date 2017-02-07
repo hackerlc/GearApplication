@@ -11,8 +11,8 @@ import java.io.File;
  * Created by YichenZ on 2015/10/26 15:50.
  */
 public class BaseWeb {
-    private static final String APP_CACAHE_DIRNAME = "/webcache";
-    private WebSettings settings;
+    protected static final String APP_CACAHE_DIRNAME = "/webcache";
+    protected WebSettings settings;
 
     public WebSettings getSettings() {
         return settings;

@@ -41,7 +41,7 @@ public class APIManagerWrite {
     }
 
     private Elements mElementUtils;//元素相关
-    private boolean isGenerate=true;
+    private boolean isGenerate=false;
 
     APIManagerHandler apiHandler;
     APIServiceHandler apiSrvHandler;
@@ -64,8 +64,10 @@ public class APIManagerWrite {
     public boolean init(Elements elementUtils,RoundEnvironment roundEnv){
         mElementUtils=elementUtils;
         isGenerate=apiHandler.processorOnAnnotation(roundEnv);
+        if(!isGenerate){
+            return isGenerate;
+        }
         isGenerate=apiSrvHandler.processorOnAnnotation(roundEnv);
-
         if(!isGenerate){
             return isGenerate;
         }

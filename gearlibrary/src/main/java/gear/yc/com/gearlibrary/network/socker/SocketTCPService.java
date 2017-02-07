@@ -19,17 +19,17 @@ import java.net.Socket;
  */
 public class SocketTCPService implements Runnable{
     //tcp server info
-    private Socket socket = null;
-    private String ip="";
-    private int port=0;
+    protected Socket socket = null;
+    protected String ip="";
+    protected int port=0;
 
-    private BufferedReader in = null;
-    private PrintWriter out = null;
-    private DataOutputStream outputStream;
-    private String content = "";
-    private String text="";
-    private SocketTcpContextListener mSocketLis;
-    private char[] cbuf=new char[1024];
+    protected BufferedReader in = null;
+    protected PrintWriter out = null;
+    protected DataOutputStream outputStream;
+    protected String content = "";
+    protected String text="";
+    protected SocketTcpContextListener mSocketLis;
+    protected char[] cbuf=new char[1024];
 
     public SocketTCPService(String ip, int port){
         this.ip=ip;
