@@ -20,14 +20,12 @@
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:transitionName="@string/tra_name_list_img"
-        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="6dp"
         card_view:cardElevation="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/sdv_books_img"

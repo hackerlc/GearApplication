@@ -52,7 +52,7 @@ public class TravelNotesAdapter extends GearRecyclerViewAdapter<TravelNoteBook.B
         Glide.with(mContext)
                 .load(data.getImgUrl())
                 .thumbnail(0.1f)
-                .placeholder(R.drawable.bg_img)
+                .placeholder(android.R.color.transparent)
                 .crossFade()
                 .into(holder.binding.sdvBooksImg);
         holder.binding.getRoot().setTag(data);
