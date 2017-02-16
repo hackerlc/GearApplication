@@ -25,5 +25,5 @@
         app:btmStartNum="30"
         app:btmContentNum="40"
         app:btmEndNum="120"
-        app:buyNum="120"/>
+        app:buyNum="35"/>
 </LinearLayout>

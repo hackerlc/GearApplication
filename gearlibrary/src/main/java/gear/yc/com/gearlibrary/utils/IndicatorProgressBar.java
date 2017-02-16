@@ -131,6 +131,7 @@ public class IndicatorProgressBar extends ProgressBar {
     protected Paint topStartPaint;
     protected Paint topContentPaint;
     protected Paint topEndPaint;
+    protected Paint btmPaint;
 
 
     public IndicatorProgressBar(Context context) {
@@ -158,19 +159,12 @@ public class IndicatorProgressBar extends ProgressBar {
         topStartPaint.setTextSize(DEF_FONT_SIZE);
         topStartPaint.setFakeBoldText(true);
 
-        topContentPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        topContentPaint.setAntiAlias(true);
-        topContentPaint.setColor(DEF_FONT_COLOR);
-        topContentPaint.setTextAlign(Paint.Align.LEFT);
-        topContentPaint.setTextSize(DEF_FONT_SIZE);
-        topContentPaint.setFakeBoldText(true);
+        topContentPaint = new TextPaint(topStartPaint);
 
-        topEndPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        topEndPaint.setAntiAlias(true);
-        topEndPaint.setColor(DEF_FONT_COLOR);
-        topEndPaint.setTextAlign(Paint.Align.RIGHT);
-        topEndPaint.setTextSize(DEF_FONT_SIZE);
-        topEndPaint.setFakeBoldText(true);
+        topEndPaint = new TextPaint(topStartPaint);
+        topEndPaint.setTextAlign(Paint.Align.CENTER);
+
+        btmPaint = new TextPaint(topStartPaint);
     }
 
     /**
@@ -208,6 +202,8 @@ public class IndicatorProgressBar extends ProgressBar {
         buyNum = typedArray.getInteger(R.styleable.IndicatorProgressBar_buyNum,0);
         //设置笔触
         setPaintSizeAndColor();
+        btmPaint.setTextSize(btmTextSize);
+        btmPaint.setColor(btmTextColor);
 
         //根据高亮尺寸设置顶部高度
         Paint paint =new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -381,16 +377,26 @@ public class IndicatorProgressBar extends ProgressBar {
         canvas.translate(0, 0);
         // indicator start
         float baseline = topHeight / 2 + topStartPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent;
-        canvas.drawText(progressDrawable
-                .getBounds().height()+"", 0, baseline, topStartPaint);
+        canvas.drawText(topStartText, 0, baseline, topStartPaint);
         // indicator content
-        float width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 +dp2px(10) ;
-//        baseline = topHeight / 2 + topContentPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent;
+        float width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 +dp2px(10);
         canvas.drawText(topContentText, width, baseline, topContentPaint);
         // indicator end
-        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2) -dp2px(10);
-//        baseline = topHeight / 2 + topEndPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent ;
+        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2);
         canvas.drawText(topEndText, width, baseline, topEndPaint);
+
+        //绘制下方
+        canvas.translate(0 , topHeight + defHeight);
+        //1
+        canvas.drawText(btmStartNum+btmUnitText+btmStartText, 0, baseline,btmPaint);
+        //2
+        width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 +dp2px(10) ;
+        canvas.drawText(btmContentNum+btmUnitText, width, baseline,btmPaint);
+//        //3
+        TextPaint paint =new TextPaint(btmPaint);
+        paint.setTextAlign(Paint.Align.CENTER);
+        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2);
+        canvas.drawText(btmEndNum+btmUnitText, width, baseline,paint);
     }
 
     private int measureHeight(int measureSpec) {
