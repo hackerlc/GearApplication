@@ -44,4 +44,9 @@
         <item name="android:scaleType">centerInside</item>
         <item name="android:visibility">invisible</item>
     </style>
+
+    <style name="WidgetProgressBarHorizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
+    </style>
 </resources>

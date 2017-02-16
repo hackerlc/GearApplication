@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.text.TextPaint;
@@ -18,7 +19,7 @@ import gear.yc.com.gearlibrary.R;
  * SJQ_ECSHOP_MJ_NEW
  *
  * xml中使用方式
- * <com.ecjia.widgets.IndicatorProgressBar
+ * <IndicatorProgressBar
      style="@style/SnatchWholesaleProgressBar"
      android:layout_width="match_parent"
      android:layout_height="10dp"
@@ -62,6 +63,7 @@ public class IndicatorProgressBar extends ProgressBar {
     protected int topHeight;
     //btm indicator height
     protected int btmHeight;
+    protected int defHeight;
 
     /**
      * 变量
@@ -215,7 +217,7 @@ public class IndicatorProgressBar extends ProgressBar {
         paint.setTextSize(topLightTextSize);
         paint.setFakeBoldText(true);
         topHeight = (int)(paint.getTextSize() + paint.getFontMetrics().bottom);
-
+        //设置底部高度
         paint.setAntiAlias(true);
         paint.setColor(btmTextColor);
         paint.setTextAlign(Paint.Align.LEFT);
@@ -230,7 +232,7 @@ public class IndicatorProgressBar extends ProgressBar {
      * 根据不同的数量设置笔触颜色尺寸
      */
     private void setPaintSizeAndColor() {
-        if(buyNum >=btmEndNum){//全部高亮
+        if(buyNum >=btmEndNum){//全部高亮 80>=120
             topStartPaint.setTextSize(topLightTextSize);
             topStartPaint.setColor(topLightTextColor);
 
@@ -239,7 +241,7 @@ public class IndicatorProgressBar extends ProgressBar {
 
             topEndPaint.setTextSize(topLightTextSize);
             topEndPaint.setColor(topLightTextColor);
-        }else if(buyNum >= btmContentNum){//中间开始高亮
+        }else if(buyNum >= btmContentNum){//中间开始高亮 80>=40
             topStartPaint.setTextSize(topLightTextSize);
             topStartPaint.setColor(topLightTextColor);
 
@@ -257,7 +259,7 @@ public class IndicatorProgressBar extends ProgressBar {
 
             topEndPaint.setTextSize(topTextSize);
             topEndPaint.setColor(topTextColor);
-        }else{
+        }else if(buyNum < btmStartNum){
             topStartPaint.setTextSize(topTextSize);
             topStartPaint.setColor(topTextColor);
 
@@ -278,6 +280,7 @@ public class IndicatorProgressBar extends ProgressBar {
     @Override
     protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        defHeight=MeasureSpec.getSize(heightMeasureSpec);
         int width = measureWidth(widthMeasureSpec);
         int height = measureHeight(heightMeasureSpec);
 
@@ -305,9 +308,7 @@ public class IndicatorProgressBar extends ProgressBar {
                 // a lot of cpu cycles. It turns out the issue was linked to
                 // calling
                 // getIntrinsicHeight which proved to be very cpu intensive.
-                d.getDrawable(i).getBounds().bottom = d.getDrawable(i)
-                        .getBounds().height()
-                        + btmHeight;
+                d.getDrawable(i).getBounds().bottom = topHeight + defHeight;
             }
         } else if (progressDrawable != null) {
             // It's not a layer drawable but we still need to adjust the
@@ -319,7 +320,7 @@ public class IndicatorProgressBar extends ProgressBar {
                     .getBounds().height() + btmHeight;
         }
 
-        updateProgressBar();
+//        updateProgressBar();
 
         super.onDraw(canvas);
         canvas.save();
@@ -337,16 +338,17 @@ public class IndicatorProgressBar extends ProgressBar {
             final float scale = getScale(getProgress());
 
             // get the progress bar and update it's size
-//            Drawable progressBar = d.findDrawableByLayerId(R.id.progress);
-//
-//            final int width = d.getBounds().right - d.getBounds().left;
-//
-//            if (progressBar != null) {
-//                Rect progressBarBounds = progressBar.getBounds();
-//                progressBarBounds.right = progressBarBounds.left
-//                        + (int) (width * scale + 0.5f);
-//                progressBar.setBounds(progressBarBounds);
-//            }
+            Drawable progressBar = d.findDrawableByLayerId(R.id.progress);
+
+            final int width = d.getBounds().right - d.getBounds().left;
+
+            if (progressBar != null) {
+                Rect progressBarBounds = progressBar.getBounds();
+                progressBarBounds.right = progressBarBounds.left
+                        + (int) (width * scale + 0.5f);
+                progressBar.setBounds(progressBarBounds);
+            }
+
         }
     }
 
@@ -379,15 +381,16 @@ public class IndicatorProgressBar extends ProgressBar {
         canvas.translate(0, 0);
         // indicator start
         float baseline = topHeight / 2 + topStartPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent;
-        canvas.drawText(topStartText, 0, baseline, topStartPaint);
+        canvas.drawText(progressDrawable
+                .getBounds().height()+"", 0, baseline, topStartPaint);
         // indicator content
-        float width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 ;
-        baseline = topHeight / 2 + topContentPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent;
-        canvas.drawText(topContentText, width, baseline, topStartPaint);
+        float width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 +dp2px(10) ;
+//        baseline = topHeight / 2 + topContentPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent;
+        canvas.drawText(topContentText, width, baseline, topContentPaint);
         // indicator end
-        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2) -50;
-        baseline = topHeight / 2 + topEndPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent ;
-        canvas.drawText(topEndText, width, baseline, topStartPaint);
+        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2) -dp2px(10);
+//        baseline = topHeight / 2 + topEndPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent ;
+        canvas.drawText(topEndText, width, baseline, topEndPaint);
     }
 
     private int measureHeight(int measureSpec) {

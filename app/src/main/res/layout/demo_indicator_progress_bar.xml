@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <gear.yc.com.gearlibrary.utils.IndicatorProgressBar
+        style="@style/WidgetProgressBarHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:progress="50"
+        app:topStartText="$100"
+        app:topContentText="$40"
+        app:topEndText="$30"
+        app:topLightTextSize="20sp"
+        app:topLightTextColor="#f82d7c"
+        app:topTextSize="16sp"
+        app:topTextColor="#666666"
+        app:btmTextColor="#666666"
+        app:btmTextSize="16sp"
+        app:btmStartText="起批"
+        app:btmUnitText="件"
+        app:btmStartNum="30"
+        app:btmContentNum="40"
+        app:btmEndNum="120"
+        app:buyNum="120"/>
+</LinearLayout>
