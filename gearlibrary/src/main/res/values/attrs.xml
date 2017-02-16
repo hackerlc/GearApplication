@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndicatorProgressBar">
+        <!--顶部提示器默认文字颜色，尺寸-->
+        <attr name="topTextColor" format="color"/>
+        <attr name="topTextSize" format="dimension"/>
+        <!--顶部提示器高亮文字颜色，尺寸-->
+        <attr name="topLightTextColor" format="color"/>
+        <attr name="topLightTextSize" format="dimension"/>
+        <!--顶部开始提示器-->
+        <attr name="topStartText" format="string"/>
+        <!--顶部中间提示器-->
+        <attr name="topContentText" format="string"/>
+        <!--顶部末尾提示器-->
+        <attr name="topEndText" format="string"/>
+        <!--底部提示器文字颜色，尺寸-->
+        <attr name="btmTextColor" format="color"/>
+        <attr name="btmTextSize" format="dimension"/>
+        <!--部提示器开始文字,会加到底部第一个提示器文字最后-->
+        <attr name="btmStartText" format="string"/>
+        <!--底部提示器单位-->
+        <attr name="btmUnitText" format="string"/>
+        <!--底部提示器开始数量-->
+        <attr name="btmStartNum" format="integer"/>
+        <!--底部提示器中间数量-->
+        <attr name="btmContentNum" format="integer"/>
+        <!--底部提示器结束数量-->
+        <attr name="btmEndNum" format="integer"/>
+        <!--当前数量-->
+        <attr name="buyNum" format="integer"/>
+
+    </declare-styleable>
+</resources>
