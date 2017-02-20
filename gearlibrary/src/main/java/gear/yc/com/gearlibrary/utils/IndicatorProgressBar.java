@@ -1,4 +1,4 @@
-package gear.yc.com.gearlibrary.utils;
+package com.ecjia.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -19,31 +19,34 @@ import gear.yc.com.gearlibrary.R;
  * SJQ_ECSHOP_MJ_NEW
  *
  * xml中使用方式
- * <IndicatorProgressBar
-     style="@style/SnatchWholesaleProgressBar"
-     android:layout_width="match_parent"
-     android:layout_height="10dp"
-     android:layout_alignParentLeft="true"
-     android:layout_marginLeft="12dp"
-     android:layout_marginRight="12dp"
-     android:layout_below="@id/v_line"
-     android:layout_toLeftOf="@id/btn_enter"
-     android:progress="50"
-     app:topStartText="$100"
-     app:topContentText="$50"
-     app:topEndText="$30"
-     app:topLightTextSize="20sp"
-     app:topLightTextColor="@color/main_color_f82d7c"
-     app:topTextSize="16sp"
-     app:topTextColor="@color/main_font_color_6"
-     app:btmTextColor="@color/main_font_color_6"
-     app:btmTextSize="16sp"
-     app:btmStartText="起批"
-     app:btmUnitText="件"
-     app:btmStartNum="20"
-     app:btmContentNum="40"
-     app:btmEndNum="120"
-     app:buyNum="120"/>
+ * <com.ecjia.widgets.IndicatorProgressBar
+ style="@style/TogetherWholesaleProgressBar"
+ android:layout_width="match_parent"
+ android:layout_height="6dp"
+ android:layout_alignParentLeft="true"
+ android:layout_marginLeft="12dp"
+ android:layout_marginRight="12dp"
+ android:layout_below="@id/v_line"
+ android:layout_toLeftOf="@id/btn_enter"
+ android:layout_marginTop="12dp"
+ android:progress="50"
+ app:topStartText="$100"
+ app:topContentText="$50"
+ app:topEndText="$30"
+ app:topLightTextSize="20sp"
+ app:topLightTextColor="@color/main_color_f82d7c"
+ app:topTextSize="16sp"
+ app:topTextColor="@color/main_font_color_6"
+ app:btmTextColor="@color/main_font_color_9"
+ app:btmTextSize="16sp"
+ app:btmStartText="起批"
+ app:btmUnitText="件"
+ app:btmStartNum="20"
+ app:btmContentNum="40"
+ app:btmEndNum="120"
+ app:buyNum="100"
+ app:pointColor="@color/main_font_color_e7e7e7"
+ app:pointLightColor="@color/main_color_db0f61"/>
  *
  * Created by YichenZ on 2017/2/16 09:27.
  */
@@ -123,6 +126,11 @@ public class IndicatorProgressBar extends ProgressBar {
      * 当前购买数量
      */
     protected int buyNum;
+    /**
+     * 圆点默认颜色和高亮颜色
+     */
+    protected int pointColor;
+    protected int pointLightColor;
 
     /**
      * 绘制
@@ -132,6 +140,10 @@ public class IndicatorProgressBar extends ProgressBar {
     protected Paint topContentPaint;
     protected Paint topEndPaint;
     protected Paint btmPaint;
+    //三个圆点的笔触
+    protected Paint contentStartPaint;
+    protected Paint contentPaint;
+    protected Paint contentEndPaint;
 
 
     public IndicatorProgressBar(Context context) {
@@ -146,6 +158,8 @@ public class IndicatorProgressBar extends ProgressBar {
         super(context, attrs, defStyleAttr);
         initPaint();
         obtainAttributes(attrs);
+
+        setProgress();
     }
 
     /**
@@ -153,7 +167,6 @@ public class IndicatorProgressBar extends ProgressBar {
      */
     private void initPaint() {
         topStartPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        topStartPaint.setAntiAlias(true);
         topStartPaint.setColor(DEF_FONT_COLOR);
         topStartPaint.setTextAlign(Paint.Align.LEFT);
         topStartPaint.setTextSize(DEF_FONT_SIZE);
@@ -165,6 +178,12 @@ public class IndicatorProgressBar extends ProgressBar {
         topEndPaint.setTextAlign(Paint.Align.CENTER);
 
         btmPaint = new TextPaint(topStartPaint);
+
+        contentStartPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        contentStartPaint.setAntiAlias(true);
+        contentStartPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        contentPaint=new Paint(contentStartPaint);
+        contentEndPaint=new Paint(contentStartPaint);
     }
 
     /**
@@ -186,6 +205,11 @@ public class IndicatorProgressBar extends ProgressBar {
         //获取高亮文字尺寸、颜色
         topLightTextSize = (int) typedArray.getDimension(R.styleable.IndicatorProgressBar_topLightTextSize,DEF_FONT_SIZE);
         topLightTextColor= typedArray.getColor(R.styleable.IndicatorProgressBar_topLightTextColor,DEF_FONT_COLOR);
+
+        //圆点默认颜色和高亮颜色
+        pointColor = typedArray.getColor(R.styleable.IndicatorProgressBar_pointColor,DEF_FONT_COLOR);
+        pointLightColor = typedArray.getColor(R.styleable.IndicatorProgressBar_pointLightColor,DEF_FONT_COLOR);
+
         //底部控件
         //文字颜色，尺寸
         btmTextColor =typedArray.getColor(R.styleable.IndicatorProgressBar_btmTextColor,DEF_FONT_COLOR);
@@ -219,7 +243,7 @@ public class IndicatorProgressBar extends ProgressBar {
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setTextSize(btmTextSize);
         paint.setFakeBoldText(true);
-        btmHeight = (int)(paint.getTextSize() + paint.getFontMetrics().bottom);
+        btmHeight = (int)(paint.getTextSize() + paint.getFontMetrics().bottom * 2);
         paint=null;
         typedArray.recycle();
     }
@@ -228,7 +252,7 @@ public class IndicatorProgressBar extends ProgressBar {
      * 根据不同的数量设置笔触颜色尺寸
      */
     private void setPaintSizeAndColor() {
-        if(buyNum >=btmEndNum){//全部高亮 80>=120
+        if(buyNum >=btmEndNum){//全部高亮
             topStartPaint.setTextSize(topLightTextSize);
             topStartPaint.setColor(topLightTextColor);
 
@@ -237,7 +261,11 @@ public class IndicatorProgressBar extends ProgressBar {
 
             topEndPaint.setTextSize(topLightTextSize);
             topEndPaint.setColor(topLightTextColor);
-        }else if(buyNum >= btmContentNum){//中间开始高亮 80>=40
+
+            contentStartPaint.setColor(pointLightColor);
+            contentPaint.setColor(pointLightColor);
+            contentEndPaint.setColor(pointLightColor);
+        }else if(buyNum >= btmContentNum){//中间开始高亮
             topStartPaint.setTextSize(topLightTextSize);
             topStartPaint.setColor(topLightTextColor);
 
@@ -246,6 +274,10 @@ public class IndicatorProgressBar extends ProgressBar {
 
             topEndPaint.setTextSize(topTextSize);
             topEndPaint.setColor(topTextColor);
+
+            contentStartPaint.setColor(pointLightColor);
+            contentPaint.setColor(pointLightColor);
+            contentEndPaint.setColor(pointColor);
         }else if(buyNum >= btmStartNum){//开始高亮
             topStartPaint.setTextSize(topLightTextSize);
             topStartPaint.setColor(topLightTextColor);
@@ -255,7 +287,11 @@ public class IndicatorProgressBar extends ProgressBar {
 
             topEndPaint.setTextSize(topTextSize);
             topEndPaint.setColor(topTextColor);
-        }else if(buyNum < btmStartNum){
+
+            contentStartPaint.setColor(pointLightColor);
+            contentPaint.setColor(pointColor);
+            contentEndPaint.setColor(pointColor);
+        }else{
             topStartPaint.setTextSize(topTextSize);
             topStartPaint.setColor(topTextColor);
 
@@ -264,6 +300,10 @@ public class IndicatorProgressBar extends ProgressBar {
 
             topEndPaint.setTextSize(topTextSize);
             topEndPaint.setColor(topTextColor);
+
+            contentStartPaint.setColor(pointColor);
+            contentPaint.setColor(pointColor);
+            contentEndPaint.setColor(pointColor);
         }
     }
 
@@ -291,32 +331,19 @@ public class IndicatorProgressBar extends ProgressBar {
      */
     @Override
     protected synchronized void onDraw(Canvas canvas) {
+        setPaintSizeAndColor();//设置一下笔触，不知道是否会影响到16ms
         Drawable progressDrawable = getProgressDrawable();
         if (progressDrawable != null
                 && progressDrawable instanceof LayerDrawable) {
             LayerDrawable d = (LayerDrawable) progressDrawable;
 
             for (int i = 0; i < d.getNumberOfLayers(); i++) {
+                d.getDrawable(i).getBounds().left = defHeight / 2;
                 d.getDrawable(i).getBounds().top = topHeight;
-
-                // thanks to Dave [dave@pds-uk.com] for point out a bug
-                // which eats up
-                // a lot of cpu cycles. It turns out the issue was linked to
-                // calling
-                // getIntrinsicHeight which proved to be very cpu intensive.
+                d.getDrawable(i).getBounds().right = progress_width - defHeight / 2;
                 d.getDrawable(i).getBounds().bottom = topHeight + defHeight;
             }
-        } else if (progressDrawable != null) {
-            // It's not a layer drawable but we still need to adjust the
-            // bounds
-            progressDrawable.getBounds().top = topHeight;
-            // thanks to Dave[dave@pds-uk.com] -- see note above for
-            // explaination.
-            progressDrawable.getBounds().bottom = progressDrawable
-                    .getBounds().height() + btmHeight;
         }
-
-//        updateProgressBar();
 
         super.onDraw(canvas);
         canvas.save();
@@ -361,19 +388,6 @@ public class IndicatorProgressBar extends ProgressBar {
      * @param progressDrawable
      */
     private void setTopStartIndicator(Canvas canvas, Drawable progressDrawable) {
-        int dx = 0;
-
-        // get the position of the progress bar's right end
-        //        if (progressDrawable != null
-        //                && progressDrawable instanceof LayerDrawable) {
-        //            LayerDrawable d = (LayerDrawable) progressDrawable;
-        //            Drawable progressBar = d.findDrawableByLayerId(R.id.progress);
-        //            dx = progressBar.getBounds().right;
-        //        } else if (progressDrawable != null) {
-        //            dx = progressDrawable.getBounds().right;
-        //        }
-
-
         canvas.translate(0, 0);
         // indicator start
         float baseline = topHeight / 2 + topStartPaint.getTextSize() / 2 - topStartPaint.getFontMetrics().descent;
@@ -382,17 +396,31 @@ public class IndicatorProgressBar extends ProgressBar {
         float width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 +dp2px(10);
         canvas.drawText(topContentText, width, baseline, topContentPaint);
         // indicator end
-        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2);
+        width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) /2);
         canvas.drawText(topEndText, width, baseline, topEndPaint);
 
-        //绘制下方
+        //绘制圆点
+        int x = 0;
+        int y = topHeight + defHeight / 2;
+        int r = defHeight - defHeight / 4;
+        //1
+        x = x +defHeight ;
+        canvas.drawCircle(x,y,r,contentStartPaint);
+        //2
+        x = progress_width / 2;
+        canvas.drawCircle(x,y,r,contentPaint);
+        //3
+        x = progress_width - defHeight;
+        canvas.drawCircle(x,y,r,contentEndPaint);
+
+        //绘制下方提示器
         canvas.translate(0 , topHeight + defHeight);
         //1
         canvas.drawText(btmStartNum+btmUnitText+btmStartText, 0, baseline,btmPaint);
         //2
         width = progress_width / 2 - (topContentText.length() * topContentPaint.getTextSize()) / 2 +dp2px(10) ;
         canvas.drawText(btmContentNum+btmUnitText, width, baseline,btmPaint);
-//        //3
+        //3
         TextPaint paint =new TextPaint(btmPaint);
         paint.setTextAlign(Paint.Align.CENTER);
         width = (progress_width - (topEndText.length() * topEndPaint.getTextSize()) / 2);
@@ -420,4 +448,180 @@ public class IndicatorProgressBar extends ProgressBar {
                 getResources().getDisplayMetrics());
     }
 
+    /**
+     * 根据中间值，最大值，当前值设置进度条
+     * 因为中间值不一定会是最大值的一半
+     * 但是如果当前值等于中间值，那么进度条应该设置为50%
+     * 那么50%以下的数值应该增加偏移量，超过中间值后则正常显示
+     * 计算偏移量
+     * 判断当前值是否超过中间值，如果没有超过那么当前值+中间值显示取百分比显示
+     * 进度条为0-100
+     * 20 40 120  buy20   40  80  计算百分比
+     * 60
+     * offset 20
+     */
+    int max =100;
+    public synchronized void setProgress(){
+        int progress = 0;
+        setMax(btmEndNum);
+        int offset = 0;
+        offset = (btmEndNum / 2) - btmContentNum;
+        if(buyNum <= btmContentNum){
+            progress=buyNum+offset;
+        }else{
+            progress = buyNum;
+        }
+        setProgress(progress);
+    }
+
+    @Override
+    public synchronized void setProgress(int progress) {
+        super.setProgress(progress);
+    }
+
+    /**
+     * 锁定最大值
+     * @param max
+     */
+    @Override
+    public synchronized void setMax(int max) {
+        max =this.max;
+        super.setMax(max);
+    }
+
+    public String getTopStartText() {
+        return topStartText;
+    }
+
+    public void setTopStartText(String topStartText) {
+        this.topStartText = topStartText;
+    }
+
+    public String getTopContentText() {
+        return topContentText;
+    }
+
+    public void setTopContentText(String topContentText) {
+        this.topContentText = topContentText;
+    }
+
+    public String getTopEndText() {
+        return topEndText;
+    }
+
+    public void setTopEndText(String topEndText) {
+        this.topEndText = topEndText;
+    }
+
+    public int getTopTextColor() {
+        return topTextColor;
+    }
+
+    public void setTopTextColor(int topTextColor) {
+        this.topTextColor = topTextColor;
+    }
+
+    public int getTopTextSize() {
+        return topTextSize;
+    }
+
+    public void setTopTextSize(int topTextSize) {
+        this.topTextSize = topTextSize;
+    }
+
+    public int getTopLightTextColor() {
+        return topLightTextColor;
+    }
+
+    public void setTopLightTextColor(int topLightTextColor) {
+        this.topLightTextColor = topLightTextColor;
+    }
+
+    public int getTopLightTextSize() {
+        return topLightTextSize;
+    }
+
+    public void setTopLightTextSize(int topLightTextSize) {
+        this.topLightTextSize = topLightTextSize;
+    }
+
+    public int getBtmTextColor() {
+        return btmTextColor;
+    }
+
+    public void setBtmTextColor(int btmTextColor) {
+        this.btmTextColor = btmTextColor;
+    }
+
+    public int getBtmTextSize() {
+        return btmTextSize;
+    }
+
+    public void setBtmTextSize(int btmTextSize) {
+        this.btmTextSize = btmTextSize;
+    }
+
+    public String getBtmStartText() {
+        return btmStartText;
+    }
+
+    public void setBtmStartText(String btmStartText) {
+        this.btmStartText = btmStartText;
+    }
+
+    public String getBtmUnitText() {
+        return btmUnitText;
+    }
+
+    public void setBtmUnitText(String btmUnitText) {
+        this.btmUnitText = btmUnitText;
+    }
+
+    public int getBtmStartNum() {
+        return btmStartNum;
+    }
+
+    public void setBtmStartNum(int btmStartNum) {
+        this.btmStartNum = btmStartNum;
+    }
+
+    public int getBtmContentNum() {
+        return btmContentNum;
+    }
+
+    public void setBtmContentNum(int btmContentNum) {
+        this.btmContentNum = btmContentNum;
+    }
+
+    public int getBtmEndNum() {
+        return btmEndNum;
+    }
+
+    public void setBtmEndNum(int btmEndNum) {
+        this.btmEndNum = btmEndNum;
+    }
+
+    public int getBuyNum() {
+        return buyNum;
+    }
+
+    public void setBuyNum(int buyNum) {
+        this.buyNum = buyNum;
+    }
+
+    public int getPointColor() {
+        return pointColor;
+    }
+
+    public void setPointColor(int pointColor) {
+        this.pointColor = pointColor;
+    }
+
+    public int getPointLightColor() {
+        return pointLightColor;
+    }
+
+    public void setPointLightColor(int pointLightColor) {
+        this.pointLightColor = pointLightColor;
+    }
 }

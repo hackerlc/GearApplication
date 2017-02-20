@@ -7,6 +7,9 @@
         <!--顶部提示器高亮文字颜色，尺寸-->
         <attr name="topLightTextColor" format="color"/>
         <attr name="topLightTextSize" format="dimension"/>
+        <!--圆点默认颜色和高亮颜色-->
+        <attr name="pointColor" format="color"/>
+        <attr name="pointLightColor" format="color"/>
         <!--顶部开始提示器-->
         <attr name="topStartText" format="string"/>
         <!--顶部中间提示器-->
