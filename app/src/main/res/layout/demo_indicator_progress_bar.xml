@@ -20,7 +20,7 @@
         app:topTextColor="#666666"
         app:btmTextColor="#666666"
         app:btmTextSize="16sp"
-        app:btmStartText="起批"
+        app:btmStartText=""
         app:btmUnitText="件"
         app:btmStartNum="30"
         app:btmContentNum="40"

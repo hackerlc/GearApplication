@@ -1,4 +1,4 @@
-package com.ecjia.widgets;
+package gear.yc.com.gearlibrary.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -158,7 +158,6 @@ public class IndicatorProgressBar extends ProgressBar {
         super(context, attrs, defStyleAttr);
         initPaint();
         obtainAttributes(attrs);
-
         setProgress();
     }
 
@@ -412,7 +411,6 @@ public class IndicatorProgressBar extends ProgressBar {
         //3
         x = progress_width - defHeight;
         canvas.drawCircle(x,y,r,contentEndPaint);
-
         //绘制下方提示器
         canvas.translate(0 , topHeight + defHeight);
         //1
