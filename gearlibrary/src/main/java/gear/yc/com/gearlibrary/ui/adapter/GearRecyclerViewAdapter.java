@@ -38,6 +38,8 @@ public class GearRecyclerViewAdapter<T,R extends RecyclerView.ViewHolder> extend
 
     @Override
     public int getItemCount() {
+        if(mData==null)
+            return 0;
         return mData.size();
     }
 
