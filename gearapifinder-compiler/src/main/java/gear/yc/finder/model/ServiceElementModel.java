@@ -11,9 +11,7 @@ import gear.yc.finder.utils.StrHandling;
  * Created by YichenZ on 2017/1/20 11:37.
  */
 
-public class ServiceElementModel implements ElementModel {
-    protected Element mElement;
-    protected TypeName mTypeName;
+public class ServiceElementModel extends BaseModel {
     protected String fieldName;
 
     public ServiceElementModel(Element element){

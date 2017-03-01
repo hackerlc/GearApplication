@@ -1,23 +1,23 @@
 package gear.yc.finder.model;
 
-import com.gear.apifinder.annotation.APIManager;
+import com.gear.apifinder.annotation.APIRouter;
 import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.util.Elements;
 
 /**
- * GearApplication
- * Created by YichenZ on 2017/1/20 11:52.
+ * SJQ_ECSHOP_MJ_NEW
+ * Created by YichenZ on 2017/3/1 15:31.
  */
 
-public class APIManagerElementModel extends BaseModel {
-    protected APIManager annotation;
+public class APIRouterModel extends BaseModel{
+    APIRouter mAPIRouter;
 
-    public APIManagerElementModel(Element element){
+    public APIRouterModel(Element element) {
         mElement=element;
         mTypeName=TypeName.get(element.asType());
-        annotation=mElement.getAnnotation(APIManager.class);
+        mAPIRouter=mElement.getAnnotation(APIRouter.class);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class APIManagerElementModel extends BaseModel {
         return mTypeName;
     }
 
-    public APIManager getAnnotation() {
-        return annotation;
+    public String getClassName(){
+        return mAPIRouter.value();
     }
 
-    public String getClassName() {
-        return annotation.value();
+    public String getrxLifecycleName(){
+        return mAPIRouter.rxLifecycle();
     }
 
     public String getPackageName(Elements elements) {

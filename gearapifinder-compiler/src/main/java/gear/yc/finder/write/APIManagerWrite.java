@@ -26,7 +26,7 @@ import gear.yc.finder.utils.StrHandling;
  * Created by YichenZ on 2017/1/22 09:16.
  */
 
-public class APIManagerWrite {
+public class APIManagerWrite extends AbstractWrite<APIManagerElementModel>{
     private static APIManagerWrite instance;
 
     public static APIManagerWrite getInstance() {
@@ -39,28 +39,22 @@ public class APIManagerWrite {
         }
         return instance;
     }
-
-    private Elements mElementUtils;//元素相关
-    private boolean isGenerate=false;
-
     APIManagerHandler apiHandler;
     APIServiceHandler apiSrvHandler;
 
     List<ServiceElementModel> mServiceElements=new ArrayList<>();
-    APIManagerElementModel mApiModel;
 
     //Field list
     List<FieldSpec> fieldSpecs =new ArrayList<>();
     //Method list
     List<MethodSpec> mtdSpecs =new ArrayList<>();
 
-    TypeSpec typeClass;
-
     public APIManagerWrite(){
         apiHandler = new APIManagerHandler();
         apiSrvHandler = new APIServiceHandler();
     }
 
+    @Override
     public boolean init(Elements elementUtils,RoundEnvironment roundEnv){
         mElementUtils=elementUtils;
         isGenerate=apiHandler.processorOnAnnotation(roundEnv);
@@ -101,6 +95,7 @@ public class APIManagerWrite {
         return isGenerate;
     }
 
+    @Override
     public void writeTo(Filer filer) throws IOException {
         JavaFile.builder(mApiModel.getPackageName(mElementUtils),typeClass)
                 .build()

@@ -1,6 +1,7 @@
 package gear.yc.finder;
 
 import com.gear.apifinder.annotation.APIManager;
+import com.gear.apifinder.annotation.APIRouter;
 import com.gear.apifinder.annotation.APIService;
 import com.google.auto.service.AutoService;
 
@@ -20,6 +21,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
 import gear.yc.finder.write.APIManagerWrite;
+import gear.yc.finder.write.APIRouterWrite;
 
 
 @AutoService(Processor.class)
@@ -29,6 +31,7 @@ public class FinderProcesser extends AbstractProcessor {
     private Messager mMessager;//日志相关
 
     APIManagerWrite mAPIManagerWrite;
+    APIRouterWrite mAPIRouterWrite;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -47,6 +50,7 @@ public class FinderProcesser extends AbstractProcessor {
         Set<String> types=new LinkedHashSet<>();
         types.add(APIManager.class.getCanonicalName());
         types.add(APIService.class.getCanonicalName());
+        types.add(APIRouter.class.getCanonicalName());
         return Collections.unmodifiableSet(types);
     }
 
@@ -73,6 +77,16 @@ public class FinderProcesser extends AbstractProcessor {
             e.printStackTrace();
         }
 
+        isGenerate = mAPIRouterWrite.getInstance().init(mElementUtils,roundEnv);
+        if(!isGenerate){
+            return false;
+        }
+
+        try {
+            mAPIRouterWrite.getInstance().writeTo(mFiler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
