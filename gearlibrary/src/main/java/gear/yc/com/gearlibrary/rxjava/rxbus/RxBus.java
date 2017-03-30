@@ -65,7 +65,7 @@ public class RxBus {
     public static final int TAG_OTHER = -1030;
     public static final int TAG_ERROR = -1090;
     //TAG-class
-    protected static Map<Class,Integer> tag4Class=new HashMap<>();
+    protected static Map<Class,Integer> tag4Class;
     //发布者
     protected final Subject bus;
 
@@ -199,6 +199,9 @@ public class RxBus {
      */
     protected Integer tag=-1000;
     protected void addTag4Class(Class cla){
+        if(tag4Class==null){
+            tag4Class=new HashMap<>();
+        }
         tag4Class.put(cla,tag);
         tag--;
     }
@@ -211,6 +214,9 @@ public class RxBus {
      * @return tag
      */
     public int getTag(Class cla,int value){
+        if(tag4Class==null){
+            return value;
+        }
         return tag4Class.get(cla).intValue()+value;
     }
 
