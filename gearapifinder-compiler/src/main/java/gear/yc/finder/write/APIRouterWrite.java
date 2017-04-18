@@ -67,37 +67,37 @@ public class APIRouterWrite extends AbstractWrite<APIRouterModel> {
         //            List<Method> methods =new ArrayList<>();
         //
         //        }
-//        TypeName typeName = TypeName.get(mServiceElements.get(0)
-//                .getElement().getEnclosedElements().get(0).asType());
+        //        TypeName typeName = TypeName.get(mServiceElements.get(0)
+        //                .getElement().getEnclosedElements().get(0).asType());
         mApiModel = routerHandler.getEleModel();
         Type type[] = new Type[]{Integer.class};
-//        Class clazz = null;
-//        try {
-//            clazz = Class.forName("gear.yc.com.gearapplication.pojo.User");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
+        //        Class clazz = null;
+        //        try {
+        //            clazz = Class.forName("gear.yc.com.gearapplication.pojo.User");
+        //        } catch (ClassNotFoundException e) {
+        //            e.printStackTrace();
+        //            return false;
+        //        }
         //给定方法名称，并且为了不重名以当前类名为后缀
         StringBuffer methodName = new StringBuffer(mServiceElements.get(0)
                 .getElement().getEnclosedElements().get(0).getSimpleName())
                 .append(mServiceElements.get(0).getElement().getSimpleName());
 
-
+        //获取返回类型，返回值为string需要处理
+        String returnType = String.valueOf(mServiceElements.get(0)
+                .getElement().getEnclosedElements().get(0).asType());
+        returnType = returnType.substring(returnType.indexOf(")")+1,returnType.length());
 
         MethodSpec methodSpec = MethodSpec.methodBuilder(methodName.toString())
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .returns(TypeVariableName.get("io.reactivex.Flowable<gear.yc.com.gearapplication.pojo.User>"))
-                .addStatement(
-                        mServiceElements.get(0)
-                                .getElement().getEnclosedElements().get(0).asType() + "\n" +
-                                "\nreturn APIServiceManager\n" +
-                                "                .getTravelNotesAPI()\n" +
-                                "                .getTravelNotesList(query, page)\n" +
-                                "                .compose(bindUntilEvent(lifecycleSubject))\n" +
-                                "                .subscribeOn(Schedulers.io())\n" +
-                                "                .observeOn(AndroidSchedulers.mainThread())\n" +
-                                "                .compose(SchedulersHelper.handleResult())")
+                .returns(TypeVariableName.get(returnType))
+                .addStatement("\nreturn APIServiceManager\n" +
+                        "                .getTravelNotesAPI()\n" +
+                        "                .getTravelNotesList(query, page)\n" +
+                        "                .compose(bindUntilEvent(lifecycleSubject))\n" +
+                        "                .subscribeOn(Schedulers.io())\n" +
+                        "                .observeOn(AndroidSchedulers.mainThread())\n" +
+                        "                .compose(SchedulersHelper.handleResult())")
                 .build();
 
         typeClass = TypeSpec.classBuilder(mApiModel.getClassName())

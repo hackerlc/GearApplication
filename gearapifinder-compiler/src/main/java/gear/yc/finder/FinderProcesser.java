@@ -82,11 +82,11 @@ public class FinderProcesser extends AbstractProcessor {
             return false;
         }
 
-//        try {
-//            mAPIRouterWrite.getInstance().writeTo(mFiler);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            mAPIRouterWrite.getInstance().writeTo(mFiler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
