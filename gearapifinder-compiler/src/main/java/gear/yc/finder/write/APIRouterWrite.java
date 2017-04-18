@@ -91,8 +91,6 @@ public class APIRouterWrite extends AbstractWrite<APIRouterModel> {
                 .addStatement(
                         mServiceElements.get(0)
                                 .getElement().getEnclosedElements().get(0).asType() + "\n" +
-//                                methodName +
-//                                typeMirror.toString() +
                                 "\nreturn APIServiceManager\n" +
                                 "                .getTravelNotesAPI()\n" +
                                 "                .getTravelNotesList(query, page)\n" +
