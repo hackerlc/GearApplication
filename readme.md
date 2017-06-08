@@ -64,5 +64,5 @@ Retrofit2，Fresco 网络访问由OkHttp3负责
 ```
 ###使用library框架
 ```
-compile 'com.joker.gear:com-joker-gear:1.5.1'
+compile 'com.joker.gear:com-joker-gear:1.5.3'
 ```
