@@ -22,7 +22,7 @@ import io.reactivex.subjects.BehaviorSubject;
  * Created by YichenZ on 2016/3/23 11:26.
  */
 public class BaseActivity extends GearActivity{
-    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
+    protected final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     @NonNull
     @CheckResult
@@ -105,5 +105,9 @@ public class BaseActivity extends GearActivity{
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public BehaviorSubject<ActivityEvent> getLifecycleSubject() {
+        return lifecycleSubject;
     }
 }

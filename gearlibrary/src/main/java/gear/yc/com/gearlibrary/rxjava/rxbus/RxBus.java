@@ -3,9 +3,6 @@ package gear.yc.com.gearlibrary.rxjava.rxbus;
 
 import android.support.annotation.NonNull;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -25,6 +22,8 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 /**
+ * @version 2.1
+ * 修改取消绑定时使用rx方式处理会出现不能正确解绑的bug
  * @version 2.0
  * 增加默认状态以及状态值
  * 使用注解方式注册，检测activity的onCreate是否有UseRxBus注解
@@ -65,7 +64,7 @@ public class RxBus {
     public static final int TAG_OTHER = -1030;
     public static final int TAG_ERROR = -1090;
     //TAG-class
-    protected static Map<Class,Integer> tag4Class=new HashMap<>();
+    protected static Map<Class,Integer> tag4Class;
     //发布者
     protected final Subject bus;
 
@@ -74,7 +73,6 @@ public class RxBus {
 
     /**
      * PublishSubject 创建一个可以在订阅之后把数据传输给订阅者Subject
-     * SerializedSubject 序列化Subject为线程安全的Subject RxJava2 暂无
      */
     public RxBus() {
         bus = PublishSubject.create().toSerialized();
@@ -199,6 +197,9 @@ public class RxBus {
      */
     protected Integer tag=-1000;
     protected void addTag4Class(Class cla){
+        if(tag4Class==null){
+            tag4Class=new HashMap<>();
+        }
         tag4Class.put(cla,tag);
         tag--;
     }
@@ -211,6 +212,9 @@ public class RxBus {
      * @return tag
      */
     public int getTag(Class cla,int value){
+        if(tag4Class==null){
+            return value;
+        }
         return tag4Class.get(cla).intValue()+value;
     }
 
@@ -219,32 +223,13 @@ public class RxBus {
      * @param subscriber 订阅者
      */
     public void unRegister(Object subscriber) {
-        Flowable.just(subscriber)
-                .filter(s -> s!=null)
-                .map(s -> subscriptions.get(s))
-                .filter(subs -> subs!=null)
-                .subscribeWith(new Subscriber<CompositeDisposable>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-
-                    }
-
-                    @Override
-                    public void onNext(CompositeDisposable compositeDisposable) {
-                        compositeDisposable.dispose();
-                        subscriptions.remove(subscriber);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        CompositeDisposable compositeDisposable;
+        if(subscriber != null){
+            compositeDisposable = subscriptions.get(subscriber);
+            if(compositeDisposable != null){
+                compositeDisposable.dispose();
+                subscriptions.remove(subscriber);
+            }
+        }
     }
-
 }

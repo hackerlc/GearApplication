@@ -33,6 +33,10 @@ public class TravelNotesPresenter implements TravelNotesContract.Presenter {
     @Override
     public void loadData(String key,int page) {
         view.showDialog();
+//        RouterDemo.getRouter(obj.getLifecycleSubject(),key, page+"")
+//                .doOnTerminate(() -> view.disDialog())
+//                .subscribe(d -> obj.dataBinding(d),
+//                        e -> obj.dataError(e));
         APIServiceManager
                 .getTravelNotesAPI()
                 .getTravelNotesList(key, page + "")
