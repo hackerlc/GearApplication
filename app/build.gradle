@@ -47,15 +47,15 @@ android {
 
     applicationVariants.all { variant ->
 
-        if (variant.buildType.name.equals('release')) {
-            variant.outputs.each { output ->
-                def appName = 'Explore'
-                def oldFile = output.outputFile
-                def releaseApkName
-                releaseApkName = appName + getVersionNameFromManifest()   + '.apk'
-                output.outputFile = new File(oldFile.parent, releaseApkName)
-            }
-        }
+//        if (variant.buildType.name.equals('release')) {
+//            variant.outputs.each { output ->
+//                def appName = 'Explore'
+//                def oldFile = output.outputFile
+//                def releaseApkName
+//                releaseApkName = appName + getVersionNameFromManifest()   + '.apk'
+//                output.outputFile = new File(oldFile.parent, releaseApkName)
+//            }
+//        }
     }
 
     lintOptions {

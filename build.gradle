@@ -4,9 +4,11 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+//        maven { url 'https://maven.google.com' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+//        classpath 'com.android.tools.build.gradle:3.0.0-alpha6'
+        classpath 'com.android.tools.build.gradle:2.2.3'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
 
